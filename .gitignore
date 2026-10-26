@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# QA output
+qa/artifacts/
+qa/test-results/
+qa/playwright-report/
+
+# local and OS files
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# local database dumps
+*.dump
+*.backup
+*.sql.gz
+
+# editor
+.vscode/
+.idea/
+*.swp

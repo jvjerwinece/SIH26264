@@ -1,0 +1,998 @@
+{
+ "institutions": [
+  {
+   "id": "i1",
+   "pid": "1-1234567",
+   "name": "Sri Venkateswara College of Engineering",
+   "city": "Kanchipuram",
+   "state": "Tamil Nadu",
+   "region": "South",
+   "address": "Pennalur, Sriperumbudur, Kanchipuram 602117",
+   "trust": "Sri Venkateswara Educational Trust",
+   "aliases": [
+    "S.V. College of Engineering",
+    "Sri Venkateshwara Engineering College",
+    "SVCE Kanchipuram"
+   ]
+  },
+  {
+   "id": "i2",
+   "pid": "1-2345678",
+   "name": "Sri Venkateswara Institute of Technology",
+   "city": "Tirupati",
+   "state": "Andhra Pradesh",
+   "region": "South",
+   "address": "Karakatamanchi, Tirupati 517502",
+   "trust": "Sri Vidya Educational Society",
+   "aliases": [
+    "SVIT Tirupati",
+    "Sri Venkateshwara Institute of Technology"
+   ]
+  },
+  {
+   "id": "i3",
+   "pid": "1-3456789",
+   "name": "Annai Meenakshi College of Engineering",
+   "city": "Chennai",
+   "state": "Tamil Nadu",
+   "region": "South",
+   "address": "Vembuliamman Koil St, K.K. Nagar, Chennai 600078",
+   "trust": "Annai Meenakshi Educational Trust",
+   "aliases": [
+    "AMCE Chennai",
+    "Annai Meenakshi Engg College"
+   ]
+  },
+  {
+   "id": "i4",
+   "pid": "1-4567890",
+   "name": "Annai Meenakshi Polytechnic College",
+   "city": "Chengalpattu",
+   "state": "Tamil Nadu",
+   "region": "South",
+   "address": "GST Road, Chengalpattu 603001",
+   "trust": "Annai Meenakshi Educational Trust",
+   "aliases": [
+    "AMPC Chengalpattu"
+   ]
+  },
+  {
+   "id": "i5",
+   "pid": "1-5678901",
+   "name": "Government Polytechnic",
+   "city": "Kangra",
+   "state": "Himachal Pradesh",
+   "region": "North",
+   "address": "Kangra 176001",
+   "trust": "—",
+   "aliases": [
+    "G.P. Kangra",
+    "Govt Polytechnic Kangra"
+   ]
+  },
+  {
+   "id": "i6",
+   "pid": "1-6789012",
+   "name": "Government Polytechnic",
+   "city": "Nabarangpur",
+   "state": "Odisha",
+   "region": "East",
+   "address": "Nabarangpur 764059",
+   "trust": "—",
+   "aliases": [
+    "G.P. Nabarangpur"
+   ]
+  },
+  {
+   "id": "i7",
+   "pid": "1-7890123",
+   "name": "Patel College of Science & Technology",
+   "city": "Indore",
+   "state": "Madhya Pradesh",
+   "region": "Central",
+   "address": "Bypass Road, Indore 452020",
+   "trust": "Patel Education Society",
+   "aliases": [
+    "Patel College of Sci & Tech",
+    "PCST Indore"
+   ]
+  },
+  {
+   "id": "i8",
+   "pid": "1-8901234",
+   "name": "Patel Institute of Management",
+   "city": "Bhopal",
+   "state": "Madhya Pradesh",
+   "region": "Central",
+   "address": "Hoshangabad Road, Bhopal 462047",
+   "trust": "Patel Education Society",
+   "aliases": [
+    "PIM Bhopal"
+   ]
+  },
+  {
+   "id": "i9",
+   "pid": "1-9012345",
+   "name": "St. Xavier's Technical Institute",
+   "city": "Mumbai",
+   "state": "Maharashtra",
+   "region": "West",
+   "address": "Mahim, Mumbai 400016",
+   "trust": "St. Xavier's Society",
+   "aliases": [
+    "SXTI Mumbai",
+    "St Xaviers Technical Institute"
+   ]
+  },
+  {
+   "id": "i10",
+   "pid": "1-0123456",
+   "name": "Rajiv Gandhi Institute of Technology",
+   "city": "Bengaluru",
+   "state": "Karnataka",
+   "region": "South",
+   "address": "Cholanayakanahalli, Bengaluru 560032",
+   "trust": "—",
+   "aliases": [
+    "RGIT Bengaluru"
+   ]
+  },
+  {
+   "id": "i11",
+   "pid": "1-1122334",
+   "name": "Sri Krishna College of Engineering",
+   "city": "Coimbatore",
+   "state": "Tamil Nadu",
+   "region": "South",
+   "address": "Vattamalaipalayam, Coimbatore 641042",
+   "trust": "Sri Krishna Educational Trust",
+   "aliases": [
+    "SKCE Coimbatore",
+    "Sri Krishna College of Engg"
+   ]
+  },
+  {
+   "id": "i12",
+   "pid": "1-2233445",
+   "name": "Sri Krishna Institute of Technology",
+   "city": "Coimbatore",
+   "state": "Tamil Nadu",
+   "region": "South",
+   "address": "Vinayaka Nagar, Coimbatore 641035",
+   "trust": "Sri Lakshmi Educational Trust",
+   "aliases": [
+    "SKIT Coimbatore"
+   ]
+  },
+  {
+   "id": "i13",
+   "pid": "1-3344556",
+   "name": "Deccan Education Society's Technical Institute",
+   "city": "Pune",
+   "state": "Maharashtra",
+   "region": "West",
+   "address": "Fergusson College Road, Pune 411004",
+   "trust": "Deccan Education Society",
+   "aliases": [
+    "DES Technical Institute",
+    "DEST Pune"
+   ]
+  },
+  {
+   "id": "i14",
+   "pid": "1-4455667",
+   "name": "Fergusson College (Autonomous)",
+   "city": "Pune",
+   "state": "Maharashtra",
+   "region": "West",
+   "address": "F.C. Road, Pune 411004",
+   "trust": "Deccan Education Society",
+   "aliases": [
+    "Fergusson College Pune"
+   ]
+  },
+  {
+   "id": "i15",
+   "pid": "1-5566778",
+   "name": "Chaitanya Bharathi Institute of Technology",
+   "city": "Hyderabad",
+   "state": "Telangana",
+   "region": "South",
+   "address": "Gandipet, Hyderabad 500075",
+   "trust": "CBIT Educational Society",
+   "aliases": [
+    "CBIT Hyderabad"
+   ]
+  },
+  {
+   "id": "i16",
+   "pid": "1-6677889",
+   "name": "Government Engineering College",
+   "city": "Thrissur",
+   "state": "Kerala",
+   "region": "South",
+   "address": "Ramavarmapuram, Thrissur 680009",
+   "trust": "—",
+   "aliases": [
+    "GEC Thrissur"
+   ]
+  },
+  {
+   "id": "i17",
+   "pid": "1-7788990",
+   "name": "Sardar Patel Institute of Technology",
+   "city": "Mumbai",
+   "state": "Maharashtra",
+   "region": "West",
+   "address": "Andheri West, Mumbai 400058",
+   "trust": "Sardar Patel Trust",
+   "aliases": [
+    "SPIT Mumbai"
+   ]
+  },
+  {
+   "id": "i18",
+   "pid": "1-8899001",
+   "name": "IIIT Design & Manufacturing Kancheepuram",
+   "city": "Kancheepuram",
+   "state": "Tamil Nadu",
+   "region": "South",
+   "address": "Melakottaiyur, Kancheepuram 600127",
+   "trust": "—",
+   "aliases": [
+    "IIITDM Kancheepuram"
+   ]
+  }
+ ],
+ "cases": [
+  {
+   "id": "C-2026-0031",
+   "instId": "i3",
+   "category": "Unauthorized intake",
+   "bureau": "RB",
+   "status": "Disposed",
+   "received": "2026-02-04",
+   "lastAction": "Show-cause closed, admissions re-verified",
+   "nextAction": "None — disposed",
+   "lastActionDate": "2026-02-26",
+   "expected": "2026-03-20",
+   "officer": "S. Iyer",
+   "sla": 60,
+   "docs": 3,
+   "summary": "Institution admitted 38 students beyond sanctioned intake in two PG programmes."
+  },
+  {
+   "id": "C-2026-0042",
+   "instId": "i4",
+   "category": "Fee refund / scholarship",
+   "bureau": "PGRC",
+   "status": "Disposed",
+   "received": "2026-02-18",
+   "lastAction": "Refund schedule filed with PGRC",
+   "nextAction": "None — disposed",
+   "lastActionDate": "2026-03-12",
+   "expected": "2026-04-02",
+   "officer": "P. Rao",
+   "sla": 60,
+   "docs": 4,
+   "summary": "Students allege excess lab and development fee collected for 2025-26."
+  },
+  {
+   "id": "C-2026-0057",
+   "instId": "i5",
+   "category": "Scholarship delay",
+   "bureau": "PGRC",
+   "status": "Disposed",
+   "received": "2026-03-03",
+   "lastAction": "State scholarship portal reconciled",
+   "nextAction": "None — disposed",
+   "lastActionDate": "2026-03-28",
+   "expected": "2026-04-17",
+   "officer": "A. Kumar",
+   "sla": 60,
+   "docs": 2,
+   "summary": "Post-matric scholarship amounts not credited to 61 eligible students."
+  },
+  {
+   "id": "C-2026-0068",
+   "instId": "i6",
+   "category": "Approval violation",
+   "bureau": "RB",
+   "status": "Disposed",
+   "received": "2026-03-21",
+   "lastAction": "Programme closure undertaking accepted",
+   "nextAction": "None — disposed",
+   "lastActionDate": "2026-04-30",
+   "expected": "2026-05-20",
+   "officer": "R. Menon",
+   "sla": 90,
+   "docs": 5,
+   "summary": "Unapproved engineering programme advertised without AICTE approval for 2026-27."
+  },
+  {
+   "id": "C-2026-0079",
+   "instId": "i7",
+   "category": "Faculty shortage",
+   "bureau": "RB",
+   "status": "Disposed",
+   "received": "2026-04-07",
+   "lastAction": "Faculty list verified against payroll",
+   "nextAction": "None — disposed",
+   "lastActionDate": "2026-05-02",
+   "expected": "2026-05-27",
+   "officer": "K. Nair",
+   "sla": 60,
+   "docs": 2,
+   "summary": "Core faculty shortfall of 22% against the approved intake for the academic year."
+  },
+  {
+   "id": "C-2026-0091",
+   "instId": "i8",
+   "category": "Infrastructure deficiency",
+   "bureau": "Regional Office",
+   "status": "Disposed",
+   "received": "2026-04-22",
+   "lastAction": "Joint inspection report closed",
+   "nextAction": "None — disposed",
+   "lastActionDate": "2026-05-19",
+   "expected": "2026-06-11",
+   "officer": "M. Das",
+   "sla": 60,
+   "docs": 6,
+   "summary": "Laboratory equipment and built-up area below the approved norms."
+  },
+  {
+   "id": "C-2026-0104",
+   "instId": "i9",
+   "category": "Land / building violation",
+   "bureau": "Regional Office",
+   "status": "Disposed",
+   "received": "2026-05-11",
+   "lastAction": "Land documents and lease deed verified",
+   "nextAction": "None — disposed",
+   "lastActionDate": "2026-06-08",
+   "expected": "2026-07-01",
+   "officer": "S. Iyer",
+   "sla": 60,
+   "docs": 4,
+   "summary": "Campus operated from a site not reflected in the approved land documents."
+  },
+  {
+   "id": "C-2026-0118",
+   "instId": "i10",
+   "category": "Harassment complaint",
+   "bureau": "PGRC",
+   "status": "Disposed",
+   "received": "2026-06-02",
+   "lastAction": "Internal committee report and action taken",
+   "nextAction": "None — disposed",
+   "lastActionDate": "2026-07-01",
+   "expected": "2026-07-22",
+   "officer": "P. Rao",
+   "sla": 45,
+   "docs": 7,
+   "summary": "Complaint referred to the institution internal committee; report received."
+  },
+  {
+   "id": "C-2026-0129",
+   "instId": "i11",
+   "category": "Fee refund / scholarship",
+   "bureau": "PGRC",
+   "status": "Disposed",
+   "received": "2026-06-19",
+   "lastAction": "Refund proof submitted by institution",
+   "nextAction": "None — disposed",
+   "lastActionDate": "2026-07-14",
+   "expected": "2026-08-05",
+   "officer": "A. Kumar",
+   "sla": 60,
+   "docs": 3,
+   "summary": "Caution deposit not refunded after withdrawal from the first year."
+  },
+  {
+   "id": "C-2026-0131",
+   "instId": "i12",
+   "category": "Unauthorized intake",
+   "bureau": "RB",
+   "status": "Disposed",
+   "received": "2026-07-02",
+   "lastAction": "Penalty order issued, intake capped",
+   "nextAction": "None — disposed",
+   "lastActionDate": "2026-07-29",
+   "expected": "2026-08-21",
+   "officer": "R. Menon",
+   "sla": 60,
+   "docs": 4,
+   "summary": "Management quota seats offered without the approved admission matrix."
+  },
+  {
+   "id": "C-2026-0142",
+   "instId": "i1",
+   "category": "Fee refund / scholarship",
+   "bureau": "PGRC",
+   "status": "Under Process",
+   "received": "2026-09-12",
+   "lastAction": "College response sought",
+   "nextAction": "Verify fee receipts",
+   "lastActionDate": "2026-10-18",
+   "expected": "2026-11-01",
+   "officer": "P. Rao",
+   "sla": 60,
+   "docs": 3,
+   "summary": "Batch of 14 students alleges excess lab fee and unpaid scholarship refunds."
+  },
+  {
+   "id": "C-2026-0167",
+   "instId": "i1",
+   "category": "Unauthorized intake",
+   "bureau": "RB",
+   "status": "Under Process",
+   "received": "2026-10-02",
+   "lastAction": "Records requested",
+   "nextAction": "Schedule inspection",
+   "lastActionDate": "2026-10-20",
+   "expected": "2026-11-15",
+   "officer": "R. Menon",
+   "sla": 90,
+   "docs": 5,
+   "summary": "Institution reportedly admitted students beyond sanctioned intake in two programs."
+  },
+  {
+   "id": "C-2026-0198",
+   "instId": "i1",
+   "category": "Scholarship delay",
+   "bureau": "PGRC",
+   "status": "Pending",
+   "received": "2026-10-21",
+   "lastAction": "Case created",
+   "nextAction": "Assign officer",
+   "lastActionDate": "2026-10-21",
+   "expected": "2026-12-20",
+   "officer": "Unassigned",
+   "sla": 60,
+   "docs": 1,
+   "summary": "Late disbursal of state scholarship for 2025-26 batch."
+  },
+  {
+   "id": "C-2026-0180",
+   "instId": "i2",
+   "category": "Faculty shortage",
+   "bureau": "PGRC",
+   "status": "Escalated",
+   "received": "2026-08-28",
+   "lastAction": "Escalated to Director",
+   "nextAction": "Personal hearing",
+   "lastActionDate": "2026-10-16",
+   "expected": "2026-10-30",
+   "officer": "S. Iyer",
+   "sla": 60,
+   "docs": 4,
+   "summary": "Only 41% faculty positions filled against sanctioned strength."
+  },
+  {
+   "id": "C-2026-0181",
+   "instId": "i2",
+   "category": "Approval violation",
+   "bureau": "RB",
+   "status": "Under Process",
+   "received": "2026-09-05",
+   "lastAction": "Show-cause issued",
+   "nextAction": "Inspect records",
+   "lastActionDate": "2026-10-19",
+   "expected": "2026-11-10",
+   "officer": "K. Nair",
+   "sla": 90,
+   "docs": 6,
+   "summary": "New program started without AICTE approval for 2026-27."
+  },
+  {
+   "id": "C-2026-0155",
+   "instId": "i3",
+   "category": "Harassment complaint",
+   "bureau": "PGRC",
+   "status": "Under Process",
+   "received": "2026-09-20",
+   "lastAction": "Inquiry committee formed",
+   "nextAction": "Inquiry report",
+   "lastActionDate": "2026-10-17",
+   "expected": "2026-11-05",
+   "officer": "A. Das",
+   "sla": 45,
+   "docs": 7,
+   "summary": "Complaint by three faculty members against departmental head."
+  },
+  {
+   "id": "C-2026-0160",
+   "instId": "i4",
+   "category": "Land / building violation",
+   "bureau": "RB",
+   "status": "Under Process",
+   "received": "2026-09-25",
+   "lastAction": "Site plan obtained",
+   "nextAction": "Site inspection",
+   "lastActionDate": "2026-10-15",
+   "expected": "2026-12-01",
+   "officer": "R. Menon",
+   "sla": 30,
+   "docs": 4,
+   "summary": "Unauthorized construction on land shown as playground in approved plan."
+  },
+  {
+   "id": "C-2026-0171",
+   "instId": "i7",
+   "category": "Unapproved course",
+   "bureau": "RB",
+   "status": "Pending",
+   "received": "2026-10-10",
+   "lastAction": "Case created",
+   "nextAction": "Assign officer",
+   "lastActionDate": "2026-10-10",
+   "expected": "2026-12-01",
+   "officer": "Unassigned",
+   "sla": 90,
+   "docs": 2,
+   "summary": "New AI & Data Science course advertised without approval."
+  },
+  {
+   "id": "C-2026-0172",
+   "instId": "i8",
+   "category": "Fee grievance",
+   "bureau": "PGRC",
+   "status": "Disposed",
+   "received": "2026-08-15",
+   "lastAction": "Refund confirmed",
+   "nextAction": "—",
+   "lastActionDate": "2026-09-30",
+   "expected": "2026-09-30",
+   "officer": "P. Rao",
+   "sla": 60,
+   "docs": 3,
+   "summary": "Excess fee refunded to 9 students."
+  },
+  {
+   "id": "C-2026-0185",
+   "instId": "i5",
+   "category": "Scholarship delay",
+   "bureau": "PGRC",
+   "status": "Pending",
+   "received": "2026-08-01",
+   "lastAction": "Notice to state office",
+   "nextAction": "Follow up with state",
+   "lastActionDate": "2026-09-02",
+   "expected": "2026-09-30",
+   "officer": "S. Iyer",
+   "sla": 60,
+   "docs": 2,
+   "summary": "Post-matric scholarship not released for 38 students."
+  },
+  {
+   "id": "C-2026-0186",
+   "instId": "i6",
+   "category": "Infrastructure deficiency",
+   "bureau": "RB",
+   "status": "Transferred",
+   "received": "2026-09-01",
+   "lastAction": "Transferred by PGRC",
+   "nextAction": "Accept custody",
+   "lastActionDate": "2026-10-10",
+   "expected": "2026-10-15",
+   "officer": "K. Nair",
+   "sla": 45,
+   "docs": 3,
+   "summary": "Lab and library deficiency; PGRC transferred to RB on 10 Oct. Custody not accepted."
+  },
+  {
+   "id": "C-2026-0190",
+   "instId": "i9",
+   "category": "Unapproved intake",
+   "bureau": "RB",
+   "status": "Under Process",
+   "received": "2026-09-28",
+   "lastAction": "Show-cause notice",
+   "nextAction": "Reply review",
+   "lastActionDate": "2026-10-19",
+   "expected": "2026-11-20",
+   "officer": "R. Menon",
+   "sla": 90,
+   "docs": 4,
+   "summary": "Diploma intake exceeds approved seats by 60."
+  },
+  {
+   "id": "C-2026-0191",
+   "instId": "i10",
+   "category": "Fee refund",
+   "bureau": "PGRC",
+   "status": "Disposed",
+   "received": "2026-08-20",
+   "lastAction": "Refund processed",
+   "nextAction": "—",
+   "lastActionDate": "2026-10-01",
+   "expected": "2026-10-01",
+   "officer": "A. Das",
+   "sla": 60,
+   "docs": 2,
+   "summary": "Refund of admission fee after withdrawal."
+  },
+  {
+   "id": "C-2026-0192",
+   "instId": "i11",
+   "category": "Faculty behaviour",
+   "bureau": "PGRC",
+   "status": "Pending",
+   "received": "2026-10-18",
+   "lastAction": "Case created",
+   "nextAction": "Assign officer",
+   "lastActionDate": "2026-10-18",
+   "expected": "2026-12-15",
+   "officer": "Unassigned",
+   "sla": 45,
+   "docs": 1,
+   "summary": "Allegation of discriminatory behaviour in classroom."
+  },
+  {
+   "id": "C-2026-0193",
+   "instId": "i12",
+   "category": "Approval violation",
+   "bureau": "RB",
+   "status": "Under Process",
+   "received": "2026-10-05",
+   "lastAction": "Documents under verification",
+   "nextAction": "Document verification",
+   "lastActionDate": "2026-10-20",
+   "expected": "2026-11-25",
+   "officer": "K. Nair",
+   "sla": 90,
+   "docs": 3,
+   "summary": "Lab equipment shown for approval not found on site."
+  },
+  {
+   "id": "C-2026-0194",
+   "instId": "i13",
+   "category": "Fee grievance",
+   "bureau": "PGRC",
+   "status": "Under Process",
+   "received": "2026-09-30",
+   "lastAction": "College response sought",
+   "nextAction": "Seek response",
+   "lastActionDate": "2026-10-18",
+   "expected": "2026-11-10",
+   "officer": "P. Rao",
+   "sla": 60,
+   "docs": 2,
+   "summary": "Fee charged for activity not listed in fee structure."
+  },
+  {
+   "id": "C-2026-0195",
+   "instId": "i14",
+   "category": "Compliance",
+   "bureau": "RB",
+   "status": "Pending",
+   "received": "2026-10-12",
+   "lastAction": "Case created",
+   "nextAction": "Assign officer",
+   "lastActionDate": "2026-10-12",
+   "expected": "2026-12-10",
+   "officer": "Unassigned",
+   "sla": 90,
+   "docs": 2,
+   "summary": "Autonomy compliance documents pending verification."
+  },
+  {
+   "id": "C-2026-0196",
+   "instId": "i15",
+   "category": "Admission irregularity",
+   "bureau": "PGRC",
+   "status": "Under Process",
+   "received": "2026-10-01",
+   "lastAction": "Statements obtained",
+   "nextAction": "Inquiry",
+   "lastActionDate": "2026-10-19",
+   "expected": "2026-11-15",
+   "officer": "S. Iyer",
+   "sla": 60,
+   "docs": 4,
+   "summary": "Admissions made outside the approved counseling process."
+  },
+  {
+   "id": "C-2026-0197",
+   "instId": "i15",
+   "category": "Unapproved course",
+   "bureau": "RB",
+   "status": "Under Process",
+   "received": "2026-10-08",
+   "lastAction": "Inspection scheduled",
+   "nextAction": "Inspection",
+   "lastActionDate": "2026-10-20",
+   "expected": "2026-11-30",
+   "officer": "R. Menon",
+   "sla": 90,
+   "docs": 3,
+   "summary": "Evening MBA program launched without approval."
+  },
+  {
+   "id": "C-2026-0165",
+   "instId": "i18",
+   "category": "Faculty shortage",
+   "bureau": "PGRC",
+   "status": "Disposed",
+   "received": "2026-07-10",
+   "lastAction": "Compliance confirmed",
+   "nextAction": "—",
+   "lastActionDate": "2026-09-15",
+   "expected": "2026-09-15",
+   "officer": "A. Das",
+   "sla": 60,
+   "docs": 5,
+   "summary": "Faculty shortage rectified; case closed."
+  },
+  {
+   "id": "C-2026-0168",
+   "instId": "i16",
+   "category": "Fee grievance",
+   "bureau": "PGRC",
+   "status": "Under Process",
+   "received": "2026-09-18",
+   "lastAction": "College response sought",
+   "nextAction": "Seek response",
+   "lastActionDate": "2026-10-16",
+   "expected": "2026-11-01",
+   "officer": "P. Rao",
+   "sla": 60,
+   "docs": 2,
+   "summary": "Excess fee charged for lab consumables."
+  },
+  {
+   "id": "C-2026-0169",
+   "instId": "i17",
+   "category": "Unapproved course",
+   "bureau": "RB",
+   "status": "Pending",
+   "received": "2026-10-14",
+   "lastAction": "Case created",
+   "nextAction": "Assign officer",
+   "lastActionDate": "2026-10-14",
+   "expected": "2026-12-15",
+   "officer": "Unassigned",
+   "sla": 90,
+   "docs": 1,
+   "summary": "New PG diploma advertised before approval."
+  }
+ ],
+ "overlaps": [
+  {
+   "id": "CL-01",
+   "instId": "i1",
+   "caseIds": [
+    "C-2026-0142",
+    "C-2026-0167",
+    "C-2026-0198"
+   ],
+   "confidence": 98,
+   "reason": [
+    "Same AICTE Permanent ID",
+    "Alias matched: S.V. College of Engineering",
+    "Same issue cluster: fee / scholarship",
+    "Location match: Kanchipuram"
+   ],
+   "state": "open",
+   "room": "CR-01",
+   "lead": "Unassigned"
+  },
+  {
+   "id": "CL-02",
+   "instId": "i2",
+   "caseIds": [
+    "C-2026-0180",
+    "C-2026-0181"
+   ],
+   "confidence": 94,
+   "reason": [
+    "Same AICTE Permanent ID",
+    "Same issue cluster: approval / faculty",
+    "Both open across PGRC and RB"
+   ],
+   "state": "open",
+   "room": "CR-02",
+   "lead": "Unassigned"
+  },
+  {
+   "id": "CL-03",
+   "instId": "i15",
+   "caseIds": [
+    "C-2026-0196",
+    "C-2026-0197"
+   ],
+   "confidence": 97,
+   "reason": [
+    "Same AICTE Permanent ID",
+    "Alias matched: CBIT Hyderabad",
+    "Same issue cluster: admission / course approval"
+   ],
+   "state": "open",
+   "room": "CR-03",
+   "lead": "Unassigned"
+  }
+ ],
+ "rooms": {
+  "CR-01": {
+   "id": "CR-01",
+   "overlapId": "CL-01",
+   "lead": "Unassigned",
+   "custody": "Each case keeps its bureau of origin",
+   "notes": "",
+   "activity": [
+    {
+     "t": "20 Oct 10:38",
+     "a": "System",
+     "x": "detected overlap with 98% confidence"
+    },
+    {
+     "t": "20 Oct 10:42",
+     "a": "R. Menon",
+     "x": "linked C-2026-0167 to C-2026-0142"
+    },
+    {
+     "t": "20 Oct 10:45",
+     "a": "P. Rao",
+     "x": "opened Coordination Room CR-01"
+    }
+   ]
+  },
+  "CR-02": {
+   "id": "CR-02",
+   "overlapId": "CL-02",
+   "lead": "Unassigned",
+   "custody": "Each case keeps its bureau of origin",
+   "notes": "",
+   "activity": [
+    {
+     "t": "19 Oct 15:10",
+     "a": "System",
+     "x": "detected overlap with 94% confidence"
+    }
+   ]
+  },
+  "CR-03": {
+   "id": "CR-03",
+   "overlapId": "CL-03",
+   "lead": "Unassigned",
+   "custody": "Each case keeps its bureau of origin",
+   "notes": "",
+   "activity": [
+    {
+     "t": "21 Oct 09:12",
+     "a": "System",
+     "x": "detected overlap with 97% confidence"
+    }
+   ]
+  }
+ },
+ "audit": [
+  {
+   "id": "A-1054",
+   "time": "2026-10-21 11:40",
+   "actor": "P. Rao",
+   "action": "Case created from complaint email",
+   "obj": "C-2026-0198"
+  },
+  {
+   "id": "A-1053",
+   "time": "2026-10-21 09:15",
+   "actor": "System",
+   "action": "Custody not accepted — escalated to Director",
+   "obj": "C-2026-0186"
+  },
+  {
+   "id": "A-1052",
+   "time": "2026-10-21 09:12",
+   "actor": "System",
+   "action": "Overlap detected (97%)",
+   "obj": "CL-03"
+  },
+  {
+   "id": "A-1051",
+   "time": "2026-10-20 17:10",
+   "actor": "R. Menon",
+   "action": "Inspection scheduled",
+   "obj": "C-2026-0197"
+  },
+  {
+   "id": "A-1050",
+   "time": "2026-10-20 15:35",
+   "actor": "K. Nair",
+   "action": "Documents under verification",
+   "obj": "C-2026-0193"
+  },
+  {
+   "id": "A-1049",
+   "time": "2026-10-20 14:20",
+   "actor": "R. Menon",
+   "action": "Records requested",
+   "obj": "C-2026-0167"
+  },
+  {
+   "id": "A-1048",
+   "time": "2026-10-20 10:47",
+   "actor": "R. Menon",
+   "action": "Assigned lead bureau: RB",
+   "obj": "CR-01"
+  },
+  {
+   "id": "A-1047",
+   "time": "2026-10-20 10:45",
+   "actor": "P. Rao",
+   "action": "Opened Coordination Room",
+   "obj": "CR-01"
+  },
+  {
+   "id": "A-1046",
+   "time": "2026-10-20 10:42",
+   "actor": "R. Menon",
+   "action": "Linked cases",
+   "obj": "C-2026-0167 → C-2026-0142"
+  },
+  {
+   "id": "A-1045",
+   "time": "2026-10-19 16:45",
+   "actor": "S. Iyer",
+   "action": "Statements obtained",
+   "obj": "C-2026-0196"
+  },
+  {
+   "id": "A-1044",
+   "time": "2026-10-19 15:10",
+   "actor": "System",
+   "action": "Overlap detected (94%)",
+   "obj": "CL-02"
+  },
+  {
+   "id": "A-1043",
+   "time": "2026-10-19 12:30",
+   "actor": "R. Menon",
+   "action": "Show-cause notice issued",
+   "obj": "C-2026-0190"
+  },
+  {
+   "id": "A-1042",
+   "time": "2026-10-18 16:05",
+   "actor": "P. Rao",
+   "action": "College response sought",
+   "obj": "C-2026-0194"
+  },
+  {
+   "id": "A-1041",
+   "time": "2026-10-18 11:15",
+   "actor": "P. Rao",
+   "action": "College response sought",
+   "obj": "C-2026-0142"
+  },
+  {
+   "id": "A-1040",
+   "time": "2026-10-18 09:40",
+   "actor": "System",
+   "action": "Case created from portal",
+   "obj": "C-2026-0192"
+  },
+  {
+   "id": "A-1039",
+   "time": "2026-10-17 15:20",
+   "actor": "A. Das",
+   "action": "Inquiry committee formed",
+   "obj": "C-2026-0155"
+  },
+  {
+   "id": "A-1038",
+   "time": "2026-10-16 14:05",
+   "actor": "P. Rao",
+   "action": "College response sought",
+   "obj": "C-2026-0168"
+  },
+  {
+   "id": "A-1037",
+   "time": "2026-10-16 10:30",
+   "actor": "S. Iyer",
+   "action": "Escalated to Director",
+   "obj": "C-2026-0180"
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "ekasutra-qa",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Reproduction harness for the Ekasutra v8 prototype",
+  "scripts": {
+    "qa": "node qa_flow.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.1"
+  }
+}

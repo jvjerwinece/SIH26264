@@ -1,0 +1,22 @@
+# Normalise text to LF; never let Git rewrite submission artifacts.
+* text=auto eol=lf
+
+# Submission artifacts must remain byte-identical to the uploaded files.
+*.html -text
+*.pptx binary
+*.pdf binary
+*.zip binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.woff2 binary
+
+# Source and docs are text.
+*.md text eol=lf
+*.txt text eol=lf
+*.sql text eol=lf
+*.py text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
