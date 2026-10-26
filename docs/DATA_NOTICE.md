@@ -53,6 +53,8 @@ The seed pairs **real institution names** with **fabricated complaints** — for
 
 Use this table as the single source of truth for numbers. “Unsupported” means the shipped artifacts do not contain evidence sufficient to defend the claim to a judge.
 
+Slide references below point at the long-form deck (`Ekasutra_SIH2026_SIH26264.pptx`). The portal upload `Ekasutra_SIH2026_SIH26264_Official.pptx` carries the identical numbers — there they appear on the FEASIBILITY AND VIABILITY page — and adds nothing new to the register. Its title page leaves the portal Team ID blank; that is a field for the team, not a claim.
+
 | Claim | Where it appears | Status | What is actually supported | Action |
 |---|---|---|---|---|
 | “9,558 AICTE IDs” | Deck slide 1, preview cover, kit, appendix | **Master count, not a validation set** | 9,558 is the size of the institution master; the list is not shipped | Always say “master” or “IDs”; never “validated on 9,558” |

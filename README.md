@@ -41,9 +41,11 @@ No install, no network, no API keys. State is stored in `localStorage` and survi
 
 ```
 ekasutra/
-├── submission/            the six upload artifacts, byte-for-byte
+├── submission/            the upload artifacts, byte-for-byte
 │   ├── Ekasutra_v8.html
-│   ├── Ekasutra_SIH2026_SIH26264.pptx
+│   ├── Ekasutra_SIH2026_SIH26264_Official.pptx   ← portal upload (official SIH 2026 template)
+│   ├── Ekasutra_SIH2026_SIH26264_Official.pdf    ← the PDF the portal asks for
+│   ├── Ekasutra_SIH2026_SIH26264.pptx            long-form deck
 │   ├── Ekasutra_SIH2026_SIH26264_preview.pdf
 │   ├── Ekasutra_Data_Appendix.pdf
 │   ├── Ekasutra_Submission_Kit.pdf
@@ -65,6 +67,10 @@ ekasutra/
 │   ├── screenshots/       v8 QA captures (desktop, mobile, flows)
 │   └── deck-preview/      one PNG per slide
 ├── qa/                    Playwright reproduction harness
+├── tools/                 deck build scripts
+│   ├── SIH2026-IDEA-Presentation-Format.pptx   unmodified official template
+│   ├── build_official_deck.py  rebuilds the portal deck from that template
+│   └── pptx2pdf.ps1            exports PPTX → PDF through PowerPoint
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
 └── README.md
@@ -72,16 +78,17 @@ ekasutra/
 
 ## What is actually verified
 
-Verified on 26 October 2026 against the files in this repository.
+Verified on 27 October 2026 against the files in this repository.
 
 | Check | Result |
 |---|---|
 | Prototype opens offline from `file://`; nine screens navigate; console clean | Pass, no console or page errors at 1366×900 |
-| Responsive layout | Pass at 360, 390, 768, 1024, 1366, 1920 px; **2 px overflow at 320 px** (open defect) |
+| Responsive layout | Pass at 320, 360, 390, 768, 1024, 1366, 1920 px; 0 px horizontal overflow at every width |
 | Intake → resolve → joint case → room decision → audit verify | Pass; chain reports 18 events after reset |
 | Demo seed chain | Head `748b44fc1aad…fc6fe0`; independently recomputed, 0 broken links |
 | Database model | 11 tables, constraints, `v_case_register`, `fn_match_institution`, seed guard |
-| Deck | 6 slides, 16:9; preview PDF matches; embedded screenshots are v8 cream UI |
+| Deck — official template | `Ekasutra_SIH2026_SIH26264_Official.pptx`: 6 slides built inside the downloaded SIH 2026 Idea format, instructions slide deleted; PDF exported from PowerPoint, 6 pages at 960×540 pt |
+| Deck — long-form | 6 slides, 16:9; preview PDF matches; embedded screenshots are v8 cream UI |
 | Kit and appendix | 2 pages each, render checked |
 | PS 26264 objectives | 8 of 8 mapped in the prototype (see `docs/PS26264_MAPPING.md`) |
 | Demo video | **Not recorded** — blocking submission item |

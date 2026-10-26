@@ -59,10 +59,12 @@ node qa_flow.js
 | V7 | Responsive layout, no horizontal overflow | 360, 390, 768, 1024, 1366, 1920 px | Pass |
 | V8 | Database model loads and is internally consistent | 11 tables, constraints, view, matcher, 18-row seed | Pass by inspection and independent chain recomputation |
 | V9 | Seed chain head | `748b44fc1aad8e9a1c05d0040b54e95f68d966ea5396dffc789139aab9fc6fe0` | Pass, 0 broken links |
-| V10 | Deck shape | 6 slides, 16:9, preview PDF matches | Pass |
+| V10 | Deck shape (long-form) | 6 slides, 16:9, preview PDF matches | Pass |
 | V11 | Deck screenshots are current v8 cream UI | Extracted PPTX media | Pass |
 | V12 | Kit and appendix pagination | 2 pages each, render checked | Pass |
 | V13 | PS 26264 objectives | 8 of 8 mapped | Pass — see `PS26264_MAPPING.md` |
+| V14 | Official-template deck | Built inside the downloaded SIH 2026 Idea format; 6 slides; instructions slide deleted; header, logo, team oval and footer preserved; PDF exported from PowerPoint, 6 pages at 960×540 pt | Pass |
+| V15 | Official-template deck claim audit | Text extracted from the exported PDF: 2,726 / 95.0 / 98.2 / 100% / 70.3 / 322 / 22% / “labelled on every screen” / “same code path” all 0 occurrences; 9,558 × 3, 367 × 4, 94.6 × 2, 99.7 × 2 | Pass |
 
 ## 4. Findings
 
@@ -212,7 +214,7 @@ State after the 27 October remediation:
 | Same code path demo/production | No (target stack labelled) | — | — | No | Resolved — P2-4 fixed |
 | Advisory text similarity (TF-IDF) | Yes | Yes (Q3) | — | — | Supported — demoable |
 
-The prototype’s Radar screen, the deck, the preview PDF, the kit and the appendix all read 9,558 / 367 / 94.6% / 99.7% / 0. The HTML was the last stale surface and was corrected in the same pass.
+The prototype’s Radar screen, the deck, the preview PDF, the kit and the appendix all read 9,558 / 367 / 94.6% / 99.7% / 0. The HTML was the last stale surface and was corrected in the same pass. The official-template deck added on 27 October was audited against the same five rows and carries no new number; the retired figures return zero occurrences in its exported PDF text.
 
 ## 6. What to fix, in order
 
@@ -243,6 +245,7 @@ All edits were made to the shipped files and re-verified.
 | P3-3 | Added `aria-label` to the bell audit button and the role selector. | QA accessibility probe: 0 unnamed buttons, 0 missing alt, 0 unlabeled inputs. |
 | P2-4 | Slide 3 separates prototype from target stack; TF-IDF listed as a matching signal. | Deck revision 11 saved; preview page 3 patched and visually checked. |
 | New | Advisory TF-IDF text similarity over complaint narratives plus an extractive two-sentence brief, shown on the Radar and at intake. | Radar surfaces a 0.41 pair at different institutions; intake returns C-2026-0168 at 0.24 with shared terms; both actions are advisory and write to the audit chain only on review/dismissal. |
+| New | Official-format idea deck (`Ekasutra_SIH2026_SIH26264_Official.pptx`) built inside the downloaded SIH 2026 template, plus the portal-required PDF exported through PowerPoint COM. | 6 slides, instructions slide deleted, template header/logo/oval/footer preserved; PDF is 6 pages at 960×540 pt; PDF text scan gives 0 occurrences of every retired figure and 3× 9,558, 4× 367, 2× 94.6, 2× 99.7. Team ID on page 1 is left blank in amber for the portal value. |
 
 **Re-run result (`qa/qa_flow.js`):** 9 views navigate with no console errors; intake collision shown; joint room created; tamper detected; live Data Layer ID correct; document digests 4/4 unique; all widths clean; accessibility 0/0/0; **no findings**.
 

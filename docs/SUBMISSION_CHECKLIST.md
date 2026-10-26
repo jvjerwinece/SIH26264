@@ -11,7 +11,8 @@
 | Artifact | File | Status | Gate |
 |---|---|---|---|
 | Prototype | `submission/Ekasutra_v8.html` | Ready; P1-1/2/3 fixed and re-tested | Tamper test is safe to demo |
-| Deck | `submission/Ekasutra_SIH2026_SIH26264.pptx` | Ready; team, metrics and stack labelling fixed | Do not regenerate without re-checking every page |
+| Deck — **portal upload** | `submission/Ekasutra_SIH2026_SIH26264_Official.pptx` + `.pdf` | Built on the official SIH 2026 Idea template; 6 slides; PDF exported from PowerPoint; both in `SHA256SUMS.txt` | Fill the Team ID on page 1, re-export the PDF, regenerate checksums |
+| Deck — long-form | `submission/Ekasutra_SIH2026_SIH26264.pptx` | Ready; team, metrics and stack labelling fixed | Keep as the visual/backup deck; not the template upload |
 | Deck preview | `submission/Ekasutra_SIH2026_SIH26264_preview.pdf` | Patched to match the edited deck | Spot-check pages 1, 3, 4 and 6 |
 | Data appendix | `submission/Ekasutra_Data_Appendix.pdf` | Ready; unsupported reconciliation line removed | Keep as the numeric source |
 | Submission kit | `submission/Ekasutra_Submission_Kit.pdf` | Claims corrected; duration note open | Rehearse to 2:50 |
@@ -32,6 +33,8 @@ P1 items are done and verified. Remaining work, in order. Full detail in `QA_REP
 - [x] **P2-2** Correct the “labelled on every screen” answer; the persistent ribbon is still open (P2-1).
 - [ ] **P2-1** Add the ribbon; anonymise institution names in public screenshots.
 - [x] **P2-4** Slide 3 relabelled: target stack vs one-file prototype; TF-IDF named as the advisory layer.
+- [x] Idea deck rebuilt on the official SIH 2026 template — `Ekasutra_SIH2026_SIH26264_Official.pptx` plus the PDF the portal asks for.
+- [ ] **Type the portal Team ID onto page 1 of the official deck** (amber placeholder), re-export the PDF with `powershell -NoProfile -ExecutionPolicy Bypass -File tools\pptx2pdf.ps1 -In submission\Ekasutra_SIH2026_SIH26264_Official.pptx -Out submission\Ekasutra_SIH2026_SIH26264_Official.pdf`, then regenerate `submission/SHA256SUMS.txt`. Upload the PDF, not the PPTX.
 - [x] Regenerate the deck preview PDF after the slide edits.
 - [x] Regenerate `submission/SHA256SUMS.txt` after the file changes.
 - [x] Re-run `qa/qa_flow.js`; no findings, no console errors, 0 overflow, A11Y 0/0/0.

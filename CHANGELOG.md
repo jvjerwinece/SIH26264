@@ -2,6 +2,17 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v8.3] — 2026-10-27
+
+Idea deck rebuilt on the official SIH 2026 template, plus a real PPTX→PDF path.
+
+- **`Ekasutra_SIH2026_SIH26264_Official.pptx`** is now the portal upload: built directly inside the downloaded `SIH2026-IDEA-Presentation-Format.pptx`, keeping its header, logo, team oval and blue footer, filling the five required sections and deleting only the instructions slide. Six slides, the allowed maximum.
+- Structure borrowed from three SIH idea decks found online (dense infographic blocks, explicit flow, risk column, references page). Their win status is unverified and is not claimed anywhere; nothing of their content was copied.
+- **`Ekasutra_SIH2026_SIH26264_Official.pdf`** exported through PowerPoint COM, so the portal-required PDF is reproducible from source instead of hand-patched. The builder, the exporter and an unmodified copy of the official template now live in `tools/`; `python tools/build_official_deck.py` regenerates the deck from scratch.
+- Same claim register as every other artifact: 9,558 Permanent IDs, 367 labelled variants, 94.6% top-1, 99.7% top-3, 0 silent merges; the officer-day saving is labelled "Modelled"; RBAC and concurrent audit writes are shown as not built.
+- One field is deliberately left blank: **portal Team ID** on page 1, shown in amber. Fill it, then re-export the PDF.
+- The previous deck stays in the pack as the long-form version; README and checklist now name both.
+
 ## [v8.2] — 2026-10-27
 
 Advisory text-similarity layer, plus the production-stack relabel.
