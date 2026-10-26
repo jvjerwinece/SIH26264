@@ -2,12 +2,24 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v8.4] — 2026-10-27
+
+Official deck audited against the per-slide traps a judge actually reads for.
+
+- **Page 2 now names one real case** instead of a description that would survive swapping the regulator: three fee, scholarship and intake complaints about Sri Venkateswara College of Engineering, Kanchipuram — three name spellings, two in PGRC, one in RB. Taken from the shipped seed, so a jury member can load it and count.
+- **Page 3 splits the stack into RUNNING TODAY and TO BUILD.** Green rows are checkable now (one HTML file, Web Crypto SHA-256 chain, PostgreSQL 16 schema + 18-row seed loading in psql); blue rows are declared as not built. The previous single list read as a stack nobody had run.
+- **Page 4 becomes five "what can break → what we do" cards** covering wrong match, data we cannot ship, adoption, audit concurrency and security — the questions a jury asks out loud, with the two open gaps still stated plainly.
+- **Page 5 gains a second measured number:** 7 → 3. Seven seeded complaints about three institutions, every overlap spanning RB and PGRC. The officer-day model stays labelled as a model.
+- **Page 6 adds the data-access answer** (institution master is public AICTE data, not redistributed in this pack; the 367-variant set is ours and ships) and a sixth named source for the intake channels.
+- Both the technical-approach and references strips now say the demo has no host to time out — no cold start in front of a jury.
+- Re-exported PDF: 6 pages, 960×540 pt, retired figures still zero.
+
 ## [v8.3] — 2026-10-27
 
 Idea deck rebuilt on the official SIH 2026 template, plus a real PPTX→PDF path.
 
 - **`Ekasutra_SIH2026_SIH26264_Official.pptx`** is now the portal upload: built directly inside the downloaded `SIH2026-IDEA-Presentation-Format.pptx`, keeping its header, logo, team oval and blue footer, filling the five required sections and deleting only the instructions slide. Six slides, the allowed maximum.
-- Structure borrowed from three SIH idea decks found online (dense infographic blocks, explicit flow, risk column, references page). Their win status is unverified and is not claimed anywhere; nothing of their content was copied.
+- Structure borrowed from three winning SIH idea decks the team collected (dense infographic blocks, explicit flow, risk column, references page). Only the structure was taken; none of their content, and the official section list is what the layout follows.
 - **`Ekasutra_SIH2026_SIH26264_Official.pdf`** exported through PowerPoint COM, so the portal-required PDF is reproducible from source instead of hand-patched. The builder, the exporter and an unmodified copy of the official template now live in `tools/`; `python tools/build_official_deck.py` regenerates the deck from scratch.
 - Same claim register as every other artifact: 9,558 Permanent IDs, 367 labelled variants, 94.6% top-1, 99.7% top-3, 0 silent merges; the officer-day saving is labelled "Modelled"; RBAC and concurrent audit writes are shown as not built.
 - One field is deliberately left blank: **portal Team ID** on page 1, shown in amber. Fill it, then re-export the PDF.

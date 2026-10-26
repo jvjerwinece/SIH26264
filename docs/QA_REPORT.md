@@ -64,7 +64,8 @@ node qa_flow.js
 | V12 | Kit and appendix pagination | 2 pages each, render checked | Pass |
 | V13 | PS 26264 objectives | 8 of 8 mapped | Pass — see `PS26264_MAPPING.md` |
 | V14 | Official-template deck | Built inside the downloaded SIH 2026 Idea format; 6 slides; instructions slide deleted; header, logo, team oval and footer preserved; PDF exported from PowerPoint, 6 pages at 960×540 pt | Pass |
-| V15 | Official-template deck claim audit | Text extracted from the exported PDF: 2,726 / 95.0 / 98.2 / 100% / 70.3 / 322 / 22% / “labelled on every screen” / “same code path” all 0 occurrences; 9,558 × 3, 367 × 4, 94.6 × 2, 99.7 × 2 | Pass |
+| V15 | Official-template deck claim audit | Text extracted from the exported PDF: 2,726 / 95.0 / 98.2 / 100% / 70.3 / 322 / 22% / “labelled on every screen” / “same code path” all 0 occurrences; 4× 9,558, 7× 367, 2× 94.6, 2× 99.7 | Pass |
+| V16 | Official deck against the per-slide traps judges read for | Page 2 names one concrete seeded case; page 3 separates running-today from to-build; page 4 carries five failure modes with fallbacks; page 5 carries two numbers with the working shown; page 6 names six sources and states what is not shipped | Pass — see the v8.4 changelog |
 
 ## 4. Findings
 
@@ -251,6 +252,7 @@ All edits were made to the shipped files and re-verified.
 
 ### Still open
 
+- **P2-6 — page 1 metadata is typed, not copied.** The PS ID, title, theme and category on the official deck were entered from the statement text, not diffed against the portal record, and the Team ID is still a placeholder. A mismatched theme or a leftover placeholder on slide one is the cheapest mark lost in the whole review. Copy the four fields from the portal character by character, type the Team ID, re-export and regenerate checksums.
 - **P2-1 / P2-2 — synthetic-data labelling.** The false “labelled on every screen” claim is gone, and the deck, preview, kit and Data Layer now say the cases are synthetic in plain words. There is still no persistent ribbon on the dashboard or case screens, and public screenshots still pair real institution names with invented complaints. Add the ribbon and anonymise public captures before the video.
 - **P2-3 — video.** Not recorded. This is the largest remaining score risk.
 - **P2-4 — production stack.** Closed. Slide 3 now labels the stack as the target and states that the prototype is one HTML file.

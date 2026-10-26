@@ -34,7 +34,9 @@ P1 items are done and verified. Remaining work, in order. Full detail in `QA_REP
 - [ ] **P2-1** Add the ribbon; anonymise institution names in public screenshots.
 - [x] **P2-4** Slide 3 relabelled: target stack vs one-file prototype; TF-IDF named as the advisory layer.
 - [x] Idea deck rebuilt on the official SIH 2026 template — `Ekasutra_SIH2026_SIH26264_Official.pptx` plus the PDF the portal asks for.
+- [x] Official deck checked slide by slide against the traps judges read for: concrete case on page 2, running-today vs to-build on page 3, five failure modes with fallbacks on page 4, two numbers with the working shown on page 5, named sources and a data-access answer on page 6. No duplicated slide, no seventh page, nothing from another project, no title running off the canvas.
 - [ ] **Type the portal Team ID onto page 1 of the official deck** (amber placeholder), re-export the PDF with `powershell -NoProfile -ExecutionPolicy Bypass -File tools\pptx2pdf.ps1 -In submission\Ekasutra_SIH2026_SIH26264_Official.pptx -Out submission\Ekasutra_SIH2026_SIH26264_Official.pdf`, then regenerate `submission/SHA256SUMS.txt`. Upload the PDF, not the PPTX.
+- [ ] **Diff page 1 against the portal record** — PS ID, PS title, Theme and Category copied character by character, not retyped from memory. A wrong theme on slide one is read before a word of the idea.
 - [x] Regenerate the deck preview PDF after the slide edits.
 - [x] Regenerate `submission/SHA256SUMS.txt` after the file changes.
 - [x] Re-run `qa/qa_flow.js`; no findings, no console errors, 0 overflow, A11Y 0/0/0.

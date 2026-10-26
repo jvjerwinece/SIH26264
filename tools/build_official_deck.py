@@ -204,12 +204,16 @@ def build():
     footer(s)
     drop(s, "TextBox")
 
-    kicker(s, 48, 142, 500, "Proposed solution")
-    textbox(s, 48, 166, 640, 70, [
-        {"runs": [("AICTE hears about the same institution through several channels and offices. Ekasutra keys every "
-                   "complaint to its AICTE Permanent ID, so RB, PGRC and the regions work from one shared case thread.",
-                   13.5, {})], "line": 1.06},
+    kicker(s, 48, 140, 500, "Proposed solution")
+    textbox(s, 48, 162, 660, 40, [
+        {"runs": [("AICTE hears about one institution through several offices. Ekasutra keys every complaint to its "
+                   "Permanent ID so RB, PGRC and the regions share one case thread.", 13, {})], "line": 1.06},
     ])
+    card(s, 48, 208, 660, 48, [
+        {"runs": [("IN THE SHIPPED SEED   ", 9.5, {"bold": True, "color": AMBER}),
+                  ("Sri Venkateswara College of Engineering, Kanchipuram: three fee, scholarship and intake "
+                   "complaints under three name spellings — two in PGRC, one in RB.", 10.5, {})], "line": 1.04},
+    ], fill=AMBER_BG, line=RGBColor.from_string("E8C9A0"), margins=(10, 10, 6, 5), anchor=MSO_ANCHOR.MIDDLE)
 
     blocks = [
         ("WHAT IT IS",
@@ -222,11 +226,11 @@ def build():
          "Explainable, human-confirmed matching with zero silent merges, plus a tamper-evident audit chain. "
          "The prototype runs offline as one HTML file."),
     ]
-    y = 272
+    y = 270
     for head, body in blocks:
-        textbox(s, 48, y, 640, 18, [{"runs": [(head, 11, {"bold": True, "color": BLUE})]}])
-        textbox(s, 48, y + 20, 640, 64, [{"runs": [(body, 12.5, {})], "line": 1.06}])
-        y += 104
+        textbox(s, 48, y, 660, 18, [{"runs": [(head, 11, {"bold": True, "color": BLUE})]}])
+        textbox(s, 48, y + 20, 660, 60, [{"runs": [(body, 12, {})], "line": 1.06}])
+        y += 100
 
     flow = [
         ("01", "Complaint arrives", "Email · CPGRAMS export · portal webhook"),
@@ -259,27 +263,38 @@ def build():
     footer(s)
     drop(s, "TextBox")
 
-    kicker(s, 48, 140, 400, "Stack")
-    rows = [
-        ("Frontend", "Next.js + TypeScript  (prototype: one offline HTML file)"),
-        ("API", "Python FastAPI"),
-        ("Data", "PostgreSQL 16 · append-only case events · SHA-256 audit chain"),
-        ("Matching", "AICTE master + alias graph · trigram and TF-IDF text similarity"),
-        ("Deploy", "Docker Compose · role-based access (to build before pilot)"),
+    kicker(s, 48, 138, 400, "Stack — running today")
+    now_rows = [
+        ("Prototype", "one HTML file · vanilla JS · no build step · opens from file://"),
+        ("Ledger", "SHA-256 chain on Web Crypto · append-only · tamper check verified"),
+        ("Data pack", "PostgreSQL 16 schema · 11 tables · 18-row seed loads in psql"),
     ]
-    y = 164
-    for label, val in rows:
-        textbox(s, 48, y, 96, 20, [{"runs": [(label, 10.5, {"bold": True, "color": BLUE})]}])
-        textbox(s, 146, y, 486, 34, [{"runs": [(val, 11, {})], "line": 1.0}])
-        y += 38
+    y = 160
+    for label, val in now_rows:
+        textbox(s, 48, y, 96, 20, [{"runs": [(label, 10.5, {"bold": True, "color": GREEN})]}])
+        textbox(s, 146, y, 486, 26, [{"runs": [(val, 11, {})], "line": 1.0}])
+        y += 30
 
-    card(s, 48, 372, 584, 86, [
+    kicker(s, 48, 258, 400, "Stack — to build before pilot")
+    to_rows = [
+        ("Frontend", "Next.js + TypeScript, replacing the single-file prototype"),
+        ("API", "Python FastAPI over the same schema and audit function"),
+        ("Matching", "pg_trgm + TF-IDF at 9,558-ID scale · browser trigram today"),
+        ("Deploy", "Docker Compose · role-based access — not built yet"),
+    ]
+    y = 280
+    for label, val in to_rows:
+        textbox(s, 48, y, 96, 20, [{"runs": [(label, 10.5, {"bold": True, "color": BLUE})]}])
+        textbox(s, 146, y, 486, 26, [{"runs": [(val, 11, {})], "line": 1.0}])
+        y += 28
+
+    card(s, 48, 396, 584, 82, [
         {"runs": [("HUMAN IN THE LOOP", 10.5, {"bold": True, "color": AMBER})], "after": 4},
         {"runs": [("Auto-link only when confidence and margin clear the threshold. Everything else goes to an officer "
                    "as a top-3 with evidence. No silent merges.", 11.5, {})], "line": 1.05},
     ], fill=AMBER_BG, line=RGBColor.from_string("E8C9A0"), margins=(12, 12, 9, 7))
 
-    textbox(s, 48, 472, 584, 40, [
+    textbox(s, 48, 488, 584, 40, [
         {"runs": [("Each action appends:  sha256(prev || time || actor || action || object)", 10,
                    {"font": "Courier New", "color": MUTED})], "line": 1.05},
         {"runs": [("Nothing is updated in place; a chain check recomputes and compares.", 10, {"color": MUTED})]},
@@ -314,7 +329,7 @@ def build():
                    10, {"color": MUTED})], "line": 1.05},
     ])
     card(s, 48, 566, 1182, 44, [
-        {"runs": [("One offline HTML file  ·  9 views, 0 console errors  ·  90-second guided tour  ·  "
+        {"runs": [("Opens from file:// — no host, no login, no cold start  ·  9 views, 0 console errors  ·  "
                    "rules decide, a statistical text check assists", 12, {"bold": True, "color": DEEP})],
          "align": PP_ALIGN.CENTER},
     ], fill=GREY_BG, line=None, margins=(10, 6, 8, 6), anchor=MSO_ANCHOR.MIDDLE)
@@ -359,24 +374,26 @@ def build():
         textbox(s, 146, y, 440, 34, [{"runs": [(text, 10.5, {})], "line": 1.0}])
         y += 40
 
-    kicker(s, 720, 140, 400, "Risks → mitigation")
+    kicker(s, 720, 140, 400, "What can break → what we do")
     risks = [
-        ("Name ambiguity — initials, duplicate names",
-         "Top-3 with evidence; an officer confirms. Zero auto-merges in the benchmark."),
-        ("Adoption and data entry",
-         "Existing intake channels stay; one inbox, no retraining of complainants."),
-        ("Concurrent audit writes — still open",
-         "Advisory lock and a unique index on prev_hash before any pilot deployment."),
-        ("Role-based access — not built yet",
-         "The demo role switch is not security; authentication is the first production build."),
+        ("What if the matcher picks the wrong institution?",
+         "Nothing merges on a score. A top-3 with the evidence goes to an officer; 0 auto-merges across 367 variants."),
+        ("What if the institution master is not ours to ship?",
+         "It is public AICTE data, so the pack ships the schema and the 367 variants we built, not the list."),
+        ("What if bureaus keep working the old way?",
+         "Email and CPGRAMS intake stay; nobody is asked to learn a new portal before the register earns it."),
+        ("What if two audit writes land at once?",
+         "Known gap — the chain can fork. An advisory lock plus a unique index on prev_hash is scheduled, not done."),
+        ("What if the jury asks about security?",
+         "Role-based access is not built. The demo role switch is a view, not access control."),
     ]
-    y = 166
+    y = 164
     for head, body in risks:
-        card(s, 720, y, 510, 78, [
-            {"runs": [(head, 11.5, {"bold": True})], "after": 3},
-            {"runs": [(body, 10.5, {"color": MUTED})], "line": 1.02},
+        card(s, 720, y, 510, 64, [
+            {"runs": [(head, 11, {"bold": True})], "after": 3},
+            {"runs": [(body, 10, {"color": MUTED})], "line": 1.02},
         ], fill=LIGHT, line=LINE, margins=(12, 12, 7, 5))
-        y += 86
+        y += 74
 
     card(s, 48, 540, 1182, 62, [
         {"runs": [("SIX-WEEK PILOT   ", 10.5, {"bold": True, "color": BLUE}),
@@ -425,8 +442,9 @@ def build():
     stats = [
         ("~100–200", "officer-days a year",
          "Modelled at 1,000 cases, 5–10% overlap and 2 officer-days per duplicate."),
-        ("Before SLA", "not after",
-         "Ageing and breach prediction put the at-risk case in front of the officer."),
+        ("7 → 3", "cases collapse to threads",
+         "In the shipped 32-case seed, 7 complaints about 3 institutions sit split across RB and PGRC under "
+         "different name spellings. All 3 overlaps span both bureaus."),
         ("0", "silent merges",
          "Ambiguous matches go to a person, never into the register automatically."),
     ]
@@ -469,37 +487,41 @@ def build():
          "Information Processing & Management 24(5), 513–523", "doi.org/10.1016/0306-4573(88)90021-0"),
         ("NIST FIPS 180-4 (2015), Secure Hash Standard", "National Institute of Standards and Technology",
          "csrc.nist.gov/pubs/fips/180-4/upd1/final"),
+        ("Public intake channels the register reads from", "AICTE institution listings · CPGRAMS grievances",
+         "aicte-india.org · cpgrams.gov.in"),
     ]
     y = 168
     for i, (title, source, link) in enumerate(refs, 1):
-        textbox(s, 48, y, 660, 58, [
+        textbox(s, 48, y, 660, 52, [
             {"runs": [(f"{i}.  ", 11, {"bold": True, "color": BLUE}), (title, 11, {"bold": True})], "line": 1.02},
             {"runs": [(source + "  ·  ", 9.5, {"color": MUTED}), (link, 9.5, {"color": BLUE})]},
         ])
-        y += 66
+        y += 58
 
-    card(s, 752, 158, 478, 246, [
+    card(s, 752, 158, 478, 260, [
         {"runs": [("PROTOTYPE & EVIDENCE", 11, {"bold": True, "color": BLUE})], "after": 8},
         {"runs": [("One offline HTML file with a 90-second guided tour", 10.5, {})], "after": 5},
         {"runs": [("9 views navigate with 0 console errors", 10.5, {})], "after": 5},
         {"runs": [("18-row seed · chain head verified · row tamper detected", 10.5, {})], "after": 5},
         {"runs": [("367 labelled variants · 94.6% top-1 · 99.7% top-3", 10.5, {})], "after": 5},
-        {"runs": [("Case data is synthetic; the AICTE institution master is public", 10.5, {})], "after": 8},
-        {"runs": [("Full evidence pack — QA report, DB pack, data notice — ships with the prototype.",
-                   9.5, {"italic": True, "color": MUTED})], "line": 1.05},
+        {"runs": [("Case data is synthetic; no real complainant data is used", 10.5, {})], "after": 8},
+        {"runs": [("DATA ACCESS   ", 9.5, {"bold": True, "color": AMBER}),
+                  ("the institution master is public AICTE data and is not redistributed in this pack; "
+                   "the 367-variant test set is ours and ships with the repo.", 9.5, {"color": MUTED})], "line": 1.05},
     ], fill=LIGHT, line=LINE, margins=(16, 14, 10, 8))
 
-    textbox(s, 48, 520, 660, 40, [
+    textbox(s, 48, 528, 660, 40, [
         {"runs": [("The matching benchmark and the audit chain are our own tests; the references above are external "
                    "sources, not validation of our results.", 9.5, {"italic": True, "color": MUTED})], "line": 1.05},
     ])
     card(s, 48, 612, 1182, 42, [
-        {"runs": [("The prototype is a single offline HTML file — it can be opened live during the jury round.",
+        {"runs": [("No hosted demo to time out — the prototype is one offline HTML file, opened live during the jury round.",
                    12, {"bold": True, "color": DEEP})], "align": PP_ALIGN.CENTER},
     ], fill=GREY_BG, line=None, margins=(10, 6, 8, 6), anchor=MSO_ANCHOR.MIDDLE)
     s.notes_slide.notes_text_frame.text = (
-        "Five sources: the problem statement, AICTE's approval handbook, the UGC grievance regulations, "
-        "the TF-IDF weighting paper and FIPS 180-4. Our own benchmark is separate from these references."
+        "Six sources: the problem statement, AICTE's approval handbook, the UGC grievance regulations, "
+        "the TF-IDF weighting paper, FIPS 180-4, and the public intake channels the register reads from. "
+        "Our own benchmark is separate from these references, and the data-access line says what we do and do not ship."
     )
 
     # ---------- drop the instructions slide ----------
