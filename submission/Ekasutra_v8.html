@@ -1191,6 +1191,60 @@ function scoreMatch(text,q){
  return Math.min(99,s);
 }
 function norm(s){return String(s).toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
+const STOPWORDS=new Set('the a an and or of to in for on is are was were has have had with at by from this that these those as its it their they not no but all any been be into over under than then so such also will would can could may per'.split(' '));
+function textTokens(s){return norm(s).split(' ').filter(t=>t.length>2&&!STOPWORDS.has(t))}
+function tfidfVectors(docs){
+ const df={};docs.forEach(d=>{new Set(d).forEach(t=>{df[t]=(df[t]||0)+1})});
+ const N=docs.length,idf={};Object.keys(df).forEach(t=>{idf[t]=Math.log((1+N)/(1+df[t]))+1});
+ return docs.map(d=>{const tf={};d.forEach(t=>{tf[t]=(tf[t]||0)+1});const v={};let n=0;Object.keys(tf).forEach(t=>{const w=(1+Math.log(tf[t]))*idf[t];v[t]=w;n+=w*w});n=Math.sqrt(n)||1;Object.keys(v).forEach(t=>{v[t]/=n});return v});
+}
+function cosine(a,b){let s=0;Object.keys(a).forEach(t=>{if(b[t])s+=a[t]*b[t]});return s}
+function sharedTerms(a,b,n){return Object.keys(a).filter(t=>b[t]).sort((x,y)=>b[y]*a[y]-b[x]*a[x]).slice(0,n||4)}
+function similarToText(text,pool,limit){
+ const docs=[textTokens(text)].concat(pool.map(c=>textTokens(c.summary||'')));
+ const vs=tfidfVectors(docs),q=vs[0];
+ return pool.map((c,i)=>({c,s:cosine(q,vs[i+1]),terms:sharedTerms(q,vs[i+1],4)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,limit||2);
+}
+function similarPairs(limit){
+ const pool=activeCases(),vs=tfidfVectors(pool.map(c=>textTokens(c.summary||''))),pairs=[];
+ for(let i=0;i<pool.length;i++)for(let j=i+1;j<pool.length;j++){
+  if(pool[i].instId===pool[j].instId)continue;
+  if(overlaps.some(o=>o.caseIds.indexOf(pool[i].id)>=0&&o.caseIds.indexOf(pool[j].id)>=0))continue;
+  const s=cosine(vs[i],vs[j]);if(s<0.3)continue;
+  pairs.push({a:pool[i],b:pool[j],s:s,terms:sharedTerms(vs[i],vs[j],4)});
+ }
+ return pairs.sort((x,y)=>y.s-x.s).slice(0,limit||1);
+}
+function extractiveBrief(text){
+ const body=String(text).split(/\n+/).filter(l=>!/^\s*subject:/i.test(l)).join(' ')
+  .replace(/^(sir\/madam|dear sir\/madam|respected sir\/madam)[,.]?\s*/i,'')
+  .replace(/\s+/g,' ').trim();
+ const protectedText=body.replace(/\b(Rs|Mr|Mrs|Ms|Dr|Smt|Shri|No)\.\s/gi,'$1 ').replace(/\b([A-Z])\.([A-Z])\.\s/g,'$1$2 ');
+ const sents=(protectedText.match(/[^.!?]+[.!?]/g)||[protectedText]).map(s=>s.trim()).filter(s=>s.split(' ').length>5);
+ if(sents.length<=2)return sents.join(' ')||body.slice(0,180);
+ const toks=sents.map(textTokens),df={};
+ toks.forEach(d=>{new Set(d).forEach(t=>{df[t]=(df[t]||0)+1})});
+ const scored=sents.map((s,i)=>{const set=new Set(toks[i]);let v=0;set.forEach(t=>{v+=df[t]});return {s:s,v:v/Math.sqrt(set.size||1),i:i}});
+ return scored.sort((a,b)=>b.v-a.v).slice(0,2).sort((a,b)=>a.i-b.i).map(x=>x.s).join(' ');
+}
+function semanticIntakePanel(text,instId){
+ const pool=activeCases().filter(c=>c.instId!==instId);
+ const hits=similarToText(text,pool,2).filter(h=>h.s>=0.2);
+ const brief=extractiveBrief(text);
+ let rows='';
+ if(hits.length){
+  rows='<div style="font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:700;margin:12px 0 5px">Similar wording elsewhere · advisory</div>'
+  +'<div class="subtle" style="margin-bottom:7px">Different Permanent IDs, so the rules cannot link them. The text layer surfaces the pattern; an officer decides.</div>'
+  +hits.map(h=>'<div class="casecard" style="cursor:default"><div class="top"><span class="caseid">'+h.c.id+'</span>'+bchip(h.c.bureau)+'<span class="chip">similarity '+h.s.toFixed(2)+'</span><span class="subtle" style="margin-left:auto">'+e(inst(h.c.instId).name)+'</span></div><div class="title">'+e(h.c.category)+'</div><div class="meta">'+e(h.c.summary)+'</div><div class="why" style="margin-top:6px">'+(h.terms.length?'Shared terms: '+h.terms.map(t=>'<span class="chip">'+e(t)+'</span>').join(''):'<span class="subtle">No shared terms</span>')+'</div><div style="margin-top:7px"><button class="btn small" onclick="reviewSemantic(\''+h.c.id+'\')">Review case</button></div></div>').join('');
+ }else{
+  rows='<div class="subtle" style="margin-top:10px">No differently-worded complaint elsewhere scores above 0.20. Nothing to escalate.</div>';
+ }
+ return '<div class="card" style="margin-top:8px"><div class="cardhead"><h3>Semantic check</h3><span class="muted">TF-IDF text similarity · runs offline</span><span class="chip" style="margin-left:auto">Advisory only</span></div><div class="cardbody"><div style="padding:10px 11px;background:var(--paper-2);border:1px solid var(--line-strong);border-radius:6px"><b style="font-size:11.5px">Auto-brief of this complaint</b><div class="subtle" style="margin-top:3px">'+e(brief)+'</div></div>'+rows+'</div></div>';
+}
+function reviewSemantic(id){
+ const c=byCase(id);if(!c)return;
+ openModal('Advisory similarity · '+id,'This case was surfaced by text similarity, not by an identifier match.'+'<div class="subtle" style="margin-top:8px">'+e(inst(c.instId).name)+' · '+e(c.category)+'</div><div class="subtle" style="margin-top:6px">Review the complaint text and decide whether the two grievances are related. Nothing is linked until an officer confirms.</div>',[{label:'Close',cls:'btn',fn:closeModal},{label:'Mark reviewed',cls:'btn primary',fn:()=>{addAudit('Semantic suggestion reviewed \u2014 no link created',id);closeModal();showToast('Review recorded · no link created','good')}}]);
+}
 function renderIntakeResults(text){
  let ranked=institutions.map(q=>({q,s:scoreMatch(text,q)})).sort((a,b)=>b.s-a.s).slice(0,3);
  if(norm(text).includes('s v college')||norm(text).includes('venkateshwara')||norm(text).includes('kanchipuram')){
@@ -1202,7 +1256,8 @@ function renderIntakeResults(text){
  +ranked.map((r,i)=>'<div class="match '+(i===0?'best':'')+'"><div class="rank">'+(i+1)+'</div><div style="min-width:0"><div class="mname">'+e(r.q.name)+'</div><div class="mmeta">'+e(r.q.pid)+' · '+e(r.q.city)+', '+e(r.q.state)+' · '+e(r.q.region)+' region</div><div class="why">'+(i===0?'<span class="chip green">Alias matched</span><span class="chip blue">Permanent ID</span><span class="chip">City match</span>':'<span class="chip">Similar name</span><span class="chip">Different '+(i===1?'state':'institution')+'</span>')+'</div></div><div class="conf"><b>'+r.s+'%</b><span>confidence</span></div></div>').join('')
  +'<div class="sectionlabel">Cross-bureau collision check</div>'
  +(open.length?'<div class="banner danger"><span>'+svg('alert',17)+'</span><div><b>'+open.length+' open case'+(open.length===1?'':'s')+' already '+(open.length===1?'exists':'exist')+' at this institution</b><div class="bt">Creating a new case will duplicate action. Link to an existing case or open a joint case.</div></div></div><div style="margin-top:9px">'+open.map(c=>'<div class="casecard"><div class="top"><span class="caseid">'+c.id+'</span>'+bchip(c.bureau)+pill(c)+'<span class="subtle" style="margin-left:auto">'+age(c)+' days old</span></div><div class="title">'+e(c.category)+'</div><div class="meta">'+e(c.summary)+'</div><div class="meta">Officer: '+e(c.officer)+' · last action: '+e(c.lastAction)+' · next: '+e(c.nextAction)+'</div></div>').join('')+'</div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn primary" onclick="linkToExisting(\''+best.id+'\')">'+svg('link',14)+'Link to existing case</button><button class="btn dark" onclick="createJoint(\''+best.id+'\')">'+svg('users',14)+'Create joint case</button><button class="btn danger" onclick="proceedAnyway(\''+best.id+'\')">Proceed with reason</button></div>'
- :'<div class="banner ok"><span>'+svg('check',17)+'</span><div><b>No open cases at this institution</b><div class="bt">Safe to create a new case. The match is still logged for audit.</div></div></div><div style="margin-top:10px"><button class="btn primary" onclick="showToast(\'Case created and assigned to your bureau\')">'+svg('plus',14)+'Create case</button></div>');
+ :'<div class="banner ok"><span>'+svg('check',17)+'</span><div><b>No open cases at this institution</b><div class="bt">Safe to create a new case. The match is still logged for audit.</div></div></div><div style="margin-top:10px"><button class="btn primary" onclick="showToast(\'Case created and assigned to your bureau\')">'+svg('plus',14)+'Create case</button></div>')
+ +semanticIntakePanel(text,best.id);
  $('#intakeResults').innerHTML=html;
 }
 function linkToExisting(instId){
@@ -1230,11 +1285,25 @@ function renderRadar(){
  +'</div><div>'
  +'<div class="whybox"><h4>Why these matched</h4><div class="sig"><div class="n">1</div><div><b>AICTE Permanent ID</b><span>Deterministic match when the complaint or email references the ID.</span></div></div><div class="sig"><div class="n">2</div><div><b>Alias graph</b><span>Every spelling a complaint has used resolves to the same Permanent ID.</span></div></div><div class="sig"><div class="n">3</div><div><b>Fuzzy name + location</b><span>Abbreviations, typos and word order; city and state disambiguate.</span></div></div><div class="sig"><div class="n">4</div><div><b>Issue similarity</b><span>Fee/scholarship complaints cluster together; approval cases cluster separately.</span></div></div><div class="sig"><div class="n">5</div><div><b>Human confirmation</b><span>High-confidence matches can auto-link; everything else goes to an officer.</span></div></div></div>'
  +'<div class="whybox evidence"><h4>Measured on real data</h4><div class="mstats"><div class="mstat"><b>94.6%</b><span>top-1 match accuracy</span></div><div class="mstat"><b>99.7%</b><span>top-3 recall</span></div><div class="mstat"><b>0</b><span>silent merges</span></div></div><div class="mnote">9,558 real AICTE Permanent IDs · 367 labelled name variants. Human confirmation for the rest.</div></div>'
+ +semanticRadarBox()
  +'<div class="whybox"><h4>What happens on confirm</h4><div class="sig"><div class="n">1</div><div><b>Link or merge</b><span>Cases stay separate but share a coordination thread, or merge into one with a reason.</span></div></div><div class="sig"><div class="n">2</div><div><b>Assign a lead bureau</b><span>RB or PGRC owns the next action; the other is notified.</span></div></div><div class="sig"><div class="n">3</div><div><b>Write to audit</b><span>Hash-chained entry with officer, time and reason.</span></div></div></div>'
  +'</div></div>';
  content.querySelectorAll('[data-go]').forEach(el=>el.onclick=()=>go(el.dataset.go,el.dataset.payload));
 }
 function dismissOverlap(id){showToast('Marked as different institution · review logged','warn')}
+let semDismissed=[];
+function semanticRadarBox(){
+ const p=similarPairs(3).find(x=>semDismissed.indexOf(x.a.id+'|'+x.b.id)<0);
+ if(!p)return '<div class="whybox"><h4>Text similarity · advisory</h4><div class="subtle">No differently-worded pair scores above 0.30 in the active register.</div></div>';
+ return '<div class="whybox"><h4>Text similarity · advisory</h4><div class="subtle" style="margin-bottom:8px;line-height:1.5">TF-IDF over complaint narratives, computed in the browser. Near-identical wording at different institutions, so identifier rules cannot link them.</div>'
+ +'<div class="kv"><span class="caseid">'+p.a.id+'</span><b style="max-width:178px">'+e(inst(p.a.instId).name)+'</b></div>'
+ +'<div class="kv"><span class="caseid">'+p.b.id+'</span><b style="max-width:178px">'+e(inst(p.b.instId).name)+'</b></div>'
+ +'<div class="kv"><span>Cosine similarity</span><b>'+p.s.toFixed(2)+'</b></div>'
+ +'<div class="why" style="margin-top:8px">'+p.terms.map(t=>'<span class="chip">'+e(t)+'</span>').join('')+'</div>'
+ +'<div style="margin-top:9px;display:flex;gap:6px;flex-wrap:wrap"><button class="btn small" onclick="reviewSemantic(\''+p.b.id+'\')">Review</button><button class="btn small" onclick="dismissSemantic(\''+p.a.id+'\',\''+p.b.id+'\')">Not related</button></div>'
+ +'<div class="mnote" style="margin-top:8px">Advisory only. Nothing links until an officer confirms.</div></div>';
+}
+function dismissSemantic(a,b){semDismissed.push(a+'|'+b);addAudit('Semantic suggestion dismissed \u2014 '+a+' / '+b,a);showToast('Pair dismissed · review logged','warn');renderRadar()}
 function renderRoom(roomId){
  const room=rooms[roomId]||rooms['CR-01'];const o=overlaps.find(x=>x.id===room.overlapId);const cs=o.caseIds.map(byCase);const i=inst(o.instId);
  const liveCount=cs.filter(function(c){return c.status!=='Disposed'}).length;

@@ -150,6 +150,8 @@ node qa_flow.js
 
 ### P2-4 · “Same code path in demo and production” is not true
 
+**Status:** Fixed 27 October 2026 — slide 3 now labels the stack “TARGET STACK” and states “Prototype is one HTML file; the API is specified, not built.” Preview page 3 patched to match.
+
 **Where:** slide 3, with “Next.js · FastAPI · PostgreSQL · Docker”.
 
 **Evidence:** the prototype is static HTML with in-memory arrays and `localStorage`. There is no API, no auth, no database connection and no Docker image in the repository.
@@ -207,7 +209,8 @@ State after the 27 October remediation:
 | Chain head `748b44fc…` | — | — | Yes | Yes | Supported |
 | Six-person team | Yes | — | — | — | Consistent |
 | Video 3:00 | — | Cover 3:00, checklist 2:50 | — | — | Missing |
-| Same code path demo/production | Yes | — | — | No | False — P2-4 still open |
+| Same code path demo/production | No (target stack labelled) | — | — | No | Resolved — P2-4 fixed |
+| Advisory text similarity (TF-IDF) | Yes | Yes (Q3) | — | — | Supported — demoable |
 
 The prototype’s Radar screen, the deck, the preview PDF, the kit and the appendix all read 9,558 / 367 / 94.6% / 99.7% / 0. The HTML was the last stale surface and was corrected in the same pass.
 
@@ -220,7 +223,7 @@ The prototype’s Radar screen, the deck, the preview PDF, the kit and the appen
 5. **P1-3** real document digests — fixed 27 Oct.
 6. **P2-3** record the video — still open.
 7. **P2-2 / P2-1** persistent synthetic ribbon and anonymised names — claims corrected, ribbon still open.
-8. **P2-4** relabel the production stack as a plan — still open.
+8. ~~**P2-4** relabel the production stack as a plan~~ — done 27 October.
 9. **P3-1 / P3-2 / P3-3** polish — fixed 27 Oct.
 10. **P2-5** lock the audit append before any real deployment — still open.
 
@@ -238,6 +241,8 @@ All edits were made to the shipped files and re-verified.
 | P3-1 | Intake banner pluralises case/cases and exists/exist. | QA shows the collision banner with correct grammar at 1 and 3 open cases. |
 | P3-2 | Alias chips wrap at narrow widths. | QA at 320/360/390/768/1024/1366/1920 px: 0 horizontal overflow on every width. |
 | P3-3 | Added `aria-label` to the bell audit button and the role selector. | QA accessibility probe: 0 unnamed buttons, 0 missing alt, 0 unlabeled inputs. |
+| P2-4 | Slide 3 separates prototype from target stack; TF-IDF listed as a matching signal. | Deck revision 11 saved; preview page 3 patched and visually checked. |
+| New | Advisory TF-IDF text similarity over complaint narratives plus an extractive two-sentence brief, shown on the Radar and at intake. | Radar surfaces a 0.41 pair at different institutions; intake returns C-2026-0168 at 0.24 with shared terms; both actions are advisory and write to the audit chain only on review/dismissal. |
 
 **Re-run result (`qa/qa_flow.js`):** 9 views navigate with no console errors; intake collision shown; joint room created; tamper detected; live Data Layer ID correct; document digests 4/4 unique; all widths clean; accessibility 0/0/0; **no findings**.
 
@@ -245,7 +250,7 @@ All edits were made to the shipped files and re-verified.
 
 - **P2-1 / P2-2 — synthetic-data labelling.** The false “labelled on every screen” claim is gone, and the deck, preview, kit and Data Layer now say the cases are synthetic in plain words. There is still no persistent ribbon on the dashboard or case screens, and public screenshots still pair real institution names with invented complaints. Add the ribbon and anonymise public captures before the video.
 - **P2-3 — video.** Not recorded. This is the largest remaining score risk.
-- **P2-4 — production stack.** Slide 3 still says “Same code path in demo and production”; the prototype remains a static HTML file. Relabel before presenting.
+- **P2-4 — production stack.** Closed. Slide 3 now labels the stack as the target and states that the prototype is one HTML file.
 - **P2-5 — concurrent audit append.** `audit_write()` still reads the chain head without a lock. Serialise with an advisory lock or a `FOR UPDATE` head row before any real deployment.
 
 ## 8. Sign-off

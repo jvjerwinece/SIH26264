@@ -11,8 +11,8 @@
 | Artifact | File | Status | Gate |
 |---|---|---|---|
 | Prototype | `submission/Ekasutra_v8.html` | Ready; P1-1/2/3 fixed and re-tested | Tamper test is safe to demo |
-| Deck | `submission/Ekasutra_SIH2026_SIH26264.pptx` | Ready; team and metrics fixed; P2-4 open | Relabel the production stack when time allows |
-| Deck preview | `submission/Ekasutra_SIH2026_SIH26264_preview.pdf` | Regenerated to match the edited deck | Spot-check pages 1, 4 and 6 |
+| Deck | `submission/Ekasutra_SIH2026_SIH26264.pptx` | Ready; team, metrics and stack labelling fixed | Do not regenerate without re-checking every page |
+| Deck preview | `submission/Ekasutra_SIH2026_SIH26264_preview.pdf` | Patched to match the edited deck | Spot-check pages 1, 3, 4 and 6 |
 | Data appendix | `submission/Ekasutra_Data_Appendix.pdf` | Ready; unsupported reconciliation line removed | Keep as the numeric source |
 | Submission kit | `submission/Ekasutra_Submission_Kit.pdf` | Claims corrected; duration note open | Rehearse to 2:50 |
 | Database pack | `submission/Ekasutra_Database_Pack.zip` | Ready | Do not modify after checksum |
@@ -31,7 +31,7 @@ P1 items are done and verified. Remaining work, in order. Full detail in `QA_REP
 - [ ] **P2-3** Record the video and verify duration.
 - [x] **P2-2** Correct the “labelled on every screen” answer; the persistent ribbon is still open (P2-1).
 - [ ] **P2-1** Add the ribbon; anonymise institution names in public screenshots.
-- [ ] **P2-4** Relabel slide 3 as prototype vs target stack.
+- [x] **P2-4** Slide 3 relabelled: target stack vs one-file prototype; TF-IDF named as the advisory layer.
 - [x] Regenerate the deck preview PDF after the slide edits.
 - [x] Regenerate `submission/SHA256SUMS.txt` after the file changes.
 - [x] Re-run `qa/qa_flow.js`; no findings, no console errors, 0 overflow, A11Y 0/0/0.
@@ -99,8 +99,7 @@ Then:
 Priority order:
 
 1. Video — without it, the submission is incomplete.
-2. P2-4 — relabel slide 3 as prototype vs target stack; a false equivalence is easy for a judge to catch.
-3. P2-1 — add the synthetic ribbon and anonymise public screenshots.
-4. P2-5 — lock the PostgreSQL audit append before any deployment beyond the demo.
+2. P2-1 — add the synthetic ribbon and anonymise public screenshots.
+3. P2-5 — lock the PostgreSQL audit append before any deployment beyond the demo.
 
 Do not regenerate the deck at the last minute without re-checking every page. A stale preview PDF is worse than a known-good older deck.

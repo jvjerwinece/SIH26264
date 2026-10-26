@@ -2,6 +2,17 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v8.2] — 2026-10-27
+
+Advisory text-similarity layer, plus the production-stack relabel.
+
+- **TF-IDF text similarity** over complaint narratives, computed in the browser with no model download: cosine ≥ 0.30 between active cases at different institutions surfaces a review pair on the Overlap Radar; cosine ≥ 0.20 against open cases elsewhere surfaces on the intake screen.
+- **Extractive auto-brief** of the incoming complaint (sentence scoring, two sentences, subject line and greeting stripped).
+- Every suggestion is advisory: *Review* opens the case, *Not related* logs a dismissal, and neither action links or merges anything.
+- Deck slide 3 now separates prototype from target stack ("Prototype is one HTML file; the API is specified, not built") and lists TF-IDF as a matching signal; preview PDF page 3 patched to match. Closes P2-4.
+- Kit Q3 ("Do you need an LLM / cloud?") rewritten to describe the rule core plus the TF-IDF assist.
+- README, claim register, QA report and checklist updated with the new claim.
+
 ## [v8.1] — 2026-10-27
 
 Remediation of the five P1 findings in `docs/QA_REPORT.md`, plus the P3 polish items.

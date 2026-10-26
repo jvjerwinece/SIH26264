@@ -64,7 +64,8 @@ Use this table as the single source of truth for numbers. “Unsupported” mean
 | Chain head `748b44fc…fc6fe0` | Appendix, DB pack | **Supported** | Recomputed, 0 broken links | Keep |
 | “Every action is tamper-evident” | Deck, tour | **Supported for the demo** | PostgreSQL chain is sound; the browser verifier now detects edited rows (P1-1 fixed) | Keep; fix P2-5 before real deployment |
 | “Synthetic data labelled on every screen” | Formerly kit Q4 | **Removed** | The claim was false; documents now say the case data is synthetic without promising a label on every screen | Add the ribbon before recording |
-| “Same code path in demo and production” | Deck slide 3 | **False — still open** | Prototype is static HTML; no API/auth/DB connection | Relabel as target stack (P2-4) |
+| “Same code path in demo and production” | Formerly deck slide 3 | **Removed 27 October 2026** | Slide now separates the prototype (one HTML file) from the target stack | Keep the separation |
+| Advisory text similarity (TF-IDF) | Prototype radar + intake, deck slide 3, kit Q3 | **Supported and demoable** | Cosine similarity over complaint narratives computed in-browser; threshold 0.30 across institutions, 0.20 at intake; never auto-links | Call it advisory; do not call it an LLM |
 | Six-person team | Deck slide 6 | **Supported** | Lead 1, frontend + design 2, backend 2, data 1 | Keep |
 | 3:00 video | Kit cover | **Not delivered** | No MP4 in archive; checklist says 2:50 | Record and verify duration |
 | All eight PS objectives demoable | Deck, appendix | **Supported** | See `PS26264_MAPPING.md` | Keep |
@@ -73,7 +74,7 @@ Use this table as the single source of truth for numbers. “Unsupported” mean
 
 The honest answer, in one breath:
 
-> “The case data is synthetic and deterministic; 18 institutions, 32 cases, 109 documents and an 18-row audit chain. The institution master is public AICTE data, and the PostgreSQL schema and seed are in the pack. Our matcher evaluation is 367 labelled variants at 94.6% top-1 and 99.7% top-3, with zero silent merges; the larger harness is not part of this submission.”
+> “The case data is synthetic and deterministic; 18 institutions, 32 cases, 109 documents and an 18-row audit chain. The institution master is public AICTE data, and the PostgreSQL schema and seed are in the pack. Our matcher evaluation is 367 labelled variants at 94.6% top-1 and 99.7% top-3, with zero silent merges; the larger harness is not part of this submission. On top of the rules, a TF-IDF text layer flags differently-worded complaints for an officer to review — advisory only, nothing auto-links.”
 
 That answer is defensible, and it is now the answer every artifact gives.
 

@@ -25,6 +25,7 @@ The problem statement asks for a single-window dashboard with eight capabilities
 - **Coordination rooms.** One room per open overlap, with a lead bureau, named owners, activity timeline, joint decision, escalation reason, merge target and a printable one-page brief.
 - **Custody and SLA.** Every case names its current bureau and officer, its next action, its age and whether it is beyond SLA. Custody is explicit, not inferred.
 - **Append-only ledger.** Every action is written as `sha256(prev_hash ‖ UTC time ‖ actor ‖ action ‖ object)`. The browser and PostgreSQL can compute the same chain. A tamper-evident history is the accountability layer, not a log file.
+- **Advisory text similarity.** A TF-IDF cosine layer over complaint narratives flags differently-worded complaints — including cases at different institutions that identifier rules cannot link — and drafts a two-line brief of the incoming complaint. Both run in the browser, offline, and never link anything without an officer.
 - **Works offline.** The prototype is one HTML file, no server, no credentials, and opens from `file://` on a laptop or phone.
 
 ## Quick start
