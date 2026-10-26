@@ -55,19 +55,17 @@ Use this table as the single source of truth for numbers. “Unsupported” mean
 
 | Claim | Where it appears | Status | What is actually supported | Action |
 |---|---|---|---|---|
-| “Validated on 9,558 real AICTE Permanent IDs” | Deck slide 1 | **Misleading** | 9,558 is the master size; it is not a validation set and the list is not shipped | Reword to “9,558-ID master” and separate it from evaluation |
-| 2,726 name variants | Deck slide 4, kit | **Unsupported** | Appendix evaluates 367 variants | Drop, or ship the variant set and harness output |
-| 95.0% top-1, 98.2% top-3 | Deck slide 4, kit | **Unsupported** | Appendix reports 94.6% / 99.7% on 367 variants | Use 94.6 / 99.7 and state n = 367 |
-| 100% precision on high-confidence auto-links | Deck slide 4 | **Unsupported** | No labelled precision run shipped | Drop unless the harness and labels are shipped |
-| 70.3% coverage | Deck slide 4, kit | **Unsupported** | No coverage run shipped | Drop with the precision claim |
-| “100% auto-link coverage at 100% precision” | Kit evidence line | **False / contradictory** | Contradicts the deck's 70.3% coverage | Delete; replace with the appendix figures |
-| 322 duplicate canonical names | Deck slide 4 | **Unsupported** | Not computed in any shipped artifact | Remove until computed and reproducible |
+| “9,558 AICTE IDs” | Deck slide 1, preview cover, kit, appendix | **Master count, not a validation set** | 9,558 is the size of the institution master; the list is not shipped | Always say “master” or “IDs”; never “validated on 9,558” |
+| 367 labelled name variants | Deck, preview, kit, appendix, prototype | **Supported as the evaluation size** | Appendix reports the run; harness output is not shipped | Keep; ship the variant set and output if a judge asks |
+| 94.6% top-1, 99.7% top-3 | Deck, preview, kit, appendix, prototype | **Supported as reported** | Measured on 367 labelled variants | Keep; cite n = 367 |
+| 0 silent merges | Deck, preview, kit, appendix | **Supported by design** | Auto-link is gated; everything else routes to a human | Keep |
+| 2,726 variants, 95.0/98.2, 100% precision, 70.3% coverage, 322 duplicate names | Formerly deck and kit | **Withdrawn 27 October 2026** | No shipped artifact supports them | Do not reintroduce |
 | 18 institutions, 32 cases, 109 documents, 18 audit rows | Appendix, DB pack | **Supported** | Deterministic seed | Keep |
 | Chain head `748b44fc…fc6fe0` | Appendix, DB pack | **Supported** | Recomputed, 0 broken links | Keep |
-| “Every action is tamper-evident” | Deck, tour | **Partially supported** | PostgreSQL chain is sound; browser verifier re-seals edits (P1-1) | Fix P1-1 or qualify the claim |
-| “Synthetic data labelled on every screen” | Kit Q4 | **False** | Only the brief footer is labelled | Add ribbon or correct the answer |
-| “Same code path in demo and production” | Deck slide 3 | **False** | Prototype is static HTML; no API/auth/DB connection | Relabel as target stack |
-| Six-person team | Deck notes | **Contradicted** | Slide lists seven roles | Consolidate to six |
+| “Every action is tamper-evident” | Deck, tour | **Supported for the demo** | PostgreSQL chain is sound; the browser verifier now detects edited rows (P1-1 fixed) | Keep; fix P2-5 before real deployment |
+| “Synthetic data labelled on every screen” | Formerly kit Q4 | **Removed** | The claim was false; documents now say the case data is synthetic without promising a label on every screen | Add the ribbon before recording |
+| “Same code path in demo and production” | Deck slide 3 | **False — still open** | Prototype is static HTML; no API/auth/DB connection | Relabel as target stack (P2-4) |
+| Six-person team | Deck slide 6 | **Supported** | Lead 1, frontend + design 2, backend 2, data 1 | Keep |
 | 3:00 video | Kit cover | **Not delivered** | No MP4 in archive; checklist says 2:50 | Record and verify duration |
 | All eight PS objectives demoable | Deck, appendix | **Supported** | See `PS26264_MAPPING.md` | Keep |
 
@@ -75,9 +73,9 @@ Use this table as the single source of truth for numbers. “Unsupported” mean
 
 The honest answer, in one breath:
 
-> “The case data is synthetic and deterministic; 18 institutions, 32 cases, 109 documents and an 18-row audit chain. The institution master is public AICTE data, and the PostgreSQL schema and seed are in the pack. Our matcher evaluation is 367 labelled variants at 94.6% top-1 and 99.7% top-3; the larger harness is not part of this submission.”
+> “The case data is synthetic and deterministic; 18 institutions, 32 cases, 109 documents and an 18-row audit chain. The institution master is public AICTE data, and the PostgreSQL schema and seed are in the pack. Our matcher evaluation is 367 labelled variants at 94.6% top-1 and 99.7% top-3, with zero silent merges; the larger harness is not part of this submission.”
 
-That answer is defensible. The current slide-4 numbers are not.
+That answer is defensible, and it is now the answer every artifact gives.
 
 ## 6. Retention and access
 

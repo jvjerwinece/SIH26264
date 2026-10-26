@@ -85,17 +85,19 @@ Verified on 26 October 2026 against the files in this repository.
 | PS 26264 objectives | 8 of 8 mapped in the prototype (see `docs/PS26264_MAPPING.md`) |
 | Demo video | **Not recorded** — blocking submission item |
 
-**Not verified, and must not be claimed as built:** production API, authentication/RBAC, real file upload, concurrent write behaviour, national-scale matcher benchmark, and the 9,558-institution validation run. See `docs/QA_REPORT.md`.
+**Not verified, and must not be claimed as built:** production API, authentication/RBAC, real file upload, concurrent write behaviour, national-scale matcher benchmark, and any evaluation over the full 9,558-name master. The shipped evaluation is 367 labelled name variants. See `docs/QA_REPORT.md`.
 
 ## Read before presenting
 
-Five defects can hurt a live demo or a judge review. Full detail and fixes are in [`docs/QA_REPORT.md`](docs/QA_REPORT.md).
+The five P1 defects from the 26 October audit were fixed on 27 October and re-tested. Details and evidence are in [`docs/QA_REPORT.md`](docs/QA_REPORT.md).
 
-1. **The browser “Verify chain” cannot detect tampering.** `renderAudit()` re-hashes the in-memory chain before comparing it, so an edited event is silently re-sealed and still reports “Chain intact”. Demonstrating tamper live will fail.
-2. **The Data Layer header is stale after any action.** It always says “Newest entry · A-1054” while the displayed hash is live. The seeded DB also stays at 18 rows while the UI grows.
-3. **Institution documents show three identical placeholder hashes.** The seed has 109 unique digests; the UI shows `9c2f4a7b` three times.
-4. **The team slide lists seven roles** while SIH teams are six including the team lead, and the speaker notes say “six people”.
-5. **Headline matcher numbers are not reproducible from the shipped pack.** The deck says 9,558 validated IDs, 2,726 variants, 95.0/98.2 and 100% precision at 70.3% coverage; the shipped appendix reports 367 variants at 94.6/99.7. No harness output or institutions CSV is in the repo.
+1. **Browser audit verification now detects tampering.** The stored chain is verified without re-hashing; editing a row and pressing **Verify chain** reports “Chain broken”.
+2. **Data Layer reads the live newest entry** and explains that the psql comparison is against the seeded 18-row snapshot.
+3. **Institution documents carry unique digests** derived per institution and filename.
+4. **The team slide shows six people** (lead 1, frontend + design 2, backend 2, data 1) and the notes match.
+5. **Every artifact uses one set of numbers:** 9,558-ID master, 367 labelled variants, 94.6% top-1, 99.7% top-3, zero silent merges. The old 2,726 / 95.0 / 98.2 / 100% / 70.3% / 322 claims are gone from the prototype, deck, preview, kit and appendix.
+
+Still open: the video is not recorded, the production stack is a target rather than a build, the PostgreSQL audit append is not concurrency-locked, and there is no persistent synthetic-data ribbon (the limitation is stated in the Data Layer and every submission document).
 
 ## Data
 

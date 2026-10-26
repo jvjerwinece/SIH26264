@@ -118,11 +118,10 @@ async function launch() {
   // 5. Institution document hashes
   await page.evaluate(() => go('inst', 'i1'));
   await page.waitForTimeout(500);
-  const hashes = await page.$$eval('.hash', els => els.map(e => e.textContent.trim()));
-  const short = hashes.filter(h => /^[0-9a-f]{8}$/.test(h));
-  console.log('DOC HASHES:', JSON.stringify(short));
-  if (short.length && new Set(short).size < short.length) {
-    findings.push('P1-3 institution documents repeat placeholder hashes: ' + JSON.stringify(short));
+  const hashes = await page.$$eval('.kv .hash', els => els.map(e => e.textContent.trim()));
+  console.log('DOC HASHES:', JSON.stringify(hashes), '| unique =', new Set(hashes).size + '/' + hashes.length);
+  if (hashes.length && new Set(hashes).size < hashes.length) {
+    findings.push('P1-3 institution documents repeat placeholder hashes: ' + JSON.stringify(hashes));
   }
   await page.screenshot({ path: path.join(OUT, 'institution_detail.png'), fullPage: true });
 

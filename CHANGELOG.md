@@ -2,6 +2,21 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v8.1] — 2026-10-27
+
+Remediation of the five P1 findings in `docs/QA_REPORT.md`, plus the P3 polish items.
+
+- Audit verification is now a real tamper check: the chain is sealed once at load, appended without re-hashing, and verified against stored `prev`/`hash`. Editing a row and pressing **Verify chain** reports “Chain broken”.
+- Data Layer shows the live newest audit ID and labels the psql comparison as the seeded 18-row snapshot.
+- Institution documents render unique digests derived from `sha256(permanent_id | filename)`.
+- Deck slide 6 reduced to six people (lead 1, frontend + design 2, backend 2, data 1) with matching notes.
+- One numeric source everywhere: 9,558-ID master, 367 labelled variants, 94.6% top-1, 99.7% top-3, 0 silent merges. Removed 2,726 / 95.0 / 98.2 / 100% / 70.3% / 322 from the prototype, deck, preview PDF, kit and appendix.
+- Deck preview PDF patched on pages 1, 4 and 6 to match the edited deck.
+- Intake pluralisation, 320 px overflow, and the two unlabeled controls fixed.
+- Checksums regenerated; Playwright QA re-run with no findings.
+
+Still open: video, persistent synthetic ribbon, production-stack relabel, concurrent audit append.
+
 ## [v8] — 2026-10-25
 
 Final submission build.
@@ -25,6 +40,8 @@ Clean handoff repository.
 - No changes to the v8 submission files.
 
 ### Known issues at this tag
+
+All five P1 issues below were fixed in v8.1.
 
 - P1-1 browser audit verification re-seals tampered rows.
 - P1-2 Data Layer newest-entry label and psql comparison go stale after actions.

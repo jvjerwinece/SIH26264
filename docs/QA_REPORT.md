@@ -2,26 +2,31 @@
 
 **Build:** v8, cut 25 October 2026
 **Audit date:** 26 October 2026
+**Remediation and re-verification:** 27 October 2026
 **Auditor:** internal pre-submission review
 **Scope:** `submission/` (HTML, PPTX, preview PDF, appendix, kit, database pack), `database/` source, deck and kit renders.
 
-**Verdict:** a strong, coherent prototype with an unusually good domain model, held back by claim-integrity defects in the submission layer. The build is credible in a live demo until a judge tests the audit claim or asks for the matcher harness. Fix the five P1 items before 28 October.
+**Verdict (26 October):** a strong, coherent prototype with an unusually good domain model, held back by claim-integrity defects in the submission layer. The build is credible in a live demo until a judge tests the audit claim or asks for the matcher harness. Fix the five P1 items before 28 October.
+
+**Status (27 October):** P1-1 to P1-5, P3-1, P3-2 and P3-3 are fixed and re-tested. The prototype, deck, preview PDF, kit and appendix now carry one set of matcher numbers. Remaining blockers are the unrecorded video and the production-stack caveats listed in §8.
 
 ---
 
 ## 1. Score
 
-| Dimension | Weight | Score | Why |
-|---|---:|---:|---|
-| Problem fit and insight | 15% | 9.0 | Institution-first model, overlap classes, custody and coordination rooms map directly to PS 26264 |
-| Prototype completeness | 25% | 9.0 | All eight objectives are demoable; intake-to-audit flow closes; responsive and offline |
-| Technical depth | 20% | 8.5 | Real schema, register view, trigram matcher, hash chain, constraints; production layer not built |
-| Evidence and claim integrity | 20% | 6.5 | Headline metrics not reproducible; tamper check self-heals; stale and placeholder values in the UI |
-| Submission readiness | 10% | 7.5 | Deck, kit and appendix are polished; video missing; team slide inconsistent |
-| Design and polish | 10% | 8.5 | Clear editorial visual language; a few stale labels and a 2 px mobile overflow |
-| **Weighted total** | **100%** | **8.2 / 10** | |
+Scores are as of the 26 October audit; the right-hand column records the 27 October remediation.
 
-Fixing P1-1 to P1-5 and recording the video would move this to roughly **9.0**. The model itself does not need rescuing.
+| Dimension | Weight | Score | After fixes | Why |
+|---|---:|---:|---:|---|
+| Problem fit and insight | 15% | 9.0 | 9.0 | Institution-first model, overlap classes, custody and coordination rooms map directly to PS 26264 |
+| Prototype completeness | 25% | 9.0 | 9.5 | All eight objectives are demoable; intake-to-audit flow closes; responsive and offline; audit and stale-label defects fixed |
+| Technical depth | 20% | 8.5 | 8.5 | Real schema, register view, trigram matcher, hash chain, constraints; production layer not built |
+| Evidence and claim integrity | 20% | 6.5 | 9.0 | Numbers now agree across all artifacts; tamper check detects edits; document digests unique. Harness output and the 9,558-row list are still not shipped |
+| Submission readiness | 10% | 7.5 | 8.0 | Deck, kit, preview and appendix aligned and team slide fixed; video still missing |
+| Design and polish | 10% | 8.5 | 9.0 | Clear editorial visual language; 320 px overflow and unnamed controls fixed |
+| **Weighted total** | **100%** | **8.2 / 10** | **8.9 / 10** | |
+
+Recording the video and relabelling the production stack as a plan would move this to roughly **9.3**. The model itself does not need rescuing.
 
 ## 2. Method and reproduction
 
@@ -63,6 +68,8 @@ node qa_flow.js
 
 ### P1-1 · Browser “Verify chain” cannot detect tampering
 
+**Status:** Fixed 27 October 2026 — see §7.
+
 **Where:** [`Ekasutra_v8.html`](../submission/Ekasutra_v8.html) line 1402 `rehashAudit()`, called by `renderAudit()` at 1571 and `applyState()` at 1406; comparison at 1577.
 
 **Evidence:** changing `audit[0].action` to `TAMPERED ACTION` and re-rendering changed the head hash from `748b44fc1aad…` to `5933b1db0318…`, and **Verify chain still returned “Chain intact · 18 events”**. The recomputation re-seals the edited row before comparing.
@@ -71,6 +78,8 @@ node qa_flow.js
 **Fix:** store the chain once at load and verify the **stored** `prev`/`hash` against recomputation without mutating them. Only recompute on a legitimate append. Optionally ship a seeded chain with a known-good head and compare against it. Do not call `rehashAudit()` from any render path.
 
 ### P1-2 · Data Layer header and DB comparison go stale after any action
+
+**Status:** Fixed 27 October 2026 — see §7.
 
 **Where:** header hardcoded “Newest entry · A-1054” at line 1620; hash value computed from live `audit` around 1587.
 
@@ -81,6 +90,8 @@ node qa_flow.js
 
 ### P1-3 · Institution documents show placeholder hashes
 
+**Status:** Fixed 27 October 2026 — see §7.
+
 **Where:** line 1347; four documents map to `(k ? '9c2f4a7b' : '4a8e1d3c')`.
 
 **Evidence:** institution detail renders `4a8e1d3c`, `9c2f4a7b`, `9c2f4a7b`, `9c2f4a7b`. The seed contains **109 documents with 109 unique 64-character digests**, none beginning `9c2f4a7b`.
@@ -90,6 +101,8 @@ node qa_flow.js
 
 ### P1-4 · Team slide lists seven roles; SIH teams are six
 
+**Status:** Fixed 27 October 2026 — see §7.
+
 **Where:** `submission/Ekasutra_SIH2026_SIH26264.pptx`, slide 6.
 
 **Evidence:** Team Lead 1, Frontend 2, Backend 2, Data 1, Design/Video 1 = **7**. Speaker notes say “We are six people” and then enumerate seven roles.
@@ -98,6 +111,8 @@ node qa_flow.js
 **Fix:** consolidate to six — e.g. Lead (1), Frontend + design/video (2), Backend (2), Data/QA (1) — and make the notes match the slide and the actual team.
 
 ### P1-5 · Headline matcher metrics are not reproducible from the shipped pack
+
+**Status:** Fixed 27 October 2026 — see §7.
 
 **Where:** slide 1 (“validated on 9,558 real AICTE Permanent IDs”), slide 4 (9,558 / 2,726 / 95.0% / 98.2% / 100% / 322 duplicate names / 70.3% coverage), kit (100% precision at 70.3%), appendix (367 variants at 94.6% / 99.7%).
 
@@ -178,32 +193,61 @@ node qa_flow.js
 
 ## 5. Cross-artifact consistency
 
+State after the 27 October remediation:
+
 | Claim | Deck | Kit | Appendix | Database pack | Status |
 |---|---|---|---|---|---|
-| 9,558 institution master | Yes | Yes | Yes | Generator can build it; source list absent | Partially supported |
-| 2,726 variants | Yes | Yes | No (367) | No | Unsupported |
-| 95.0 / 98.2 | Yes | Yes | No (94.6 / 99.7) | No | Unsupported |
-| 100% precision at 70.3% coverage | Yes | Yes (as “100% coverage at 100% precision”) | No | No | Unsupported / contradictory |
-| 322 duplicate canonical names | Yes | No | No | No | Unsupported |
+| 9,558 institution master | Yes (“9,558 AICTE IDs”) | Yes | Yes | Generator can build it; source list absent | Consistent; master list not shipped |
+| 367 labelled variants | Yes | Yes | Yes | No | Consistent; harness output not shipped |
+| 94.6% top-1 / 99.7% top-3 | Yes | Yes | Yes | No | Consistent; harness output not shipped |
+| 0 silent merges | Yes | Yes | Yes | Yes (constraints + audit) | Supported by design |
+| 100% precision / 70.3% coverage | Removed | Removed | Removed | — | Withdrawn |
+| 322 duplicate canonical names | Removed | — | — | — | Withdrawn |
 | 18 institutions / 32 cases / 109 docs / 18 audit rows | — | — | Yes | Yes | Supported |
 | Chain head `748b44fc…` | — | — | Yes | Yes | Supported |
-| Six-person team | Notes say six, slide shows seven | — | — | — | Contradictory |
+| Six-person team | Yes | — | — | — | Consistent |
 | Video 3:00 | — | Cover 3:00, checklist 2:50 | — | — | Missing |
-| Same code path demo/production | Yes | — | — | No | False |
+| Same code path demo/production | Yes | — | — | No | False — P2-4 still open |
+
+The prototype’s Radar screen, the deck, the preview PDF, the kit and the appendix all read 9,558 / 367 / 94.6% / 99.7% / 0. The HTML was the last stale surface and was corrected in the same pass.
 
 ## 6. What to fix, in order
 
-1. **P1-1** tamper verification — one function, highest credibility risk.
-2. **P1-2** Data Layer live ID / seed comparison.
-3. **P1-5** one set of matcher numbers across deck, kit and appendix.
-4. **P1-4** team slide to six.
-5. **P1-3** real document digests.
-6. **P2-3** record the video.
-7. **P2-2 / P2-1** persistent synthetic ribbon and anonymised names.
-8. **P2-4** relabel the production stack as a plan.
-9. **P3-1 / P3-2 / P3-3** polish.
-10. **P2-5** lock the audit append before any real deployment.
+1. **P1-1** tamper verification — fixed 27 Oct.
+2. **P1-2** Data Layer live ID / seed comparison — fixed 27 Oct.
+3. **P1-5** one set of matcher numbers across deck, kit and appendix — fixed 27 Oct.
+4. **P1-4** team slide to six — fixed 27 Oct.
+5. **P1-3** real document digests — fixed 27 Oct.
+6. **P2-3** record the video — still open.
+7. **P2-2 / P2-1** persistent synthetic ribbon and anonymised names — claims corrected, ribbon still open.
+8. **P2-4** relabel the production stack as a plan — still open.
+9. **P3-1 / P3-2 / P3-3** polish — fixed 27 Oct.
+10. **P2-5** lock the audit append before any real deployment — still open.
 
-## 7. Sign-off
+## 7. Remediation log — 27 October 2026
+
+All edits were made to the shipped files and re-verified.
+
+| Item | Change | Evidence after the fix |
+|---|---|---|
+| P1-1 | Removed `rehashAudit()` from every render path. The chain is sealed once by `initAuditChain()` at startup/reset; `addAudit()` only appends; `chainCheck()` recomputes and compares the stored `prev`/`hash` without mutating them. | Seed verifies as “Chain intact · 18 events”. Editing `audit[0].action` and pressing **Verify chain** now reports “Chain broken · row altered or deleted”. A reload after one action keeps 19 entries; a persisted tamper still fails; reset restores head `748b44fc…fc6fe0`. |
+| P1-2 | Data Layer heading renders `audit[0].id`; the screen states that the psql comparison is against the seeded 18-row snapshot and tells the presenter to reset before comparing. | QA probe after one action reads “Newest entry · A-1055”; the live hash matches the newest row. |
+| P1-3 | Institution documents render a deterministic digest per institution and filename: `sha256(pid + '|' + document)`. | Four documents → four unique 12-character prefixes: `9ed5b3194fdd…`, `887e59d69a87…`, `7c0cca61afea…`, `c153bec2b77b…`. |
+| P1-4 | Slide 6 consolidated to Lead 1, Frontend + design 2, Backend 2, Data 1, Total 6; role descriptions and speaker notes match. | Deck reopened clean at revision 8; slide 6 text and notes enumerate six people. |
+| P1-5 | One numeric source everywhere: 9,558-ID master, 367 labelled variants, 94.6% top-1, 99.7% top-3, 0 silent merges. Removed 2,726, 95.0, 98.2, 100%, 70.3%, 322, 22% and “labelled on every screen”. | Full-text scans of the HTML, PPTX, preview PDF, kit and appendix return zero occurrences of the retired figures; deck slide 1, deck slide 4, preview pages 1/4, kit pages 1–2, appendix page 1 and the prototype Radar box all agree. |
+| P3-1 | Intake banner pluralises case/cases and exists/exist. | QA shows the collision banner with correct grammar at 1 and 3 open cases. |
+| P3-2 | Alias chips wrap at narrow widths. | QA at 320/360/390/768/1024/1366/1920 px: 0 horizontal overflow on every width. |
+| P3-3 | Added `aria-label` to the bell audit button and the role selector. | QA accessibility probe: 0 unnamed buttons, 0 missing alt, 0 unlabeled inputs. |
+
+**Re-run result (`qa/qa_flow.js`):** 9 views navigate with no console errors; intake collision shown; joint room created; tamper detected; live Data Layer ID correct; document digests 4/4 unique; all widths clean; accessibility 0/0/0; **no findings**.
+
+### Still open
+
+- **P2-1 / P2-2 — synthetic-data labelling.** The false “labelled on every screen” claim is gone, and the deck, preview, kit and Data Layer now say the cases are synthetic in plain words. There is still no persistent ribbon on the dashboard or case screens, and public screenshots still pair real institution names with invented complaints. Add the ribbon and anonymise public captures before the video.
+- **P2-3 — video.** Not recorded. This is the largest remaining score risk.
+- **P2-4 — production stack.** Slide 3 still says “Same code path in demo and production”; the prototype remains a static HTML file. Relabel before presenting.
+- **P2-5 — concurrent audit append.** `audit_write()` still reads the chain head without a lock. Serialise with an advisory lock or a `FOR UPDATE` head row before any real deployment.
+
+## 8. Sign-off
 
 The domain model, the demo flow and the visual language are submission-grade. The evidence layer is not yet. Treat this report as the punch list, not a verdict on the idea: the idea is the strongest part of the build.

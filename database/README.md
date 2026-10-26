@@ -77,7 +77,7 @@ psql -d ekasutra -f schema.sql
 psql -d ekasutra -c "\copy institutions(permanent_id, name, city, state) from 'institutions.csv' csv"
 ```
 
-9,558 rows, 322 duplicate canonical names. The demo seed never writes here.
+9,558 rows. The demo seed never writes here.
 
 ## 3. What each table holds
 
