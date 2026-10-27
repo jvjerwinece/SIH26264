@@ -2,6 +2,16 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v8.6] — 2026-10-27
+
+The portal deck closes the visual gap against the winning decks we compared it with.
+
+- **Page 5 gained a status-quo vs Ekasutra table** (8 capability rows, deep-blue header, alternating rows, red ✗ under TODAY, green ✓ under EKASUTRA) in place of the three bullet columns. Every row is demoable in the prototype; the one modelled figure (officer-days) is flagged in a footnote under the table. The seed chart moved to the top-left and the three measured stat cards run across the bottom.
+- **Page 3 got lane colours and stage icons**: RB deep-blue, PGRC blue, regional office green — the same three colours as the chart legend on page 5 and the bureau names on page 2 — with each intake arrow taking its lane colour, and a glyph per stage (◎ resolve, ① thread, ∩ overlap, ⇄ coordinate, ▦ register, ∑ audit). All native shapes and text; no image assets.
+- **Page 2 colours the three bureaus** in the step-03 subtitle to match.
+- Two glyphs did not survive the first render (⛓ showed as tofu, ① at 11.5 pt wrapped the THREAD card) and were swapped for ∑ and tighter spacing; every page re-rendered from the PowerPoint export afterwards.
+- Bounds check: no shape off the 1280×720 canvas. PDF text scan: retired figures still 0; 4× 9,558, 7× 367, 2× 94.6, 2× 99.7 unchanged. Checksums regenerated.
+
 ## [v8.5] — 2026-10-27
 
 Official deck rebuilt to carry real diagrams instead of three-column bullet lists.

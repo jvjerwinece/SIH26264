@@ -35,6 +35,9 @@ AMBER_BG = RGBColor.from_string("FFF4E0")
 WHITE = RGBColor.from_string("FFFFFF")
 PURPLE = RGBColor.from_string("4B2E83")
 GREY_BG = RGBColor.from_string("F4F6F9")
+RED = RGBColor.from_string("C00000")
+GREEN_BG = RGBColor.from_string("E7F4EE")
+DEEP_BG = RGBColor.from_string("E8EDF5")
 
 BODY = "Arial"
 HEAD = "Times New Roman"
@@ -235,14 +238,23 @@ def build():
     flow = [
         ("01", "Complaint arrives", "Email · CPGRAMS export · portal webhook"),
         ("02", "Resolve to the Permanent ID", "9,558-ID AICTE master + alias graph"),
-        ("03", "One thread across bureaus", "RB · PGRC · regional office — one custody chain, one SLA"),
+        ("03", "One thread across bureaus", None),
     ]
     x, w = 735, 495
     top = 150
     for i, (num, title, sub) in enumerate(flow):
+        if sub is None:
+            sub_runs = [("RB", 10.5, {"bold": True, "color": DEEP}),
+                        ("  ·  ", 10.5, {"color": MUTED}),
+                        ("PGRC", 10.5, {"bold": True, "color": BLUE}),
+                        ("  ·  ", 10.5, {"color": MUTED}),
+                        ("regional office", 10.5, {"bold": True, "color": GREEN}),
+                        ("  — one custody chain, one SLA", 10.5, {"color": MUTED})]
+        else:
+            sub_runs = [(sub, 10.5, {"color": MUTED})]
         card(s, x, top, w, 92, [
             {"runs": [(num + "   ", 15, {"bold": True, "color": BLUE}), (title, 14.5, {"bold": True})], "after": 3},
-            {"runs": [(sub, 10.5, {"color": MUTED})]},
+            {"runs": sub_runs},
         ], fill=LIGHT, line=LINE, margins=(14, 12, 10, 8))
         if i < 2:
             shape(s, MSO_SHAPE.DOWN_ARROW, x + w / 2 - 12, top + 100, 24, 32, fill=LINE)
@@ -296,20 +308,22 @@ def build():
 
     kicker(s, 652, 140, 572, "System flow — three channels, one thread")
     lanes = ["RB", "PGRC", "Regional office"]
+    lane_colors = {"RB": (DEEP, DEEP_BG), "PGRC": (BLUE, LIGHT), "Regional office": (GREEN, GREEN_BG)}
     for i, lane in enumerate(lanes):
+        fg, bg = lane_colors[lane]
         card(s, 652, 170 + i * 32, 112, 26, [
-            {"runs": [(lane, 10, {"bold": True, "color": DEEP})], "align": PP_ALIGN.CENTER},
-        ], fill=WHITE, line=LINE, margins=(4, 4, 2, 2), anchor=MSO_ANCHOR.MIDDLE)
-        shape(s, MSO_SHAPE.RIGHT_ARROW, 770, 178 + i * 32, 20, 10, fill=LINE)
+            {"runs": [(lane, 10, {"bold": True, "color": fg})], "align": PP_ALIGN.CENTER},
+        ], fill=bg, line=fg, margins=(4, 4, 2, 2), anchor=MSO_ANCHOR.MIDDLE)
+        shape(s, MSO_SHAPE.RIGHT_ARROW, 770, 178 + i * 32, 20, 10, fill=fg)
 
     card(s, 790, 170, 162, 84, [
-        {"runs": [("01  RESOLVE", 10.5, {"bold": True, "color": BLUE})], "after": 2},
+        {"runs": [("◎  ", 11.5, {"bold": True, "color": BLUE}), ("01  RESOLVE", 10.5, {"bold": True, "color": BLUE})], "after": 2},
         {"runs": [("Permanent ID + alias + trigram + TF-IDF", 8.5, {"color": MUTED})], "line": 1.02, "after": 2},
         {"runs": [("top-3 · officer confirms", 8.5, {"color": AMBER})], "line": 1.02},
     ], fill=LIGHT, line=LINE, margins=(8, 8, 6, 4))
     shape(s, MSO_SHAPE.RIGHT_ARROW, 956, 207, 18, 10, fill=LINE)
     card(s, 978, 170, 126, 84, [
-        {"runs": [("02  THREAD", 10.5, {"bold": True, "color": BLUE})], "after": 2},
+        {"runs": [("① ", 10.5, {"bold": True, "color": BLUE}), ("02  THREAD", 10.5, {"bold": True, "color": BLUE})], "after": 2},
         {"runs": [("one case ID, bureau, officer, custody, SLA", 8.5, {"color": MUTED})], "line": 1.02},
     ], fill=LIGHT, line=LINE, margins=(8, 8, 6, 4))
     shape(s, MSO_SHAPE.RIGHT_ARROW, 1108, 207, 16, 10, fill=LINE)
@@ -320,13 +334,13 @@ def build():
     shape(s, MSO_SHAPE.DOWN_ARROW, 1124, 258, 10, 30, fill=LINE)
 
     row2 = [
-        ("03  OVERLAP", "same institution already open in another bureau", 1044),
-        ("04  COORDINATE", "lead bureau, joint decision, custody chain", 848),
-        ("05  REGISTER", "8 KPIs, ageing, reports, CSV export", 652),
+        ("∩", "03  OVERLAP", "same institution already open in another bureau", 1044),
+        ("⇄", "04  COORDINATE", "lead bureau, joint decision, custody chain", 848),
+        ("▦", "05  REGISTER", "8 KPIs, ageing, reports, CSV export", 652),
     ]
-    for idx, (name, sub, x) in enumerate(row2):
+    for idx, (icon, name, sub, x) in enumerate(row2):
         card(s, x, 292, 170, 76, [
-            {"runs": [(name, 10.5, {"bold": True, "color": BLUE})], "after": 2},
+            {"runs": [(icon + "  ", 11.5, {"bold": True, "color": BLUE}), (name, 10.5, {"bold": True, "color": BLUE})], "after": 2},
             {"runs": [(sub, 8.5, {"color": MUTED})], "line": 1.02},
         ], fill=LIGHT, line=LINE, margins=(8, 8, 6, 4))
         if idx < 2:
@@ -337,7 +351,7 @@ def build():
                    "are specified in the repo.", 10, {"color": MUTED})], "line": 1.05},
     ])
     card(s, 652, 424, 572, 76, [
-        {"runs": [("06  AUDIT CHAIN", 10.5, {"bold": True, "color": BLUE})], "after": 3},
+        {"runs": [("∑  ", 11.5, {"bold": True, "color": BLUE}), ("06  AUDIT CHAIN", 10.5, {"bold": True, "color": BLUE})], "after": 3},
         {"runs": [("sha256(prev || time || actor || action || object)", 10,
                    {"font": "Courier New", "color": INK})], "after": 2},
         {"runs": [("Nothing is updated in place; a chain check recomputes and compares stored hashes.",
@@ -426,42 +440,49 @@ def build():
     footer(s)
     drop(s, "TextBox")
 
-    cols = [
-        ("OFFICERS", [
-            "One register, not two",
-            "Overlap visible before duplicate action",
-            "Custody and SLA on one screen",
-        ]),
-        ("INSTITUTIONS & STUDENTS", [
-            "One complaint, one case ID",
-            "A transfer cannot go missing",
-            "Status visible without an RTI",
-        ]),
-        ("AICTE SYSTEM", [
-            "Institution-, region-, bureau- and status-wise reports",
-            "Alerts before the timeline, not after",
-            "Every action attributable in a hash chain",
-        ]),
+    # --- status-quo vs Ekasutra table (replaces the three bullet columns) ---
+    rows = [
+        "One case thread per institution Permanent ID",
+        "Overlap flagged at intake, before duplicate action",
+        "Custody chain and SLA ageing on one screen",
+        "Case transfer as an audited, attributed action",
+        "Case status visible to every bureau without an RTI",
+        "Officer time on disposal, not de-duplication",
+        "Matches confirmed by an officer — 0 silent merges",
+        "Every write verifiable against a SHA-256 chain",
     ]
-    x = 48
-    for head, items in cols:
-        textbox(s, x, 146, 380, 20, [{"runs": [(head, 11, {"bold": True, "color": BLUE})]}])
-        y = 172
-        for item in items:
-            textbox(s, x, y, 380, 26, [
-                {"runs": [("•  ", 12, {"color": BLUE}), (item, 11.5, {})], "line": 1.02},
-            ])
-            y += 30
-        x += 402
+    shape(s, MSO_SHAPE.RECTANGLE, 632, 146, 598, 202, fill=WHITE, line=LINE)
+    shape(s, MSO_SHAPE.RECTANGLE, 632, 146, 598, 26, fill=DEEP, line=None)
+    textbox(s, 644, 146, 430, 26, [{"runs": [("CAPABILITY", 10, {"bold": True, "color": WHITE})]}],
+            anchor=MSO_ANCHOR.MIDDLE)
+    textbox(s, 1074, 146, 78, 26, [{"runs": [("TODAY", 9.5, {"bold": True, "color": WHITE})],
+                                    "align": PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
+    textbox(s, 1152, 146, 78, 26, [{"runs": [("EKASUTRA", 9.5, {"bold": True, "color": WHITE})],
+                                    "align": PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
+    ry = 172
+    for i, label in enumerate(rows):
+        if i % 2 == 1:
+            shape(s, MSO_SHAPE.RECTANGLE, 633, ry, 596, 22, fill=GREY_BG, line=None)
+        textbox(s, 644, ry, 420, 22, [{"runs": [(label, 9.5, {})]}], anchor=MSO_ANCHOR.MIDDLE)
+        textbox(s, 1074, ry, 78, 22, [{"runs": [("✗", 11, {"bold": True, "color": RED})],
+                                       "align": PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
+        textbox(s, 1152, ry, 78, 22, [{"runs": [("✓", 11, {"bold": True, "color": GREEN})],
+                                       "align": PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
+        ry += 22
+    textbox(s, 632, 372, 598, 30, [
+        {"runs": [("Officer-days (~100–200 a year) is a model: 1,000 cases · 5–10% overlap · 2 officer-days "
+                   "per duplicate. Every other row is demoable in the prototype today.",
+                   8.5, {"italic": True, "color": MUTED})], "line": 1.05},
+    ])
 
     # --- seed chart: the same institution filed in two bureaus, counted from demo_seed.json ---
-    card(s, 48, 268, 560, 232, [], fill=WHITE, line=LINE, margins=(0, 0, 0, 0))
-    textbox(s, 66, 280, 524, 18, [
+    card(s, 48, 146, 560, 232, [], fill=WHITE, line=LINE, margins=(0, 0, 0, 0))
+    textbox(s, 66, 158, 524, 18, [
         {"runs": [("WHAT THE REGISTER DOES TO THE SHIPPED SEED", 10, {"bold": True, "color": BLUE})]},
     ])
     for lx, lc, lt in ((66, BLUE, "PGRC"), (128, DEEP, "RB")):
-        shape(s, MSO_SHAPE.RECTANGLE, lx, 302, 11, 11, fill=lc)
-        textbox(s, lx + 15, 299, 50, 16, [{"runs": [(lt, 9, {"color": MUTED})]}])
+        shape(s, MSO_SHAPE.RECTANGLE, lx, 180, 11, 11, fill=lc)
+        textbox(s, lx + 15, 177, 50, 16, [{"runs": [(lt, 9, {"color": MUTED})]}])
 
     lanes = [
         ("Sri Venkateswara College of Engineering, Kanchipuram", 2, 1, "CL-01 · 3 files"),
@@ -469,7 +490,7 @@ def build():
         ("Chaitanya Bharathi Institute of Technology", 1, 1, "CL-03 · 2 files"),
     ]
     unit = 44
-    y = 324
+    y = 202
     for name, pg, rb, room in lanes:
         textbox(s, 66, y, 200, 30, [{"runs": [(name, 9.5, {})], "line": 1.02}])
         for count, bar_y, bar_c in ((pg, y, BLUE), (rb, y + 17, DEEP)):
@@ -482,7 +503,7 @@ def build():
         ])
         y += 46
 
-    textbox(s, 66, 466, 524, 20, [
+    textbox(s, 66, 344, 524, 20, [
         {"runs": [("7 complaints · 3 institutions · every overlap spans both bureaus — see seed_demo.sql.",
                    9, {"italic": True, "color": MUTED})], "line": 1.05},
     ])
@@ -495,14 +516,14 @@ def build():
         ("0", "silent merges",
          "Ambiguous matches go to a person, never into the register automatically."),
     ]
-    y = 268
+    x = 48
     for big, small, note in stats:
-        card(s, 632, y, 598, 70, [
-            {"runs": [(big + "   ", 20, {"bold": True, "color": DEEP}),
+        card(s, x, 412, 376, 84, [
+            {"runs": [(big + "  ", 20, {"bold": True, "color": DEEP}),
                       (small, 11, {"bold": True, "color": BLUE})], "after": 3},
             {"runs": [(note, 9.5, {"color": MUTED})], "line": 1.03},
         ], fill=LIGHT, line=LINE, margins=(14, 12, 8, 6), anchor=MSO_ANCHOR.MIDDLE)
-        y += 81
+        x += 403
 
     textbox(s, 48, 512, 1182, 60, [
         {"runs": [("Social: a student sees one case ID and one owner.   Economic: officer time moves from de-duplication to disposal.   "
