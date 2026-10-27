@@ -31,12 +31,13 @@ P1 items are done and verified. Remaining work, in order. Full detail in `QA_REP
 - [x] **P1-5** Use one numeric source: 367 variants, 94.6% top-1, 99.7% top-3, 9,558-ID master. Removed 2,726 / 95.0 / 98.2 / 100% / 70.3% / 322 from every artifact.
 - [ ] **P2-3** Record the video and verify duration.
 - [x] **P2-2** Correct the “labelled on every screen” answer; the persistent ribbon is still open (P2-1).
-- [ ] **P2-1** Add the ribbon; anonymise institution names in public screenshots.
+- [ ] **P2-1** Ribbon shipped in v8.7 (every prototype screen now carries the synthetic-data label); anonymising institution names in public screenshots is still open.
 - [x] **P2-4** Slide 3 relabelled: target stack vs one-file prototype; TF-IDF named as the advisory layer.
 - [x] Idea deck rebuilt on the official SIH 2026 template — `Ekasutra_SIH2026_SIH26264_Official.pptx` plus the PDF the portal asks for.
 - [x] Official deck checked slide by slide against the traps judges read for: concrete case on page 2, running-today vs to-build on page 3, five failure modes with fallbacks on page 4, two numbers with the working shown on page 5, named sources and a data-access answer on page 6. No duplicated slide, no seventh page, nothing from another project, no title running off the canvas.
 - [x] Pages 3 and 5 redrawn with native shapes: a three-channel system flow on page 3, and a bar chart of the seeded PGRC/RB counts per overlapping institution on page 5 (2/1, 1/1, 1/1 — the same rows as `database/seed_demo.sql`). PDF re-exported, pages re-rendered and checked for off-canvas geometry, checksums regenerated.
 - [x] Visual parity with the winning decks: 8-row ✗/✓ status-quo table on page 5 (only the modelled officer-days figure footnoted as a model), one bureau colour system across pages 2/3/5, and a glyph per flow stage on page 3. Re-rendered every changed page from the export; checksums regenerated.
+- [x] Real prototype screenshots in the portal deck (v8.7): dashboard hero on page 2, overlap radar + audit chain on page 6, captured from the running file by `qa/qa_flow.js` with the synthetic-data ribbon visible in every shot; committed under `submission/media/` so the build stays reproducible.
 - [ ] **Type the portal Team ID onto page 1 of the official deck** (amber placeholder), re-export the PDF with `powershell -NoProfile -ExecutionPolicy Bypass -File tools\pptx2pdf.ps1 -In submission\Ekasutra_SIH2026_SIH26264_Official.pptx -Out submission\Ekasutra_SIH2026_SIH26264_Official.pdf`, then regenerate `submission/SHA256SUMS.txt`. Upload the PDF, not the PPTX.
 - [ ] **Diff page 1 against the portal record** — PS ID, PS title, Theme and Category copied character by character, not retyped from memory. A wrong theme on slide one is read before a word of the idea.
 - [x] Regenerate the deck preview PDF after the slide edits.

@@ -21,6 +21,7 @@ from pptx.util import Emu, Pt
 REPO = Path(__file__).resolve().parents[1]
 TEMPLATE = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO / "tools" / "SIH2026-IDEA-Presentation-Format.pptx"
 OUT = REPO / "submission" / "Ekasutra_SIH2026_SIH26264_Official.pptx"
+MEDIA = REPO / "submission" / "media"
 
 EMU = 9525
 INK = RGBColor.from_string("1F2A44")
@@ -115,6 +116,17 @@ def card(slide, x, y, w, h, paras, fill=LIGHT, line=LINE, adj=(0.10,), margins=(
     tf.vertical_anchor = anchor
     fill_paras(tf, paras)
     return sh
+
+
+def picture(slide, path, x, y, w, h, crop_top=0.0, crop_bottom=0.0, border=LINE):
+    pic = slide.shapes.add_picture(str(path), px(x), px(y), px(w), px(h))
+    if crop_top or crop_bottom:
+        pic.crop_top = crop_top
+        pic.crop_bottom = crop_bottom
+    if border is not None:
+        pic.line.color.rgb = border
+        pic.line.width = Pt(1.0)
+    return pic
 
 
 def set_title(slide, text, size=34, color=DEEP):
@@ -236,29 +248,32 @@ def build():
         y += 100
 
     flow = [
-        ("01", "Complaint arrives", "Email · CPGRAMS export · portal webhook"),
-        ("02", "Resolve to the Permanent ID", "9,558-ID AICTE master + alias graph"),
+        ("01", "Complaint arrives", "Email · CPGRAMS · webhook"),
+        ("02", "Resolve to the Permanent ID", "9,558-ID master + alias graph"),
         ("03", "One thread across bureaus", None),
     ]
     x, w = 735, 495
     top = 150
     for i, (num, title, sub) in enumerate(flow):
         if sub is None:
-            sub_runs = [("RB", 10.5, {"bold": True, "color": DEEP}),
-                        ("  ·  ", 10.5, {"color": MUTED}),
-                        ("PGRC", 10.5, {"bold": True, "color": BLUE}),
-                        ("  ·  ", 10.5, {"color": MUTED}),
-                        ("regional office", 10.5, {"bold": True, "color": GREEN}),
-                        ("  — one custody chain, one SLA", 10.5, {"color": MUTED})]
+            tail = [(title + "    ", 12, {"bold": True}),
+                    ("RB", 10, {"bold": True, "color": DEEP}), ("  ·  ", 10, {"color": MUTED}),
+                    ("PGRC", 10, {"bold": True, "color": BLUE}), ("  ·  ", 10, {"color": MUTED}),
+                    ("regional office", 10, {"bold": True, "color": GREEN})]
         else:
-            sub_runs = [(sub, 10.5, {"color": MUTED})]
-        card(s, x, top, w, 92, [
-            {"runs": [(num + "   ", 15, {"bold": True, "color": BLUE}), (title, 14.5, {"bold": True})], "after": 3},
-            {"runs": sub_runs},
-        ], fill=LIGHT, line=LINE, margins=(14, 12, 10, 8))
+            tail = [(title + "    ", 12, {"bold": True}), (sub, 10, {"color": MUTED})]
+        card(s, x, top, w, 40, [{"runs": [(num + "  ", 12.5, {"bold": True, "color": BLUE})] + tail}],
+             fill=LIGHT, line=LINE, margins=(12, 10, 2, 2), anchor=MSO_ANCHOR.MIDDLE)
         if i < 2:
-            shape(s, MSO_SHAPE.DOWN_ARROW, x + w / 2 - 12, top + 100, 24, 32, fill=LINE)
-        top += 140
+            shape(s, MSO_SHAPE.DOWN_ARROW, x + w / 2 - 9, top + 45, 18, 13, fill=LINE)
+        top += 64
+
+    picture(s, MEDIA / "Dashboard.png", 735, 334, 495, 248, crop_top=0.0441, crop_bottom=0.5783)
+    shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, 1046, 556, 176, 18,
+          fill=AMBER_BG, line=RGBColor.from_string("E8C9A0"), adj=(0.5,))
+    textbox(s, 1046, 556, 176, 18, [
+        {"runs": [("PROTOTYPE V8 · SYNTHETIC DATA", 7.5, {"bold": True, "color": AMBER})],
+         "align": PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
 
     card(s, 48, 606, 1182, 44, [
         {"runs": [("Prevent duplicates at intake   ·   Detect RB/PGRC overlap   ·   Coordinate custody, SLA and disposal",
@@ -566,17 +581,25 @@ def build():
         ])
         y += 58
 
-    card(s, 752, 158, 478, 260, [
+    card(s, 752, 158, 478, 352, [
         {"runs": [("PROTOTYPE & EVIDENCE", 11, {"bold": True, "color": BLUE})], "after": 8},
-        {"runs": [("One offline HTML file with a 90-second guided tour", 10.5, {})], "after": 5},
-        {"runs": [("9 views navigate with 0 console errors", 10.5, {})], "after": 5},
-        {"runs": [("18-row seed · chain head verified · row tamper detected", 10.5, {})], "after": 5},
-        {"runs": [("367 labelled variants · 94.6% top-1 · 99.7% top-3", 10.5, {})], "after": 5},
-        {"runs": [("Case data is synthetic; no real complainant data is used", 10.5, {})], "after": 8},
+    ], fill=LIGHT, line=LINE, margins=(16, 14, 10, 8))
+    picture(s, MEDIA / "Overlap_Radar.png", 768, 196, 218, 170, crop_top=0.006, crop_bottom=0.306)
+    picture(s, MEDIA / "Audit_Log.png", 998, 196, 218, 170, crop_top=0.006, crop_bottom=0.0505)
+    textbox(s, 768, 368, 218, 14, [
+        {"runs": [("Overlap radar — 98% match, officer confirms", 8, {"color": MUTED})], "align": PP_ALIGN.CENTER}])
+    textbox(s, 998, 368, 218, 14, [
+        {"runs": [("Audit chain — 18 events · SHA-256 intact", 8, {"color": MUTED})], "align": PP_ALIGN.CENTER}])
+    textbox(s, 768, 388, 448, 60, [
+        {"runs": [("9 views · 0 console errors · tamper detected by the verifier", 10.5, {})], "after": 4},
+        {"runs": [("367 labelled variants · 94.6% top-1 · 99.7% top-3 · 0 silent merges", 10.5, {})], "after": 4},
+        {"runs": [("One offline HTML file — opened live in the jury round", 10.5, {})], "after": 8},
+    ])
+    textbox(s, 768, 452, 448, 50, [
         {"runs": [("DATA ACCESS   ", 9.5, {"bold": True, "color": AMBER}),
                   ("the institution master is public AICTE data and is not redistributed in this pack; "
                    "the 367-variant test set is ours and ships with the repo.", 9.5, {"color": MUTED})], "line": 1.05},
-    ], fill=LIGHT, line=LINE, margins=(16, 14, 10, 8))
+    ])
 
     textbox(s, 48, 528, 660, 40, [
         {"runs": [("The matching benchmark and the audit chain are our own tests; the references above are external "

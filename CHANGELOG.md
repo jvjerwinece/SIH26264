@@ -2,6 +2,16 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v8.7] — 2026-10-27
+
+The portal deck now carries real product screenshots instead of only native shapes.
+
+- **Three live captures from the prototype** (`qa/qa_flow.js`, 1366×900 Playwright runs) ship in `submission/media/` and sit in the deck: the dashboard command centre on page 2 (hero, under the three flow rows) and the overlap radar plus the audit chain side by side inside the page-6 evidence card. No stock photography — every image is this prototype, which is what the winning decks' Figma mocks are not.
+- **Page 2 rebuilt around the capture**: the three flow steps became compact single-row cards (bureau colours kept on step 03) so the dashboard gets a 495×248 band; an amber "PROTOTYPE V8 · SYNTHETIC DATA" badge sits on the image corner, aspect-correct via picture crops, 1 pt border.
+- **Page 6 evidence card** grew from 260 to 352 px tall: two 218×170 thumbs with captions ("98% match, officer confirms" / "18 events · SHA-256 intact"), three condensed evidence lines and the unchanged DATA ACCESS note. The synthetic-data line the thumbs replace is now visible in them: the capture carries the new ribbon.
+- **P2-1 half-closed**: a persistent amber ribbon ("SYNTHETIC DEMO DATA · NO REAL COMPLAINANTS") is fixed to the bottom-right of every prototype view, so any capture — deck, video, screenshots — is self-labelling. Anonymising the institution names in public captures stays open.
+- Full QA re-run after the HTML edit: 9 views, 0 console errors, intake collision, joint room, tamper detected, 4/4 unique digests, all widths, a11y 0/0/0. Bounds check clean; PDF text scan unchanged (retired 0; 4× 9,558, 7× 367, 2× 94.6, 2× 99.7). Checksums regenerated for all eight artifacts, including the previously stale `Ekasutra_v8.html`.
+
 ## [v8.6] — 2026-10-27
 
 The portal deck closes the visual gap against the winning decks we compared it with.
