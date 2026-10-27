@@ -2,6 +2,15 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v9.1] — 2026-10-28
+
+Page 3 becomes a pictorial flowchart: the same tree, but every step now carries an icon, so the diagram reads before the text does.
+
+- **Icons in the tree.** All nine step cards on page 3 gain a tinted disc with a thin-line glyph from Segoe MDL2 Assets — ID card, magnifier, person for branch A; ranked list, check, return arrow for B; page, stack, question mark for C. The three branch tabs get filled letter discs (A/B/C), the entry chip a warning disc, the decision box a search disc, and each outcome card a solid colour disc (check / person / shield).
+- **Still native and editable.** Every disc is an oval plus a glyph run, so the file stays text and shapes. The glyph font is embedded in the PDF as a subset (`ABCDEE+Segoe MDL2 Assets`), so the icons render on a machine that has never seen the font. The deck does not depend on an image for the flowchart.
+- **Copy tightened where the icons took width.** "Nothing merges without a named officer." became "No merge without a named officer." and the queue sub-line became "queued for the data team to approve", because both wrapped into the next card. The decision question drops to 16.5 pt so it stays on one line beside its disc.
+- **Verified from the export, not the source.** Every node label and sub-line measured inside its 44 px card, no span crossing a card edge, all six pages re-rendered and read. Text scan unchanged: 0 retired figures, 2× 9,558, 4× 367, 2× 94.6, 2× 99.7, 6 pages at 960×540 pt.
+
 ## [v9] — 2026-10-28
 
 The portal deck is rebuilt against the winning sample: bigger type, a capture on four of six pages, and a real decision tree instead of a card snake.

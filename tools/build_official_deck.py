@@ -40,6 +40,7 @@ GREEN_BG = RGBColor.from_string("E7F4EE")
 
 BODY = "Arial"
 HEAD = "Times New Roman"
+ICON = "Segoe MDL2 Assets"
 
 
 def px(v):
@@ -179,6 +180,20 @@ def chip(slide, x, y, w, h, text, fg=INK, bg=WHITE, border=LINE, size=11.5, bold
          fill=bg, line=border, adj=(0.35,), margins=(6, 6, 2, 2), anchor=MSO_ANCHOR.MIDDLE)
 
 
+def disc(slide, x, y, d, fill, glyph, size, color):
+    sh = shape(slide, MSO_SHAPE.OVAL, x, y, d, d, fill=fill, line=None)
+    tf = sh.text_frame
+    tf.word_wrap = False
+    tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    p = tf.paragraphs[0]
+    p.alignment = PP_ALIGN.CENTER
+    r = p.add_run()
+    r.text = glyph
+    style_run(r, size, color=color, font=ICON)
+    return sh
+
+
 def down_arrow(slide, cx, y, h, color=LINE, w=16):
     shape(slide, MSO_SHAPE.DOWN_ARROW, cx - w / 2, y, w, h, fill=color)
 
@@ -299,15 +314,19 @@ def build():
     footer(s)
     drop(s, "TextBox")
 
-    chip(s, 48, 140, 176, 46, "Complaint arrives", fg=INK, bg=WHITE, border=LINE, size=13)
-    right_arrow(s, 232, 163, 26, INK, h=16)
+    shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, 48, 140, 196, 46, fill=WHITE, line=LINE, adj=(0.35,))
+    disc(s, 56, 150, 26, AMBER_BG, "\uE7BA", 13, AMBER)
+    textbox(s, 88, 140, 148, 46, [
+        {"runs": [("Complaint arrives", 12, {"bold": True, "color": INK})]}], anchor=MSO_ANCHOR.MIDDLE)
+    right_arrow(s, 248, 163, 16, INK, h=16)
 
     dec = shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, 266, 116, 462, 92, fill=INK, line=None, adj=(0.10,))
+    disc(s, 282, 145, 34, BLUE, "\uE721", 15, WHITE)
     tf = dec.text_frame
-    tf.margin_left = tf.margin_right = px(10)
+    tf.margin_left, tf.margin_right = px(46), px(8)
     tf.vertical_anchor = MSO_ANCHOR.MIDDLE
     fill_paras(tf, [
-        {"runs": [("Do we already know this institution?", 18, {"bold": True, "color": WHITE})],
+        {"runs": [("Do we already know this institution?", 16.5, {"bold": True, "color": WHITE})],
          "align": PP_ALIGN.CENTER, "after": 2},
         {"runs": [("checked against name, alias, city and Permanent ID", 10.5, {"color": LIGHT})],
          "align": PP_ALIGN.CENTER},
@@ -321,28 +340,31 @@ def build():
     branches = [
         {
             "x": 48, "color": GREEN, "tint": GREEN_BG, "tag": "A", "head": "ID OR ALIAS MATCHES",
+            "mark": "\uE73E",
             "nodes": [
-                ("Exact Permanent ID", "or a spelling we already hold"),
-                ("Evidence on screen", "which token matched, and where"),
-                ("Officer confirms", "link, relate, or keep separate"),
+                ("\uE8A1", "Exact Permanent ID", "or a spelling we already hold"),
+                ("\uE721", "Evidence on screen", "which token matched, and where"),
+                ("\uE77B", "Officer confirms", "link, relate, or keep separate"),
             ],
             "out": "The case joins an existing thread.",
         },
         {
             "x": 436, "color": AMBER, "tint": AMBER_BG, "tag": "B", "head": "THE NAME IS FUZZY",
+            "mark": "\uE77B",
             "nodes": [
-                ("Three best candidates", "ranked by rules, then text similarity"),
-                ("Officer picks one", "the reason for the pick is saved"),
-                ("Or rejects all three", "a new case opens, untouched"),
+                ("\uE71D", "Three best candidates", "ranked by rules, then text similarity"),
+                ("\uE73E", "Officer picks one", "the reason for the pick is saved"),
+                ("\uE8AB", "Or rejects all three", "a new case opens, untouched"),
             ],
-            "out": "Nothing merges without a named officer.",
+            "out": "No merge without a named officer.",
         },
         {
             "x": 824, "color": BLUE, "tint": LIGHT, "tag": "C", "head": "NOT IN THE MASTER",
+            "mark": "\uEA18",
             "nodes": [
-                ("New institution record", "created with the raw name as written"),
-                ("Master review queue", "queued for the data team, never auto-approved"),
-                ("Provisional linking", "held until the Permanent ID is confirmed"),
+                ("\uE8A5", "New institution record", "created with the raw name as written"),
+                ("\uE8B9", "Master review queue", "queued for the data team to approve"),
+                ("\uE9CE", "Provisional linking", "held until the Permanent ID is confirmed"),
             ],
             "out": "No silent identity is invented.",
         },
@@ -351,21 +373,24 @@ def build():
         x, c, tint = b["x"], b["color"], b["tint"]
         elbow(s, 497, 208, x + 186, 230, color=c, width=1.8)
         shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, x, 230, 372, 298, fill=tint, line=c, line_w=1.4, adj=(0.05,), dash=True)
-        textbox(s, x + 14, 242, 344, 20, [
-            {"runs": [(b["tag"] + "   ", 12.5, {"bold": True, "color": c}),
-                      (b["head"], 11.5, {"bold": True, "color": c, "spc": 70})]},
-        ])
+        disc(s, x + 14, 240, 20, c, b["tag"], 10, WHITE)
+        textbox(s, x + 40, 240, 318, 20, [
+            {"runs": [(b["head"], 11.5, {"bold": True, "color": c, "spc": 70})]}], anchor=MSO_ANCHOR.MIDDLE)
         ny = 266
-        for i, (head, sub) in enumerate(b["nodes"]):
+        for i, (glyph, head, sub) in enumerate(b["nodes"]):
             shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, x + 18, ny, 336, 44, fill=WHITE, line=c, line_w=1.0, adj=(0.18,))
-            textbox(s, x + 30, ny + 5, 316, 16, [{"runs": [(head, 12.5, {"bold": True})]}])
-            textbox(s, x + 30, ny + 25, 316, 14, [{"runs": [(sub, 10.5, {"color": MUTED})]}])
+            disc(s, x + 26, ny + 9, 26, tint, glyph, 12.5, c)
+            textbox(s, x + 60, ny + 5, 284, 15, [{"runs": [(head, 12.5, {"bold": True})]}])
+            textbox(s, x + 60, ny + 24, 284, 15, [{"runs": [(sub, 10.5, {"color": MUTED})]}])
             if i < 2:
                 down_arrow(s, x + 186, ny + 46, 10, c, w=14)
             ny += 56
-        card(s, x + 18, 452, 336, 54, [
-            {"runs": [(b["out"], 12, {"bold": True, "color": c})], "align": PP_ALIGN.CENTER},
-        ], fill=WHITE, line=c, adj=(0.30,), margins=(8, 8, 4, 4), anchor=MSO_ANCHOR.MIDDLE)
+
+        down_arrow(s, x + 186, 424, 14, c, w=14)
+        shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, x + 18, 452, 336, 54, fill=WHITE, line=c, line_w=1.0, adj=(0.30,))
+        disc(s, x + 26, 466, 26, c, b["mark"], 12, WHITE)
+        textbox(s, x + 60, 452, 282, 54, [
+            {"runs": [(b["out"], 12, {"bold": True, "color": c})], "line": 1.05}], anchor=MSO_ANCHOR.MIDDLE)
 
     shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, 48, 548, 1148, 98, fill=GREY_BG, line=LINE, adj=(0.06,))
     textbox(s, 66, 558, 150, 18, [{"runs": [("TECH STACK", 11.5, {"bold": True, "color": DEEP, "spc": 90})]}])
