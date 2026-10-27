@@ -87,7 +87,7 @@ Verified on 27 October 2026 against the files in this repository.
 | Intake → resolve → joint case → room decision → audit verify | Pass; chain reports 18 events after reset |
 | Demo seed chain | Head `748b44fc1aad…fc6fe0`; independently recomputed, 0 broken links |
 | Database model | 11 tables, constraints, `v_case_register`, `fn_match_institution`, seed guard |
-| Deck — official template | `Ekasutra_SIH2026_SIH26264_Official.pptx`: 6 slides built inside the downloaded SIH 2026 Idea format, instructions slide deleted; PDF exported from PowerPoint, 6 pages at 960×540 pt |
+| Deck — official template | `Ekasutra_SIH2026_SIH26264_Official.pptx`: 6 slides built inside the downloaded SIH 2026 Idea format, instructions slide deleted; page 3 system flow and page 5 overlap chart drawn with native shapes from the seeded counts; PDF exported from PowerPoint, 6 pages at 960×540 pt |
 | Deck — long-form | 6 slides, 16:9; preview PDF matches; embedded screenshots are v8 cream UI |
 | Kit and appendix | 2 pages each, render checked |
 | PS 26264 objectives | 8 of 8 mapped in the prototype (see `docs/PS26264_MAPPING.md`) |

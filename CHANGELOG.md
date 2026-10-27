@@ -2,6 +2,15 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v8.5] — 2026-10-27
+
+Official deck rebuilt to carry real diagrams instead of three-column bullet lists.
+
+- **Page 3 gained a system-flow diagram** in place of the six-card snake: three intake channels (RB, PGRC, regional office) converge on `01 RESOLVE`, then `02 THREAD` → the `0 silent merges` tile → `03 OVERLAP` → `04 COORDINATE` → `05 REGISTER`, with `06 AUDIT CHAIN` and its `sha256(prev || time || actor || action || object)` formula below. All native shapes and arrows, no image assets, so the file stays editable and the PDF stays small. The duplicated hash line in the left column is gone.
+- **Page 5 gained a bar chart** drawn from the shipped seed: PGRC/RB complaint counts per institution for the three overlap clusters, each collapsing to one thread (`CL-01 · 3 files`, `CL-02 · 2 files`, `CL-03 · 2 files`). Every bar length is a count in `database/seed_demo.sql`; the caption says so. The "7 → 3" stat card it replaces is now shown rather than asserted.
+- Density, counted in the exported file: 44 shapes on page 3 and 48 on page 5, against 8–21 on the rest — the two pages a judge scores on "how does it actually work" now carry the graphics.
+- Re-rendered pages 1, 3 and 5 from the PowerPoint export and checked for overflow: no shape leaves the 1280×720 canvas, the chart caption fits on one line inside its card. PDF is 6 pages, 960×540 pt; retired figures still zero.
+
 ## [v8.4] — 2026-10-27
 
 Official deck audited against the per-slide traps a judge actually reads for.
