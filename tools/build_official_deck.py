@@ -8,12 +8,12 @@ Then:   powershell -NoProfile -ExecutionPolicy Bypass -File tools/pptx2pdf.ps1 `
           -In submission/Ekasutra_SIH2026_SIH26264_Official.pptx `
           -Out submission/Ekasutra_SIH2026_SIH26264_Official.pdf
 """
-import copy
 import sys
 from pathlib import Path
 
 from pptx import Presentation
 from pptx.dml.color import RGBColor
+from pptx.enum.dml import MSO_LINE
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Emu, Pt
@@ -36,9 +36,7 @@ AMBER_BG = RGBColor.from_string("FFF4E0")
 WHITE = RGBColor.from_string("FFFFFF")
 PURPLE = RGBColor.from_string("4B2E83")
 GREY_BG = RGBColor.from_string("F4F6F9")
-RED = RGBColor.from_string("C00000")
 GREEN_BG = RGBColor.from_string("E7F4EE")
-DEEP_BG = RGBColor.from_string("E8EDF5")
 
 BODY = "Arial"
 HEAD = "Times New Roman"
@@ -48,22 +46,14 @@ def px(v):
     return Emu(int(round(v * EMU)))
 
 
-def style_run(run, size, color=INK, bold=False, italic=False, font=BODY):
+def style_run(run, size, color=INK, bold=False, italic=False, font=BODY, spc=None):
     run.font.name = font
     run.font.size = Pt(size)
     run.font.bold = bold
     run.font.italic = italic
     run.font.color.rgb = color
-
-
-def textbox(slide, x, y, w, h, paras, anchor=MSO_ANCHOR.TOP, margins=(0, 0, 0, 0)):
-    box = slide.shapes.add_textbox(px(x), px(y), px(w), px(h))
-    tf = box.text_frame
-    tf.word_wrap = True
-    tf.vertical_anchor = anchor
-    tf.margin_left, tf.margin_right, tf.margin_top, tf.margin_bottom = [px(m) for m in margins]
-    fill_paras(tf, paras)
-    return box
+    if spc is not None:
+        run.font._element.set("spc", str(int(spc)))
 
 
 def fill_paras(tf, paras):
@@ -86,10 +76,21 @@ def fill_paras(tf, paras):
                 bold=opts.get("bold", False),
                 italic=opts.get("italic", False),
                 font=opts.get("font", BODY),
+                spc=opts.get("spc"),
             )
 
 
-def shape(slide, kind, x, y, w, h, fill=None, line=None, line_w=1.0, adj=None):
+def textbox(slide, x, y, w, h, paras, anchor=MSO_ANCHOR.TOP, margins=(0, 0, 0, 0)):
+    box = slide.shapes.add_textbox(px(x), px(y), px(w), px(h))
+    tf = box.text_frame
+    tf.word_wrap = True
+    tf.vertical_anchor = anchor
+    tf.margin_left, tf.margin_right, tf.margin_top, tf.margin_bottom = [px(m) for m in margins]
+    fill_paras(tf, paras)
+    return box
+
+
+def shape(slide, kind, x, y, w, h, fill=None, line=None, line_w=1.0, adj=None, dash=False):
     sh = slide.shapes.add_shape(kind, px(x), px(y), px(w), px(h))
     sh.shadow.inherit = False
     if fill is None:
@@ -102,6 +103,8 @@ def shape(slide, kind, x, y, w, h, fill=None, line=None, line_w=1.0, adj=None):
     else:
         sh.line.color.rgb = line
         sh.line.width = Pt(line_w)
+        if dash:
+            sh.line.dash_style = MSO_LINE.DASH
     if adj is not None:
         for i, v in enumerate(adj):
             sh.adjustments[i] = v
@@ -118,27 +121,25 @@ def card(slide, x, y, w, h, paras, fill=LIGHT, line=LINE, adj=(0.10,), margins=(
     return sh
 
 
-def picture(slide, path, x, y, w, h, crop_top=0.0, crop_bottom=0.0, border=LINE):
+def picture(slide, path, x, y, w, h, border=LINE):
     pic = slide.shapes.add_picture(str(path), px(x), px(y), px(w), px(h))
-    if crop_top or crop_bottom:
-        pic.crop_top = crop_top
-        pic.crop_bottom = crop_bottom
     if border is not None:
         pic.line.color.rgb = border
         pic.line.width = Pt(1.0)
     return pic
 
 
-def set_title(slide, text, size=34, color=DEEP):
+def set_title(slide, text, size=38, color=DEEP):
     for sh in slide.shapes:
         if sh.name.startswith("Title"):
-            sh.left, sh.top, sh.width, sh.height = px(40), px(52), px(1200), px(70)
+            sh.left, sh.top, sh.width, sh.height = px(40), px(46), px(1200), px(62)
             tf = sh.text_frame
             tf.word_wrap = True
             tf.vertical_anchor = MSO_ANCHOR.MIDDLE
             fill_paras(
                 tf,
-                [{"runs": [(text, size, {"bold": True, "font": HEAD, "color": color})], "align": PP_ALIGN.CENTER}],
+                [{"runs": [(text, size, {"bold": True, "font": HEAD, "color": color, "spc": 20})],
+                  "align": PP_ALIGN.CENTER}],
             )
             return
 
@@ -151,14 +152,14 @@ def footer(slide):
                 [{"runs": [("@Team Ekasutra  ·  SIH26264", 11, {"color": WHITE})], "align": PP_ALIGN.CENTER}],
             )
         elif sh.name.startswith("Oval"):
-            sh.left, sh.top, sh.width, sh.height = px(28), px(26), px(200), px(72)
+            sh.left, sh.top, sh.width, sh.height = px(30), px(24), px(165), px(62)
             tf = sh.text_frame
             tf.word_wrap = True
             tf.margin_left = tf.margin_right = px(2)
             tf.vertical_anchor = MSO_ANCHOR.MIDDLE
             fill_paras(
                 tf,
-                [{"runs": [("Team Ekasutra", 13, {"bold": True, "color": PURPLE})], "align": PP_ALIGN.CENTER}],
+                [{"runs": [("Team Ekasutra", 12.5, {"bold": True, "color": PURPLE})], "align": PP_ALIGN.CENTER}],
             )
 
 
@@ -168,215 +169,212 @@ def drop(slide, prefix):
             sh._element.getparent().remove(sh._element)
 
 
-def kicker(slide, x, y, w, text):
-    textbox(
-        slide, x, y, w, 18,
-        [{"runs": [(text.upper(), 10.5, {"bold": True, "color": BLUE})]}],
-    )
+def section(slide, x, y, w, text, color=BLUE):
+    textbox(slide, x, y, w, 20,
+            [{"runs": [(text.upper(), 12.5, {"bold": True, "color": color, "spc": 90})]}])
+
+
+def chip(slide, x, y, w, h, text, fg=INK, bg=WHITE, border=LINE, size=11.5, bold=True):
+    card(slide, x, y, w, h, [{"runs": [(text, size, {"bold": bold, "color": fg})], "align": PP_ALIGN.CENTER}],
+         fill=bg, line=border, adj=(0.35,), margins=(6, 6, 2, 2), anchor=MSO_ANCHOR.MIDDLE)
+
+
+def down_arrow(slide, cx, y, h, color=LINE, w=16):
+    shape(slide, MSO_SHAPE.DOWN_ARROW, cx - w / 2, y, w, h, fill=color)
+
+
+def right_arrow(slide, x, cy, w, color=LINE, h=18):
+    shape(slide, MSO_SHAPE.RIGHT_ARROW, x, cy - h / 2, w, h, fill=color)
+
+
+def connector(slide, x1, y1, x2, y2, color=LINE, width=1.6):
+    c = slide.shapes.add_connector(1, px(x1), px(y1), px(x2), px(y2))
+    c.line.color.rgb = color
+    c.line.width = Pt(width)
+    return c
+
+
+def elbow(slide, x1, y1, x2, y2, color=LINE, width=1.6):
+    mid = (y1 + y2) / 2
+    connector(slide, x1, y1, x1, mid, color, width)
+    connector(slide, x1, mid, x2, mid, color, width)
+    connector(slide, x2, mid, x2, y2, color, width)
 
 
 def build():
     prs = Presentation(str(TEMPLATE))
     slides = list(prs.slides)
 
-    # ---------- Slide 0: title ----------
+    # ---------- Slide 0: title (template layout, values filled) ----------
     s = slides[0]
     for sh in s.shapes:
         if sh.name.startswith("Subtitle"):
-            sh.left, sh.top, sh.width, sh.height = px(80), px(118), px(500), px(64)
-            tf = sh.text_frame
-            tf.word_wrap = True
-            tf.vertical_anchor = MSO_ANCHOR.TOP
-            tf.margin_top = tf.margin_bottom = px(0)
-            fill_paras(tf, [
-                {"runs": [("Ekasutra", 46, {"bold": True, "font": HEAD, "color": DEEP})]},
-            ])
+            fill_paras(sh.text_frame, [])
         if sh.name.startswith("TextBox") and sh.shape_id == 10:
-            sh.left, sh.top, sh.width, sh.height = px(38), px(268), px(548), px(420)
+            sh.left, sh.top, sh.width, sh.height = px(38), px(186), px(610), px(300)
             tf = sh.text_frame
             tf.word_wrap = True
             tf.margin_top = px(0)
             tf.margin_left = tf.margin_right = px(0)
+            v, b = 16.5, {"bold": True}
             fill_paras(tf, [
-                {"runs": [("Problem Statement ID – ", 16, {"bold": True}), ("26264", 16, {})], "after": 7},
-                {"runs": [("Problem Statement Title – ", 16, {"bold": True}),
-                          ("Integrated dashboard for monitoring and tracking institution-related complaint cases across AICTE Bureaus/Cells", 16, {})], "after": 7},
-                {"runs": [("Theme – ", 16, {"bold": True}), ("Smart Automation", 16, {})], "after": 7},
-                {"runs": [("PS Category – ", 16, {"bold": True}), ("Software", 16, {})], "after": 7},
-                {"runs": [("Team ID – ", 16, {"bold": True}),
-                          ("[ add from SIH portal ]", 16, {"bold": True, "color": AMBER})], "after": 7},
-                {"runs": [("Team Name – ", 16, {"bold": True}), ("Team Ekasutra", 16, {})], "after": 12},
-                {"runs": [("Working prototype · 90-second guided tour · synthetic case data", 11, {"color": MUTED})]},
+                {"runs": [("•  Problem Statement ID : ", v, b), ("26264", v, {**b, "color": GREEN})], "after": 12},
+                {"runs": [("•  Problem Statement Title : ", v, b),
+                          ("Integrated dashboard for monitoring and tracking institution-related complaint cases "
+                           "across AICTE Bureaus/Cells", v, {**b, "color": GREEN})], "after": 12},
+                {"runs": [("•  Theme : ", v, b), ("Smart Automation", v, {**b, "color": GREEN})], "after": 12},
+                {"runs": [("•  PS Category : ", v, b), ("Software", v, {**b, "color": GREEN})], "after": 12},
+                {"runs": [("•  Team ID : ", v, b), ("[ add from SIH portal ]", v, {"bold": True, "color": AMBER})],
+                 "after": 12},
+                {"runs": [("•  Team Name : ", v, b), ("Team Ekasutra", v, {**b, "color": GREEN})]},
             ])
-    textbox(s, 82, 196, 500, 56, [
-        {"runs": [("One institution. One thread.", 16, {"italic": True, "color": MUTED})]},
-        {"runs": [("No case falls between bureaus.", 16, {"italic": True, "color": MUTED})]},
+    shape(s, MSO_SHAPE.RECTANGLE, 38, 506, 64, 3, fill=BLUE)
+    textbox(s, 38, 520, 560, 64, [
+        {"runs": [("One complaint register, keyed on the AICTE Permanent ID, shared by every bureau "
+                   "that touches the case.", 15, {"italic": True, "color": DEEP})], "line": 1.14},
     ])
 
     # ---------- Slide 1: idea title / proposed solution ----------
     s = slides[1]
-    set_title(s, "Ekasutra — one institution, one thread", 33)
+    set_title(s, "One institution, one thread", 38)
     footer(s)
     drop(s, "TextBox")
 
-    kicker(s, 48, 140, 500, "Proposed solution")
-    textbox(s, 48, 162, 660, 40, [
-        {"runs": [("AICTE hears about one institution through several offices. Ekasutra keys every complaint to its "
-                   "Permanent ID so RB, PGRC and the regions share one case thread.", 13, {})], "line": 1.06},
-    ])
-    card(s, 48, 208, 660, 48, [
-        {"runs": [("IN THE SHIPPED SEED   ", 9.5, {"bold": True, "color": AMBER}),
-                  ("Sri Venkateswara College of Engineering, Kanchipuram: three fee, scholarship and intake "
-                   "complaints under three name spellings — two in PGRC, one in RB.", 10.5, {})], "line": 1.04},
-    ], fill=AMBER_BG, line=RGBColor.from_string("E8C9A0"), margins=(10, 10, 6, 5), anchor=MSO_ANCHOR.MIDDLE)
-
+    LX, LW = 48, 640
     blocks = [
-        ("WHAT IT IS",
-         "A single register of institution cases shared by the Regulation Bureau, PGRC and regional offices. "
-         "Each case carries its bureau, officer, custody, status and next action."),
-        ("HOW IT SOLVES THE PROBLEM",
-         "Intake checks for an existing case before creating one. The overlap radar shows where RB and PGRC are "
-         "acting on the same institution. One coordination room holds the joint decision, the custody chain and the SLA."),
-        ("WHAT IS NEW",
-         "Explainable, human-confirmed matching with zero silent merges, plus a tamper-evident audit chain. "
-         "The prototype runs offline as one HTML file."),
+        (128, "The problem today",
+         "A complaint about one college can arrive at RB, PGRC or a regional office. "
+         "Each office types the name its own way, so one institution becomes three records that never meet."),
+        (256, "What Ekasutra does",
+         "Every complaint is resolved once to the AICTE Permanent ID. From that point the case thread "
+         "is shared: one owner at a time, one history, and one place where any bureau can look before "
+         "it acts."),
+        (384, "What is new",
+         "Matching is rules-first and it shows its reasons. An officer confirms before two cases are "
+         "linked, and that decision is written to a hash-chained audit trail."),
     ]
-    y = 270
-    for head, body in blocks:
-        textbox(s, 48, y, 660, 18, [{"runs": [(head, 11, {"bold": True, "color": BLUE})]}])
-        textbox(s, 48, y + 20, 660, 60, [{"runs": [(body, 12, {})], "line": 1.06}])
-        y += 100
+    for y, head, body in blocks:
+        section(s, LX, y, LW, head)
+        textbox(s, LX, y + 22, LW, 96, [{"runs": [(body, 15, {})], "line": 1.12}])
 
-    flow = [
-        ("01", "Complaint arrives", "Email · CPGRAMS · webhook"),
-        ("02", "Resolve to the Permanent ID", "9,558-ID master + alias graph"),
-        ("03", "One thread across bureaus", None),
-    ]
-    x, w = 735, 495
-    top = 150
-    for i, (num, title, sub) in enumerate(flow):
-        if sub is None:
-            tail = [(title + "    ", 12, {"bold": True}),
-                    ("RB", 10, {"bold": True, "color": DEEP}), ("  ·  ", 10, {"color": MUTED}),
-                    ("PGRC", 10, {"bold": True, "color": BLUE}), ("  ·  ", 10, {"color": MUTED}),
-                    ("regional office", 10, {"bold": True, "color": GREEN})]
-        else:
-            tail = [(title + "    ", 12, {"bold": True}), (sub, 10, {"color": MUTED})]
-        card(s, x, top, w, 40, [{"runs": [(num + "  ", 12.5, {"bold": True, "color": BLUE})] + tail}],
-             fill=LIGHT, line=LINE, margins=(12, 10, 2, 2), anchor=MSO_ANCHOR.MIDDLE)
-        if i < 2:
-            shape(s, MSO_SHAPE.DOWN_ARROW, x + w / 2 - 9, top + 45, 18, 13, fill=LINE)
-        top += 64
+    card(s, LX, 514, LW, 104, [
+        {"runs": [("IN THE SHIPPED SEED", 11, {"bold": True, "color": AMBER, "spc": 90})], "after": 4},
+        {"runs": [("Three cases about Vidyasagara College of Engineering arrived under different spellings. "
+                   "Two sat with PGRC and one with RB, and the register keeps all three on one thread for a "
+                   "single officer to review.", 12.5, {})], "line": 1.1},
+    ], fill=AMBER_BG, line=RGBColor.from_string("E8C9A0"), margins=(14, 14, 9, 8))
 
-    picture(s, MEDIA / "Dashboard.png", 735, 334, 495, 248, crop_top=0.0441, crop_bottom=0.5783)
-    shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, 1046, 556, 176, 18,
-          fill=AMBER_BG, line=RGBColor.from_string("E8C9A0"), adj=(0.5,))
-    textbox(s, 1046, 556, 176, 18, [
-        {"runs": [("PROTOTYPE V8 · SYNTHETIC DATA", 7.5, {"bold": True, "color": AMBER})],
-         "align": PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
+    textbox(s, LX, 626, LW, 30, [
+        {"runs": [("Open the prototype file and this exact case is on the dashboard. Synthetic data throughout.",
+                   11.5, {"color": MUTED})], "line": 1.15},
+    ])
 
-    card(s, 48, 606, 1182, 44, [
-        {"runs": [("Prevent duplicates at intake   ·   Detect RB/PGRC overlap   ·   Coordinate custody, SLA and disposal",
-                   12, {"bold": True, "color": DEEP})], "align": PP_ALIGN.CENTER},
-    ], fill=GREY_BG, line=None, margins=(10, 6, 8, 6), anchor=MSO_ANCHOR.MIDDLE)
+    RX, RW = 726, 506
+    picture(s, MEDIA / "dash_main.png", RX, 130, RW, 316)
+    textbox(s, RX, 452, RW, 18, [
+        {"runs": [("Dashboard, the live prototype opened from a single file", 11, {"color": MUTED})]},
+    ])
+
+    steps = [("01", "Resolve the institution"), ("02", "Review the overlap"), ("03", "Share the thread")]
+    sx = RX
+    for num, label in steps:
+        card(s, sx, 480, 162, 66, [
+            {"runs": [(num + "   ", 13, {"bold": True, "color": BLUE}), (label, 11.5, {"bold": True})], "line": 1.05},
+        ], fill=LIGHT, line=LINE, margins=(10, 10, 6, 6), anchor=MSO_ANCHOR.MIDDLE)
+        sx += 172
+
+    textbox(s, RX, 562, RW, 56, [
+        {"runs": [("“I can see the other bureau’s case before I decide.”", 14, {"italic": True, "color": DEEP})],
+         "line": 1.1},
+        {"runs": [("That is the whole product in one sentence.", 11.5, {"color": MUTED})]},
+    ])
     s.notes_slide.notes_text_frame.text = (
         "Ekasutra is one register keyed on the AICTE Permanent ID. The complaint is resolved to the institution once, "
         "then RB, PGRC and the regional office all work on the same thread. Nothing links automatically."
     )
 
-    # ---------- Slide 2: technical approach ----------
+    # ---------- Slide 2: technical approach — decision tree ----------
     s = slides[2]
-    set_title(s, "TECHNICAL APPROACH", 34)
+    set_title(s, "TECHNICAL APPROACH", 38)
     footer(s)
     drop(s, "TextBox")
 
-    kicker(s, 48, 138, 400, "Stack — running today")
-    now_rows = [
-        ("Prototype", "one HTML file · vanilla JS · no build step · opens from file://"),
-        ("Ledger", "SHA-256 chain on Web Crypto · append-only · tamper check verified"),
-        ("Data pack", "PostgreSQL 16 schema · 11 tables · 18-row seed loads in psql"),
-    ]
-    y = 160
-    for label, val in now_rows:
-        textbox(s, 48, y, 96, 20, [{"runs": [(label, 10.5, {"bold": True, "color": GREEN})]}])
-        textbox(s, 146, y, 486, 26, [{"runs": [(val, 11, {})], "line": 1.0}])
-        y += 30
+    chip(s, 48, 140, 176, 46, "Complaint arrives", fg=INK, bg=WHITE, border=LINE, size=13)
+    right_arrow(s, 232, 163, 26, INK, h=16)
 
-    kicker(s, 48, 258, 400, "Stack — to build before pilot")
-    to_rows = [
-        ("Frontend", "Next.js + TypeScript, replacing the single-file prototype"),
-        ("API", "Python FastAPI over the same schema and audit function"),
-        ("Matching", "pg_trgm + TF-IDF at 9,558-ID scale · browser trigram today"),
-        ("Deploy", "Docker Compose · role-based access — not built yet"),
-    ]
-    y = 280
-    for label, val in to_rows:
-        textbox(s, 48, y, 96, 20, [{"runs": [(label, 10.5, {"bold": True, "color": BLUE})]}])
-        textbox(s, 146, y, 486, 26, [{"runs": [(val, 11, {})], "line": 1.0}])
-        y += 28
-
-    card(s, 48, 396, 584, 82, [
-        {"runs": [("HUMAN IN THE LOOP", 10.5, {"bold": True, "color": AMBER})], "after": 4},
-        {"runs": [("Auto-link only when confidence and margin clear the threshold. Everything else goes to an officer "
-                   "as a top-3 with evidence. No silent merges.", 11.5, {})], "line": 1.05},
-    ], fill=AMBER_BG, line=RGBColor.from_string("E8C9A0"), margins=(12, 12, 9, 7))
-
-    kicker(s, 652, 140, 572, "System flow — three channels, one thread")
-    lanes = ["RB", "PGRC", "Regional office"]
-    lane_colors = {"RB": (DEEP, DEEP_BG), "PGRC": (BLUE, LIGHT), "Regional office": (GREEN, GREEN_BG)}
-    for i, lane in enumerate(lanes):
-        fg, bg = lane_colors[lane]
-        card(s, 652, 170 + i * 32, 112, 26, [
-            {"runs": [(lane, 10, {"bold": True, "color": fg})], "align": PP_ALIGN.CENTER},
-        ], fill=bg, line=fg, margins=(4, 4, 2, 2), anchor=MSO_ANCHOR.MIDDLE)
-        shape(s, MSO_SHAPE.RIGHT_ARROW, 770, 178 + i * 32, 20, 10, fill=fg)
-
-    card(s, 790, 170, 162, 84, [
-        {"runs": [("◎  ", 11.5, {"bold": True, "color": BLUE}), ("01  RESOLVE", 10.5, {"bold": True, "color": BLUE})], "after": 2},
-        {"runs": [("Permanent ID + alias + trigram + TF-IDF", 8.5, {"color": MUTED})], "line": 1.02, "after": 2},
-        {"runs": [("top-3 · officer confirms", 8.5, {"color": AMBER})], "line": 1.02},
-    ], fill=LIGHT, line=LINE, margins=(8, 8, 6, 4))
-    shape(s, MSO_SHAPE.RIGHT_ARROW, 956, 207, 18, 10, fill=LINE)
-    card(s, 978, 170, 126, 84, [
-        {"runs": [("① ", 10.5, {"bold": True, "color": BLUE}), ("02  THREAD", 10.5, {"bold": True, "color": BLUE})], "after": 2},
-        {"runs": [("one case ID, bureau, officer, custody, SLA", 8.5, {"color": MUTED})], "line": 1.02},
-    ], fill=LIGHT, line=LINE, margins=(8, 8, 6, 4))
-    shape(s, MSO_SHAPE.RIGHT_ARROW, 1108, 207, 16, 10, fill=LINE)
-    card(s, 1128, 170, 96, 84, [
-        {"runs": [("0", 20, {"bold": True, "color": DEEP})], "after": 0},
-        {"runs": [("silent merges", 8.5, {"color": MUTED})], "line": 1.02},
-    ], fill=AMBER_BG, line=RGBColor.from_string("E8C9A0"), margins=(8, 8, 6, 4))
-    shape(s, MSO_SHAPE.DOWN_ARROW, 1124, 258, 10, 30, fill=LINE)
-
-    row2 = [
-        ("∩", "03  OVERLAP", "same institution already open in another bureau", 1044),
-        ("⇄", "04  COORDINATE", "lead bureau, joint decision, custody chain", 848),
-        ("▦", "05  REGISTER", "8 KPIs, ageing, reports, CSV export", 652),
-    ]
-    for idx, (icon, name, sub, x) in enumerate(row2):
-        card(s, x, 292, 170, 76, [
-            {"runs": [(icon + "  ", 11.5, {"bold": True, "color": BLUE}), (name, 10.5, {"bold": True, "color": BLUE})], "after": 2},
-            {"runs": [(sub, 8.5, {"color": MUTED})], "line": 1.02},
-        ], fill=LIGHT, line=LINE, margins=(8, 8, 6, 4))
-        if idx < 2:
-            shape(s, MSO_SHAPE.LEFT_ARROW, x - 26, 324, 20, 10, fill=LINE)
-
-    textbox(s, 652, 382, 572, 30, [
-        {"runs": [("Stages 01–05 run in the prototype on seeded data; the FastAPI layer and the PostgreSQL schema "
-                   "are specified in the repo.", 10, {"color": MUTED})], "line": 1.05},
-    ])
-    card(s, 652, 424, 572, 76, [
-        {"runs": [("∑  ", 11.5, {"bold": True, "color": BLUE}), ("06  AUDIT CHAIN", 10.5, {"bold": True, "color": BLUE})], "after": 3},
-        {"runs": [("sha256(prev || time || actor || action || object)", 10,
-                   {"font": "Courier New", "color": INK})], "after": 2},
-        {"runs": [("Nothing is updated in place; a chain check recomputes and compares stored hashes.",
-                   9, {"color": MUTED})], "line": 1.02},
-    ], fill=WHITE, line=LINE, margins=(10, 10, 6, 4))
-    card(s, 48, 566, 1182, 44, [
-        {"runs": [("Opens from file:// — no host, no login, no cold start  ·  9 views, 0 console errors  ·  "
-                   "rules decide, a statistical text check assists", 12, {"bold": True, "color": DEEP})],
+    dec = shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, 266, 116, 462, 92, fill=INK, line=None, adj=(0.10,))
+    tf = dec.text_frame
+    tf.margin_left = tf.margin_right = px(10)
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    fill_paras(tf, [
+        {"runs": [("Do we already know this institution?", 18, {"bold": True, "color": WHITE})],
+         "align": PP_ALIGN.CENTER, "after": 2},
+        {"runs": [("checked against name, alias, city and Permanent ID", 10.5, {"color": LIGHT})],
          "align": PP_ALIGN.CENTER},
-    ], fill=GREY_BG, line=None, margins=(10, 6, 8, 6), anchor=MSO_ANCHOR.MIDDLE)
+    ])
+
+    textbox(s, 764, 124, 468, 76, [
+        {"runs": [("No score ever links two cases. Every branch ends at a named officer, and the chain records "
+                   "who decided.", 14, {"italic": True, "color": DEEP})], "line": 1.15},
+    ])
+
+    branches = [
+        {
+            "x": 48, "color": GREEN, "tint": GREEN_BG, "tag": "A", "head": "ID OR ALIAS MATCHES",
+            "nodes": [
+                ("Exact Permanent ID", "or a spelling we already hold"),
+                ("Evidence on screen", "which token matched, and where"),
+                ("Officer confirms", "link, relate, or keep separate"),
+            ],
+            "out": "The case joins an existing thread.",
+        },
+        {
+            "x": 436, "color": AMBER, "tint": AMBER_BG, "tag": "B", "head": "THE NAME IS FUZZY",
+            "nodes": [
+                ("Three best candidates", "ranked by rules, then text similarity"),
+                ("Officer picks one", "the reason for the pick is saved"),
+                ("Or rejects all three", "a new case opens, untouched"),
+            ],
+            "out": "Nothing merges without a named officer.",
+        },
+        {
+            "x": 824, "color": BLUE, "tint": LIGHT, "tag": "C", "head": "NOT IN THE MASTER",
+            "nodes": [
+                ("New institution record", "created with the raw name as written"),
+                ("Master review queue", "queued for the data team, never auto-approved"),
+                ("Provisional linking", "held until the Permanent ID is confirmed"),
+            ],
+            "out": "No silent identity is invented.",
+        },
+    ]
+    for b in branches:
+        x, c, tint = b["x"], b["color"], b["tint"]
+        elbow(s, 497, 208, x + 186, 230, color=c, width=1.8)
+        shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, x, 230, 372, 298, fill=tint, line=c, line_w=1.4, adj=(0.05,), dash=True)
+        textbox(s, x + 14, 242, 344, 20, [
+            {"runs": [(b["tag"] + "   ", 12.5, {"bold": True, "color": c}),
+                      (b["head"], 11.5, {"bold": True, "color": c, "spc": 70})]},
+        ])
+        ny = 266
+        for i, (head, sub) in enumerate(b["nodes"]):
+            shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, x + 18, ny, 336, 44, fill=WHITE, line=c, line_w=1.0, adj=(0.18,))
+            textbox(s, x + 30, ny + 5, 316, 16, [{"runs": [(head, 12.5, {"bold": True})]}])
+            textbox(s, x + 30, ny + 25, 316, 14, [{"runs": [(sub, 10.5, {"color": MUTED})]}])
+            if i < 2:
+                down_arrow(s, x + 186, ny + 46, 10, c, w=14)
+            ny += 56
+        card(s, x + 18, 452, 336, 54, [
+            {"runs": [(b["out"], 12, {"bold": True, "color": c})], "align": PP_ALIGN.CENTER},
+        ], fill=WHITE, line=c, adj=(0.30,), margins=(8, 8, 4, 4), anchor=MSO_ANCHOR.MIDDLE)
+
+    shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, 48, 548, 1148, 98, fill=GREY_BG, line=LINE, adj=(0.06,))
+    textbox(s, 66, 558, 150, 18, [{"runs": [("TECH STACK", 11.5, {"bold": True, "color": DEEP, "spc": 90})]}])
+    textbox(s, 66, 578, 170, 16, [{"runs": [("runs today", 10, {"color": GREEN})]}])
+    for i, t in enumerate(["HTML + JS", "Web Crypto", "PostgreSQL 14", "11 tables"]):
+        chip(s, 66 + i * 144, 598, 134, 30, t, fg=INK, bg=WHITE, border=LINE, size=10.5)
+    textbox(s, 652, 578, 190, 16, [{"runs": [("pilot build, not built yet", 10, {"color": AMBER})]}])
+    for i, t in enumerate(["Next.js", "FastAPI", "pg_trgm", "Docker"]):
+        chip(s, 652 + i * 132, 598, 122, 30, t, fg=MUTED, bg=WHITE, border=LINE, size=10.5)
     s.notes_slide.notes_text_frame.text = (
         "Rules decide, a statistical text check assists. Every match is explainable and every action is attributable. "
         "Auto-link only when confidence and margin clear the threshold; otherwise a person confirms."
@@ -384,66 +382,70 @@ def build():
 
     # ---------- Slide 3: feasibility and viability ----------
     s = slides[3]
-    set_title(s, "FEASIBILITY AND VIABILITY", 34)
+    set_title(s, "FEASIBILITY AND VIABILITY", 38)
     footer(s)
     drop(s, "TextBox")
 
-    kicker(s, 48, 140, 400, "Built and measured")
+    section(s, 48, 128, 560, "Built and measured")
     metrics = [
-        ("9,558", "AICTE Permanent IDs"),
-        ("367", "labelled name variants"),
-        ("94.6%", "top-1 match"),
-        ("99.7%", "top-3 recall"),
-        ("0", "silent merges"),
+        ("9,558", "AICTE Permanent IDs", 48, 152),
+        ("367", "name variants", 232, 152),
+        ("94.6%", "top-1 match", 416, 152),
+        ("99.7%", "top-3 recall", 48, 244),
+        ("0", "silent merges", 232, 244),
     ]
-    positions = [(48, 166), (232, 166), (416, 166), (48, 262), (232, 262)]
-    for (value, label), (x, y) in zip(metrics, positions):
-        card(s, x, y, 176, 80, [
-            {"runs": [(value, 22, {"bold": True, "color": DEEP})], "after": 1},
-            {"runs": [(label, 9, {"color": MUTED})]},
-        ], fill=WHITE, line=LINE, margins=(10, 10, 6, 5), anchor=MSO_ANCHOR.MIDDLE)
-    textbox(s, 48, 352, 600, 32, [
-        {"runs": [("367 is the evaluation set; 9,558 is the size of the AICTE master, not the test set. "
-                   "Ambiguous names route to a person.", 9.5, {"color": MUTED, "italic": True})], "line": 1.05},
+    for value, label, x, y in metrics:
+        card(s, x, y, 168, 80, [
+            {"runs": [(value, 31, {"bold": True, "color": DEEP})], "after": 1},
+            {"runs": [(label, 10.5, {"color": MUTED})]},
+        ], fill=WHITE, line=LINE, margins=(12, 12, 6, 5), anchor=MSO_ANCHOR.MIDDLE)
+    textbox(s, 416, 244, 190, 80, [
+        {"runs": [("Measured on a labelled set we built and ship with the prototype.",
+                   11, {"italic": True, "color": MUTED})], "line": 1.1},
+    ], anchor=MSO_ANCHOR.MIDDLE)
+
+    textbox(s, 48, 334, 580, 30, [
+        {"runs": [("367 is the test set; 9,558 is the size of the AICTE master. Names we cannot separate go to a person.",
+                   11.5, {"color": MUTED})], "line": 1.1},
     ])
 
     feas = [
-        ("TECHNICAL", "working HTML prototype; resolver benchmarked on 367 variants; audit chain verified end to end."),
-        ("OPERATIONAL", "keeps existing email and CPGRAMS intake; institutions do not learn a new portal."),
-        ("ECONOMIC", "one API and one database; no new hardware, no licensed matching product."),
+        ("TECHNICAL", "The prototype and the PostgreSQL schema both run; a production API is specified, not written."),
+        ("OPERATIONAL", "A pilot can keep the current email and CPGRAMS intake and add a shared register beside it."),
+        ("ECONOMIC", "Every component is open source, so there is no matching licence to buy. Implementation cost is not estimated."),
     ]
-    y = 398
+    y = 378
     for label, text in feas:
-        textbox(s, 48, y, 96, 18, [{"runs": [(label, 9.5, {"bold": True, "color": BLUE})]}])
-        textbox(s, 146, y, 440, 34, [{"runs": [(text, 10.5, {})], "line": 1.0}])
-        y += 40
+        textbox(s, 48, y, 106, 18, [{"runs": [(label, 10.5, {"bold": True, "color": BLUE})]}])
+        textbox(s, 160, y - 2, 468, 40, [{"runs": [(text, 13.5, {})], "line": 1.08}])
+        y += 52
 
-    kicker(s, 720, 140, 400, "What can break → what we do")
+    section(s, 648, 128, 584, "What could break, and what we do", AMBER)
     risks = [
-        ("What if the matcher picks the wrong institution?",
-         "Nothing merges on a score. A top-3 with the evidence goes to an officer; 0 auto-merges across 367 variants."),
-        ("What if the institution master is not ours to ship?",
-         "It is public AICTE data, so the pack ships the schema and the 367 variants we built, not the list."),
-        ("What if bureaus keep working the old way?",
-         "Email and CPGRAMS intake stay; nobody is asked to learn a new portal before the register earns it."),
-        ("What if two audit writes land at once?",
-         "Known gap — the chain can fork. An advisory lock plus a unique index on prev_hash is scheduled, not done."),
-        ("What if the jury asks about security?",
+        ("If the name is ambiguous",
+         "Rank the candidates and show the reasons. An officer decides; a score never merges two cases."),
+        ("If the master cannot be shared",
+         "The master is not in this pack. A pilot needs authorised access and a data-sharing agreement first."),
+        ("If offices keep their old intake",
+         "The register sits beside the existing routes. Nothing is switched off on day one."),
+        ("If two audit writes land at once",
+         "Known gap: the chain can fork. An advisory lock and a unique index on prev_hash are scheduled."),
+        ("If the jury asks about security",
          "Role-based access is not built. The demo role switch is a view, not access control."),
     ]
-    y = 164
+    y = 152
     for head, body in risks:
-        card(s, 720, y, 510, 64, [
-            {"runs": [(head, 11, {"bold": True})], "after": 3},
-            {"runs": [(body, 10, {"color": MUTED})], "line": 1.02},
-        ], fill=LIGHT, line=LINE, margins=(12, 12, 7, 5))
-        y += 74
+        card(s, 648, y, 584, 78, [
+            {"runs": [(head, 13, {"bold": True})], "after": 3},
+            {"runs": [(body, 11.5, {"color": MUTED})], "line": 1.06},
+        ], fill=LIGHT, line=LINE, margins=(14, 14, 8, 6))
+        y += 86
 
-    card(s, 48, 540, 1182, 62, [
-        {"runs": [("SIX-WEEK PILOT   ", 10.5, {"bold": True, "color": BLUE}),
-                  ("W1–2 connect intake + master  ·  W3–4 RB, PGRC and one regional office live  ·  "
-                   "W5 harden roles and audit lock  ·  W6 rehearse and hand over", 11, {})], "line": 1.05},
-    ], fill=GREY_BG, line=None, margins=(12, 10, 8, 8), anchor=MSO_ANCHOR.MIDDLE)
+    card(s, 48, 552, 580, 90, [
+        {"runs": [("SIX-WEEK PILOT", 11, {"bold": True, "color": BLUE, "spc": 80})], "after": 3},
+        {"runs": [("Two weeks to connect intake and the master, two to run a real bureau trial, one to harden roles "
+                   "and the audit lock, and one to hand over.", 11.5, {})], "line": 1.06},
+    ], fill=WHITE, line=LINE, margins=(14, 12, 7, 6))
     s.notes_slide.notes_text_frame.text = (
         "Feasibility is measured, not asserted: 367 labelled variants, 94.6 percent top-1, 99.7 percent top-3, "
         "zero silent merges. The audit concurrency gap is known and scheduled before any pilot."
@@ -451,105 +453,74 @@ def build():
 
     # ---------- Slide 4: impact and benefits ----------
     s = slides[4]
-    set_title(s, "IMPACT AND BENEFITS", 34)
+    set_title(s, "IMPACT AND BENEFITS", 38)
     footer(s)
     drop(s, "TextBox")
 
-    # --- status-quo vs Ekasutra table (replaces the three bullet columns) ---
+    picture(s, MEDIA / "reports_band.png", 48, 128, 540, 288)
+    textbox(s, 48, 424, 540, 18, [
+        {"runs": [("Reports: filters, register, disposal rate, ageing, exported as CSV", 11, {"color": MUTED})]},
+    ])
+
     rows = [
-        "One case thread per institution Permanent ID",
-        "Overlap flagged at intake, before duplicate action",
-        "Custody chain and SLA ageing on one screen",
-        "Case transfer as an audited, attributed action",
-        "Case status visible to every bureau without an RTI",
-        "Officer time on disposal, not de-duplication",
-        "Matches confirmed by an officer — 0 silent merges",
-        "Every write verifiable against a SHA-256 chain",
+        ("Consolidate", "Institution profile + case register"),
+        ("Identify owner", "Bureau and officer on each case"),
+        ("Track movement", "Status and case-event timeline"),
+        ("Detect overlap", "Radar groups same-institution cases"),
+        ("Coordinate", "Room holds decision and activity"),
+        ("Monitor workload", "Filters cover five case statuses"),
+        ("Report", "Institution / region / bureau / status + CSV"),
+        ("Watch timelines", "SLA ageing and due-case alerts"),
     ]
-    shape(s, MSO_SHAPE.RECTANGLE, 632, 146, 598, 202, fill=WHITE, line=LINE)
-    shape(s, MSO_SHAPE.RECTANGLE, 632, 146, 598, 26, fill=DEEP, line=None)
-    textbox(s, 644, 146, 430, 26, [{"runs": [("CAPABILITY", 10, {"bold": True, "color": WHITE})]}],
+    shape(s, MSO_SHAPE.RECTANGLE, 620, 128, 612, 222, fill=WHITE, line=LINE)
+    shape(s, MSO_SHAPE.RECTANGLE, 620, 128, 612, 30, fill=DEEP, line=None)
+    textbox(s, 634, 128, 190, 30,
+            [{"runs": [("WHAT THE PS ASKS", 11, {"bold": True, "color": WHITE, "spc": 70})]}],
             anchor=MSO_ANCHOR.MIDDLE)
-    textbox(s, 1074, 146, 78, 26, [{"runs": [("TODAY", 9.5, {"bold": True, "color": WHITE})],
-                                    "align": PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
-    textbox(s, 1152, 146, 78, 26, [{"runs": [("EKASUTRA", 9.5, {"bold": True, "color": WHITE})],
-                                    "align": PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
-    ry = 172
-    for i, label in enumerate(rows):
+    textbox(s, 822, 128, 396, 30,
+            [{"runs": [("WHAT THE PROTOTYPE SHOWS", 11, {"bold": True, "color": WHITE, "spc": 70})]}],
+            anchor=MSO_ANCHOR.MIDDLE)
+    ry = 158
+    for i, (need, path) in enumerate(rows):
         if i % 2 == 1:
-            shape(s, MSO_SHAPE.RECTANGLE, 633, ry, 596, 22, fill=GREY_BG, line=None)
-        textbox(s, 644, ry, 420, 22, [{"runs": [(label, 9.5, {})]}], anchor=MSO_ANCHOR.MIDDLE)
-        textbox(s, 1074, ry, 78, 22, [{"runs": [("✗", 11, {"bold": True, "color": RED})],
-                                       "align": PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
-        textbox(s, 1152, ry, 78, 22, [{"runs": [("✓", 11, {"bold": True, "color": GREEN})],
-                                       "align": PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
-        ry += 22
-    textbox(s, 632, 372, 598, 30, [
-        {"runs": [("Officer-days (~100–200 a year) is a model: 1,000 cases · 5–10% overlap · 2 officer-days "
-                   "per duplicate. Every other row is demoable in the prototype today.",
-                   8.5, {"italic": True, "color": MUTED})], "line": 1.05},
-    ])
-
-    # --- seed chart: the same institution filed in two bureaus, counted from demo_seed.json ---
-    card(s, 48, 146, 560, 232, [], fill=WHITE, line=LINE, margins=(0, 0, 0, 0))
-    textbox(s, 66, 158, 524, 18, [
-        {"runs": [("WHAT THE REGISTER DOES TO THE SHIPPED SEED", 10, {"bold": True, "color": BLUE})]},
-    ])
-    for lx, lc, lt in ((66, BLUE, "PGRC"), (128, DEEP, "RB")):
-        shape(s, MSO_SHAPE.RECTANGLE, lx, 180, 11, 11, fill=lc)
-        textbox(s, lx + 15, 177, 50, 16, [{"runs": [(lt, 9, {"color": MUTED})]}])
-
-    lanes = [
-        ("Sri Venkateswara College of Engineering, Kanchipuram", 2, 1, "CL-01 · 3 files"),
-        ("Sri Venkateswara Institute of Technology", 1, 1, "CL-02 · 2 files"),
-        ("Chaitanya Bharathi Institute of Technology", 1, 1, "CL-03 · 2 files"),
-    ]
-    unit = 44
-    y = 202
-    for name, pg, rb, room in lanes:
-        textbox(s, 66, y, 200, 30, [{"runs": [(name, 9.5, {})], "line": 1.02}])
-        for count, bar_y, bar_c in ((pg, y, BLUE), (rb, y + 17, DEEP)):
-            shape(s, MSO_SHAPE.RECTANGLE, 272, bar_y, unit * count, 14, fill=bar_c)
-            textbox(s, 280 + unit * count, bar_y - 1, 40, 16,
-                    [{"runs": [(str(count), 9.5, {"bold": True, "color": MUTED})]}])
-        textbox(s, 410, y + 2, 180, 30, [
-            {"runs": [("→ 1 thread", 10.5, {"bold": True, "color": DEEP})], "after": 1},
-            {"runs": [(room, 8.5, {"color": MUTED})]},
-        ])
-        y += 46
-
-    textbox(s, 66, 344, 524, 20, [
-        {"runs": [("7 complaints · 3 institutions · every overlap spans both bureaus — see seed_demo.sql.",
-                   9, {"italic": True, "color": MUTED})], "line": 1.05},
+            shape(s, MSO_SHAPE.RECTANGLE, 621, ry, 610, 24, fill=GREY_BG, line=None)
+        textbox(s, 634, ry, 182, 24, [{"runs": [(need, 11.5, {"bold": True, "color": DEEP})]}],
+                anchor=MSO_ANCHOR.MIDDLE)
+        textbox(s, 822, ry, 396, 24, [{"runs": [("→  " + path, 11, {})]}], anchor=MSO_ANCHOR.MIDDLE)
+        ry += 24
+    textbox(s, 620, 358, 612, 22, [
+        {"runs": [("All eight objectives are demonstrable today. Multi-user access is not.",
+                   10.5, {"italic": True, "color": MUTED})]},
     ])
 
     stats = [
-        ("~100–200", "officer-days a year",
-         "Modelled at 1,000 cases, 5–10% overlap and 2 officer-days per duplicate."),
-        ("Before SLA", "not after",
-         "Ageing and breach prediction put the at-risk case in front of the officer."),
-        ("0", "silent merges",
-         "Ambiguous matches go to a person, never into the register automatically."),
+        ("ECONOMIC", "100–200*", "officer-days a year",
+         "Modelled at 1,000 cases, 5–10% overlap and two days per duplicate."),
+        ("SOCIAL", "SLA", "ageing visible",
+         "Overdue cases rise to the top instead of waiting for a reminder."),
+        ("GOVERNANCE", "0", "silent case merges",
+         "Candidate overlap is reviewed; a person decides whether to link."),
     ]
     x = 48
-    for big, small, note in stats:
-        card(s, x, 412, 376, 84, [
-            {"runs": [(big + "  ", 20, {"bold": True, "color": DEEP}),
-                      (small, 11, {"bold": True, "color": BLUE})], "after": 3},
-            {"runs": [(note, 9.5, {"color": MUTED})], "line": 1.03},
+    for tag, big, small, note in stats:
+        card(s, x, 470, 376, 104, [
+            {"runs": [(tag, 9.5, {"bold": True, "color": BLUE, "spc": 70})], "after": 2},
+            {"runs": [(big + "  ", 26, {"bold": True, "color": DEEP}),
+                      (small, 11.5, {"bold": True, "color": BLUE})], "after": 3},
+            {"runs": [(note, 10.5, {"color": MUTED})], "line": 1.06},
         ], fill=LIGHT, line=LINE, margins=(14, 12, 8, 6), anchor=MSO_ANCHOR.MIDDLE)
         x += 403
 
-    textbox(s, 48, 512, 1182, 60, [
-        {"runs": [("Social: a student sees one case ID and one owner.   Economic: officer time moves from de-duplication to disposal.   "
-                   "Governance: every transfer and decision is attributable.", 11.5, {})], "line": 1.08},
-        {"runs": [("Built for AICTE. The same pattern fits any regulator with several cells and one institution master.",
-                   10, {"color": MUTED, "italic": True})], "before": 4},
+    textbox(s, 48, 588, 1182, 26, [
+        {"runs": [("A student gets one case number to quote. An officer stops re-reading the same complaint. "
+                   "A director can see who decided what, and when.", 14, {})], "line": 1.12},
     ])
-    card(s, 48, 612, 1182, 42, [
-        {"runs": [("PS 26264 — all eight objectives are demoable in the prototype today", 12,
-                   {"bold": True, "color": DEEP})], "align": PP_ALIGN.CENTER},
-    ], fill=GREY_BG, line=None, margins=(10, 6, 8, 6), anchor=MSO_ANCHOR.MIDDLE)
+    textbox(s, 48, 618, 1182, 40, [
+        {"runs": [("*Model only, not a measurement.   ", 10.5, {"italic": True, "color": MUTED}),
+                  ("ENVIRONMENTAL   ", 10.5, {"bold": True, "color": BLUE}),
+                  ("the prototype ships as one HTML file and needs no server to run.", 10.5, {"color": MUTED})],
+         "line": 1.1},
+    ])
     s.notes_slide.notes_text_frame.text = (
         "Impact is stated with its assumption. The officer-day figure is a model at 1,000 cases a year, not a measurement. "
         "The defensible claims are the benchmark, the audit chain and the single case thread."
@@ -557,58 +528,58 @@ def build():
 
     # ---------- Slide 5: research and references ----------
     s = slides[5]
-    set_title(s, "RESEARCH  AND REFERENCES", 34)
+    set_title(s, "RESEARCH AND REFERENCES", 38)
     footer(s)
     drop(s, "TextBox")
 
-    kicker(s, 48, 140, 400, "Sources")
+    section(s, 48, 128, 600, "Sources we relied on")
     refs = [
         ("SIH 2026 — Problem Statement 26264", "Smart India Hackathon portal", "sih.gov.in"),
         ("AICTE Approval Process Handbook 2026–27", "All India Council for Technical Education", "aicte-india.org"),
         ("UGC (Redress of Grievances) Regulations, 2019", "University Grants Commission", "ugc.gov.in"),
-        ("Salton & Buckley (1988), Term-weighting approaches in automatic text retrieval",
-         "Information Processing & Management 24(5), 513–523", "doi.org/10.1016/0306-4573(88)90021-0"),
+        ("Salton & Buckley (1988), Term-weighting approaches",
+         "Information Processing & Management 24(5)", "doi.org/10.1016/0306-4573(88)90021-0"),
         ("NIST FIPS 180-4 (2015), Secure Hash Standard", "National Institute of Standards and Technology",
          "csrc.nist.gov/pubs/fips/180-4/upd1/final"),
         ("Public intake channels the register reads from", "AICTE institution listings · CPGRAMS grievances",
          "aicte-india.org · cpgrams.gov.in"),
     ]
-    y = 168
+    y = 152
     for i, (title, source, link) in enumerate(refs, 1):
-        textbox(s, 48, y, 660, 52, [
-            {"runs": [(f"{i}.  ", 11, {"bold": True, "color": BLUE}), (title, 11, {"bold": True})], "line": 1.02},
-            {"runs": [(source + "  ·  ", 9.5, {"color": MUTED}), (link, 9.5, {"color": BLUE})]},
+        textbox(s, 48, y, 600, 50, [
+            {"runs": [(f"{i}.  ", 13, {"bold": True, "color": BLUE}), (title, 13, {"bold": True})], "line": 1.04},
+            {"runs": [(source + "  ·  ", 11, {"color": MUTED}), (link, 11, {"color": BLUE})]},
         ])
-        y += 58
+        y += 62
 
-    card(s, 752, 158, 478, 352, [
-        {"runs": [("PROTOTYPE & EVIDENCE", 11, {"bold": True, "color": BLUE})], "after": 8},
+    textbox(s, 48, 522, 600, 56, [
+        {"runs": [("Our benchmark and the audit-chain tests are our own work. The sources above are background; "
+                   "they do not validate our results.", 11.5, {"italic": True, "color": MUTED})], "line": 1.12},
+    ])
+
+    card(s, 686, 124, 546, 424, [
+        {"runs": [("PROTOTYPE & EVIDENCE", 12, {"bold": True, "color": BLUE, "spc": 80})]},
     ], fill=LIGHT, line=LINE, margins=(16, 14, 10, 8))
-    picture(s, MEDIA / "Overlap_Radar.png", 768, 196, 218, 170, crop_top=0.006, crop_bottom=0.306)
-    picture(s, MEDIA / "Audit_Log.png", 998, 196, 218, 170, crop_top=0.006, crop_bottom=0.0505)
-    textbox(s, 768, 368, 218, 14, [
-        {"runs": [("Overlap radar — 98% match, officer confirms", 8, {"color": MUTED})], "align": PP_ALIGN.CENTER}])
-    textbox(s, 998, 368, 218, 14, [
-        {"runs": [("Audit chain — 18 events · SHA-256 intact", 8, {"color": MUTED})], "align": PP_ALIGN.CENTER}])
-    textbox(s, 768, 388, 448, 60, [
-        {"runs": [("9 views · 0 console errors · tamper detected by the verifier", 10.5, {})], "after": 4},
-        {"runs": [("367 labelled variants · 94.6% top-1 · 99.7% top-3 · 0 silent merges", 10.5, {})], "after": 4},
-        {"runs": [("One offline HTML file — opened live in the jury round", 10.5, {})], "after": 8},
+    picture(s, MEDIA / "radar_card.png", 702, 164, 514, 186)
+    textbox(s, 702, 354, 514, 18, [
+        {"runs": [("Overlap radar: 98% match, the reasons beside it, and an officer who confirms", 10, {"color": MUTED})]},
     ])
-    textbox(s, 768, 452, 448, 50, [
-        {"runs": [("DATA ACCESS   ", 9.5, {"bold": True, "color": AMBER}),
-                  ("the institution master is public AICTE data and is not redistributed in this pack; "
-                   "the 367-variant test set is ours and ships with the repo.", 9.5, {"color": MUTED})], "line": 1.05},
-    ])
+    for i, t in enumerate(["18 audit events", "SHA-256 chain intact", "0 silent merges"]):
+        chip(s, 702 + i * 172, 380, 164, 30, t, fg=DEEP, bg=WHITE, border=LINE, size=10.5)
 
-    textbox(s, 48, 528, 660, 40, [
-        {"runs": [("The matching benchmark and the audit chain are our own tests; the references above are external "
-                   "sources, not validation of our results.", 9.5, {"italic": True, "color": MUTED})], "line": 1.05},
+    textbox(s, 702, 420, 514, 60, [
+        {"runs": [("367 labelled variants · 94.6% top-1 · 99.7% top-3", 12.5, {})], "after": 5},
+        {"runs": [("9 views · 0 console errors · tamper detected by the verifier", 12.5, {})]},
     ])
-    card(s, 48, 612, 1182, 42, [
-        {"runs": [("No hosted demo to time out — the prototype is one offline HTML file, opened live during the jury round.",
-                   12, {"bold": True, "color": DEEP})], "align": PP_ALIGN.CENTER},
-    ], fill=GREY_BG, line=None, margins=(10, 6, 8, 6), anchor=MSO_ANCHOR.MIDDLE)
+    textbox(s, 702, 484, 514, 46, [
+        {"runs": [("DATA ACCESS   ", 10.5, {"bold": True, "color": AMBER}),
+                  ("the AICTE master is public data and is not redistributed here; the 367-variant test set is ours "
+                   "and ships with the repo.", 10.5, {"color": MUTED})], "line": 1.1},
+    ])
+    textbox(s, 48, 588, 600, 64, [
+        {"runs": [("Nothing to host, nothing to log into, and nothing that can time out in front of a jury.",
+                   13, {"bold": True, "color": DEEP})], "line": 1.14},
+    ])
     s.notes_slide.notes_text_frame.text = (
         "Six sources: the problem statement, AICTE's approval handbook, the UGC grievance regulations, "
         "the TF-IDF weighting paper, FIPS 180-4, and the public intake channels the register reads from. "

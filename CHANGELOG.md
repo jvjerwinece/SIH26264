@@ -2,6 +2,20 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v9] — 2026-10-28
+
+The portal deck is rebuilt against the winning sample: bigger type, a capture on four of six pages, and a real decision tree instead of a card snake.
+
+- **Type and spacing.** Section titles are 38 pt Times New Roman bold with light tracking, body is 15 pt Arial, captions 12.5 pt. The average body size of the previous deck was 9.5–12 pt; the winning sample ran 20–32 pt. Every grey "one · two · three" middot strip is gone — each block is one written paragraph, and the only middot lines left are data labels.
+- **Page 1** keeps the template layout and the bulb art, and gains a single thesis line under the metadata. The Team ID stays an amber `[ add from SIH portal ]` placeholder on purpose.
+- **Page 2** carries the dashboard capture at 506×316, a three-step strip and one seeded case: three cases about Vidyasagara College of Engineering that arrived under different spellings, two sitting with PGRC and one with RB — `C-2026-0142` / `C-2026-0198` vs `C-2026-0167` in `database/demo_seed.json`.
+- **Page 3** is a native three-branch decision tree, all shapes and editable text: complaint → "do we already know this institution?" → A exact ID or alias, B fuzzy ranked candidates, C not in the master. Each branch is a dashed frame of three steps ending in one rule, and a run-today / target stack strip closes the page. No raster flowchart is needed.
+- **Page 4** keeps five measured tiles, three feasibility lines, five "what can break, what we do" cards and the six-week pilot.
+- **Page 5** uses a reports capture re-shot with the dev ribbon hidden, the eight PS objectives against what the prototype shows, and SOCIAL / ECONOMIC / GOVERNANCE cards plus an environmental line — the template asks for social, economic and environmental benefits, so all three are now named.
+- **Page 6** holds six sources, a fresh radar capture, three evidence chips (18 audit events, SHA-256 chain intact, 0 silent merges) and the data-access note.
+- **Claims unchanged and re-scanned:** 2× 9,558, 4× 367, 2× 94.6, 2× 99.7, 1× 18 audit events, 1× 11 tables, 0 occurrences of every retired figure. PDF is 6 pages at 960×540 pt.
+- **Synthetic data:** every capture in this deck shows fictional institutions only; the four reshoots came from the renamed seed.
+
 ## [v8.7] — 2026-10-27
 
 The portal deck now carries real product screenshots instead of only native shapes.
@@ -35,7 +49,7 @@ Official deck rebuilt to carry real diagrams instead of three-column bullet list
 
 Official deck audited against the per-slide traps a judge actually reads for.
 
-- **Page 2 now names one real case** instead of a description that would survive swapping the regulator: three fee, scholarship and intake complaints about Sri Venkateswara College of Engineering, Kanchipuram — three name spellings, two in PGRC, one in RB. Taken from the shipped seed, so a jury member can load it and count.
+- **Page 2 now names one real case** instead of a description that would survive swapping the regulator: three fee, scholarship and intake complaints about Vidyasagara College of Engineering, Kanchipuram — three name spellings, two in PGRC, one in RB. Taken from the shipped seed, so a jury member can load it and count.
 - **Page 3 splits the stack into RUNNING TODAY and TO BUILD.** Green rows are checkable now (one HTML file, Web Crypto SHA-256 chain, PostgreSQL 16 schema + 18-row seed loading in psql); blue rows are declared as not built. The previous single list read as a stack nobody had run.
 - **Page 4 becomes five "what can break → what we do" cards** covering wrong match, data we cannot ship, adoption, audit concurrency and security — the questions a jury asks out loud, with the two open gaps still stated plainly.
 - **Page 5 gains a second measured number:** 7 → 3. Seven seeded complaints about three institutions, every overlap spanning RB and PGRC. The officer-day model stays labelled as a model.

@@ -48,55 +48,55 @@ insert into users (email, full_name, role, bureau) values
 
 -- ------------------------------------------------------------ institutions
 insert into institutions (permanent_id, name, address, city, state, region, trust_name) values
-  ('1-1234567', 'Sri Venkateswara College of Engineering', 'Pennalur, Sriperumbudur, Kanchipuram 602117', 'Kanchipuram', 'Tamil Nadu', 'South', 'Sri Venkateswara Educational Trust'),
-  ('1-2345678', 'Sri Venkateswara Institute of Technology', 'Karakatamanchi, Tirupati 517502', 'Tirupati', 'Andhra Pradesh', 'South', 'Sri Vidya Educational Society'),
-  ('1-3456789', 'Annai Meenakshi College of Engineering', 'Vembuliamman Koil St, K.K. Nagar, Chennai 600078', 'Chennai', 'Tamil Nadu', 'South', 'Annai Meenakshi Educational Trust'),
-  ('1-4567890', 'Annai Meenakshi Polytechnic College', 'GST Road, Chengalpattu 603001', 'Chengalpattu', 'Tamil Nadu', 'South', 'Annai Meenakshi Educational Trust'),
-  ('1-5678901', 'Government Polytechnic', 'Kangra 176001', 'Kangra', 'Himachal Pradesh', 'North', '—'),
-  ('1-6789012', 'Government Polytechnic', 'Nabarangpur 764059', 'Nabarangpur', 'Odisha', 'East', '—'),
-  ('1-7890123', 'Patel College of Science & Technology', 'Bypass Road, Indore 452020', 'Indore', 'Madhya Pradesh', 'Central', 'Patel Education Society'),
-  ('1-8901234', 'Patel Institute of Management', 'Hoshangabad Road, Bhopal 462047', 'Bhopal', 'Madhya Pradesh', 'Central', 'Patel Education Society'),
-  ('1-9012345', 'St. Xavier''s Technical Institute', 'Mahim, Mumbai 400016', 'Mumbai', 'Maharashtra', 'West', 'St. Xavier''s Society'),
-  ('1-0123456', 'Rajiv Gandhi Institute of Technology', 'Cholanayakanahalli, Bengaluru 560032', 'Bengaluru', 'Karnataka', 'South', '—'),
-  ('1-1122334', 'Sri Krishna College of Engineering', 'Vattamalaipalayam, Coimbatore 641042', 'Coimbatore', 'Tamil Nadu', 'South', 'Sri Krishna Educational Trust'),
-  ('1-2233445', 'Sri Krishna Institute of Technology', 'Vinayaka Nagar, Coimbatore 641035', 'Coimbatore', 'Tamil Nadu', 'South', 'Sri Lakshmi Educational Trust'),
-  ('1-3344556', 'Deccan Education Society''s Technical Institute', 'Fergusson College Road, Pune 411004', 'Pune', 'Maharashtra', 'West', 'Deccan Education Society'),
-  ('1-4455667', 'Fergusson College (Autonomous)', 'F.C. Road, Pune 411004', 'Pune', 'Maharashtra', 'West', 'Deccan Education Society'),
-  ('1-5566778', 'Chaitanya Bharathi Institute of Technology', 'Gandipet, Hyderabad 500075', 'Hyderabad', 'Telangana', 'South', 'CBIT Educational Society'),
-  ('1-6677889', 'Government Engineering College', 'Ramavarmapuram, Thrissur 680009', 'Thrissur', 'Kerala', 'South', '—'),
-  ('1-7788990', 'Sardar Patel Institute of Technology', 'Andheri West, Mumbai 400058', 'Mumbai', 'Maharashtra', 'West', 'Sardar Patel Trust'),
-  ('1-8899001', 'IIIT Design & Manufacturing Kancheepuram', 'Melakottaiyur, Kancheepuram 600127', 'Kancheepuram', 'Tamil Nadu', 'South', '—');
+  ('1-1234567', 'Vidyasagara College of Engineering', 'Pennalur, Sriperumbudur, Kanchipuram 602117', 'Kanchipuram', 'Tamil Nadu', 'South', 'Vidyasagara Educational Trust'),
+  ('1-2345678', 'Vidyasagara Institute of Technology', 'Karakatamanchi, Tirupati 517502', 'Tirupati', 'Andhra Pradesh', 'South', 'Vidya Prasarana Society'),
+  ('1-3456789', 'Annai Thilagam College of Engineering', 'Vembuliamman Koil St, K.K. Nagar, Chennai 600078', 'Chennai', 'Tamil Nadu', 'South', 'Annai Thilagam Educational Trust'),
+  ('1-4567890', 'Annai Thilagam Polytechnic College', 'GST Road, Chengalpattu 603001', 'Chengalpattu', 'Tamil Nadu', 'South', 'Annai Thilagam Educational Trust'),
+  ('1-5678901', 'Triloknath Government Polytechnic', 'Kangra 176001', 'Kangra', 'Himachal Pradesh', 'North', '—'),
+  ('1-6789012', 'Kandhasor Government Polytechnic', 'Nabarangpur 764059', 'Nabarangpur', 'Odisha', 'East', '—'),
+  ('1-7890123', 'Rajhans College of Science & Technology', 'Bypass Road, Indore 452020', 'Indore', 'Madhya Pradesh', 'Central', 'Rajhans Education Society'),
+  ('1-8901234', 'Rajhans Institute of Management', 'Hoshangabad Road, Bhopal 462047', 'Bhopal', 'Madhya Pradesh', 'Central', 'Rajhans Education Society'),
+  ('1-9012345', 'St. Ives Technical Institute', 'Mahim, Mumbai 400016', 'Mumbai', 'Maharashtra', 'West', 'St. Ives Society'),
+  ('1-0123456', 'Chalukya Institute of Technology', 'Cholanayakanahalli, Bengaluru 560032', 'Bengaluru', 'Karnataka', 'South', '—'),
+  ('1-1122334', 'Kovai College of Engineering', 'Vattamalaipalayam, Coimbatore 641042', 'Coimbatore', 'Tamil Nadu', 'South', 'Kovai Educational Trust'),
+  ('1-2233445', 'Kovai Institute of Technology', 'Vinayaka Nagar, Coimbatore 641035', 'Coimbatore', 'Tamil Nadu', 'South', 'Nallur Educational Trust'),
+  ('1-3344556', 'Sahyadri Vidyapeeth''s Technical Institute', 'Nandanvan College Road, Pune 411004', 'Pune', 'Maharashtra', 'West', 'Sahyadri Vidyapeeth Society'),
+  ('1-4455667', 'Anandashram College (Autonomous)', 'N.C. Road, Pune 411004', 'Pune', 'Maharashtra', 'West', 'Sahyadri Vidyapeeth Society'),
+  ('1-5566778', 'Vidyanidhi Institute of Technology', 'Gandipet, Hyderabad 500075', 'Hyderabad', 'Telangana', 'South', 'Vidyanidhi Educational Society'),
+  ('1-6677889', 'Kodiyur Government Engineering College', 'Ramavarmapuram, Thrissur 680009', 'Thrissur', 'Kerala', 'South', '—'),
+  ('1-7788990', 'Sardar Rajhans Institute of Technology', 'Andheri West, Mumbai 400058', 'Mumbai', 'Maharashtra', 'West', 'Rajhans Memorial Trust'),
+  ('1-8899001', 'Kancheepuram Institute of Design & Manufacturing', 'Melakottaiyur, Kancheepuram 600127', 'Kancheepuram', 'Tamil Nadu', 'South', '—');
 
 insert into institution_aliases (institution_id, alias, source)
 select i.id, v.alias, v.source
 from (values
-  ('1-1234567', 'S.V. College of Engineering', 'master'),
-  ('1-1234567', 'Sri Venkateshwara Engineering College', 'complaint'),
-  ('1-1234567', 'SVCE Kanchipuram', 'manual'),
-  ('1-2345678', 'SVIT Tirupati', 'master'),
-  ('1-2345678', 'Sri Venkateshwara Institute of Technology', 'complaint'),
-  ('1-3456789', 'AMCE Chennai', 'master'),
-  ('1-3456789', 'Annai Meenakshi Engg College', 'complaint'),
-  ('1-4567890', 'AMPC Chengalpattu', 'master'),
-  ('1-5678901', 'G.P. Kangra', 'master'),
-  ('1-5678901', 'Govt Polytechnic Kangra', 'complaint'),
-  ('1-6789012', 'G.P. Nabarangpur', 'master'),
-  ('1-7890123', 'Patel College of Sci & Tech', 'master'),
-  ('1-7890123', 'PCST Indore', 'complaint'),
-  ('1-8901234', 'PIM Bhopal', 'master'),
-  ('1-9012345', 'SXTI Mumbai', 'master'),
-  ('1-9012345', 'St Xaviers Technical Institute', 'complaint'),
-  ('1-0123456', 'RGIT Bengaluru', 'master'),
-  ('1-1122334', 'SKCE Coimbatore', 'master'),
-  ('1-1122334', 'Sri Krishna College of Engg', 'complaint'),
-  ('1-2233445', 'SKIT Coimbatore', 'master'),
-  ('1-3344556', 'DES Technical Institute', 'master'),
-  ('1-3344556', 'DEST Pune', 'complaint'),
-  ('1-4455667', 'Fergusson College Pune', 'master'),
-  ('1-5566778', 'CBIT Hyderabad', 'master'),
-  ('1-6677889', 'GEC Thrissur', 'master'),
-  ('1-7788990', 'SPIT Mumbai', 'master'),
-  ('1-8899001', 'IIITDM Kancheepuram', 'master')) as v(pid, alias, source)
+  ('1-1234567', 'V.S. College of Engineering', 'master'),
+  ('1-1234567', 'Vidyasagar Engineering College', 'complaint'),
+  ('1-1234567', 'VCE Kanchipuram', 'manual'),
+  ('1-2345678', 'VSIT Tirupati', 'master'),
+  ('1-2345678', 'Vidyasagar Institute of Technology', 'complaint'),
+  ('1-3456789', 'ATCE Chennai', 'master'),
+  ('1-3456789', 'Annai Thilagam Engg College', 'complaint'),
+  ('1-4567890', 'ATPC Chengalpattu', 'master'),
+  ('1-5678901', 'T.G.P. Kangra', 'master'),
+  ('1-5678901', 'Triloknath Govt Polytechnic', 'complaint'),
+  ('1-6789012', 'K.G.P. Nabarangpur', 'master'),
+  ('1-7890123', 'Rajhans College of Sci & Tech', 'master'),
+  ('1-7890123', 'RCST Indore', 'complaint'),
+  ('1-8901234', 'RIM Bhopal', 'master'),
+  ('1-9012345', 'SITI Mumbai', 'master'),
+  ('1-9012345', 'St Ives Technical Institute', 'complaint'),
+  ('1-0123456', 'CIT Bengaluru', 'master'),
+  ('1-1122334', 'KCE Coimbatore', 'master'),
+  ('1-1122334', 'Kovai College of Engg', 'complaint'),
+  ('1-2233445', 'KIT Coimbatore', 'master'),
+  ('1-3344556', 'SV Technical Institute', 'master'),
+  ('1-3344556', 'SVTI Pune', 'complaint'),
+  ('1-4455667', 'Anandashram College Pune', 'master'),
+  ('1-5566778', 'VNIET Hyderabad', 'master'),
+  ('1-6677889', 'KGEC Thrissur', 'master'),
+  ('1-7788990', 'SRIT Mumbai', 'master'),
+  ('1-8899001', 'KIDM Kancheepuram', 'master')) as v(pid, alias, source)
 join institutions i on i.permanent_id = v.pid;
 
 -- ------------------------------------------------------------------- cases
@@ -402,9 +402,9 @@ insert into overlap_clusters (ref, institution_id, confidence, state, reason, de
 select v.ref, i.id, v.confidence::numeric, v.state, v.reason::jsonb,
        v.detected_at::timestamptz
 from (values
-  ('CL-01', '1-1234567', '98'::numeric, 'open', '["Same AICTE Permanent ID", "Alias matched: S.V. College of Engineering", "Same issue cluster: fee / scholarship", "Location match: Kanchipuram"]'::jsonb, '2026-10-20 10:38:00+00'::timestamptz),
+  ('CL-01', '1-1234567', '98'::numeric, 'open', '["Same AICTE Permanent ID", "Alias matched: V.S. College of Engineering", "Same issue cluster: fee / scholarship", "Location match: Kanchipuram"]'::jsonb, '2026-10-20 10:38:00+00'::timestamptz),
   ('CL-02', '1-2345678', '94'::numeric, 'open', '["Same AICTE Permanent ID", "Same issue cluster: approval / faculty", "Both open across PGRC and RB"]'::jsonb, '2026-10-19 15:10:00+00'::timestamptz),
-  ('CL-03', '1-5566778', '97'::numeric, 'open', '["Same AICTE Permanent ID", "Alias matched: CBIT Hyderabad", "Same issue cluster: admission / course approval"]'::jsonb, '2026-10-21 09:12:00+00'::timestamptz)) as v(ref, pid, confidence, state, reason, detected_at)
+  ('CL-03', '1-5566778', '97'::numeric, 'open', '["Same AICTE Permanent ID", "Alias matched: VNIET Hyderabad", "Same issue cluster: admission / course approval"]'::jsonb, '2026-10-21 09:12:00+00'::timestamptz)) as v(ref, pid, confidence, state, reason, detected_at)
 join institutions i on i.permanent_id = v.pid;
 
 insert into overlap_cases (overlap_id, case_id)

@@ -3,244 +3,244 @@
   {
    "id": "i1",
    "pid": "1-1234567",
-   "name": "Sri Venkateswara College of Engineering",
+   "name": "Vidyasagara College of Engineering",
    "city": "Kanchipuram",
    "state": "Tamil Nadu",
    "region": "South",
    "address": "Pennalur, Sriperumbudur, Kanchipuram 602117",
-   "trust": "Sri Venkateswara Educational Trust",
+   "trust": "Vidyasagara Educational Trust",
    "aliases": [
-    "S.V. College of Engineering",
-    "Sri Venkateshwara Engineering College",
-    "SVCE Kanchipuram"
+    "V.S. College of Engineering",
+    "Vidyasagar Engineering College",
+    "VCE Kanchipuram"
    ]
   },
   {
    "id": "i2",
    "pid": "1-2345678",
-   "name": "Sri Venkateswara Institute of Technology",
+   "name": "Vidyasagara Institute of Technology",
    "city": "Tirupati",
    "state": "Andhra Pradesh",
    "region": "South",
    "address": "Karakatamanchi, Tirupati 517502",
-   "trust": "Sri Vidya Educational Society",
+   "trust": "Vidya Prasarana Society",
    "aliases": [
-    "SVIT Tirupati",
-    "Sri Venkateshwara Institute of Technology"
+    "VSIT Tirupati",
+    "Vidyasagar Institute of Technology"
    ]
   },
   {
    "id": "i3",
    "pid": "1-3456789",
-   "name": "Annai Meenakshi College of Engineering",
+   "name": "Annai Thilagam College of Engineering",
    "city": "Chennai",
    "state": "Tamil Nadu",
    "region": "South",
    "address": "Vembuliamman Koil St, K.K. Nagar, Chennai 600078",
-   "trust": "Annai Meenakshi Educational Trust",
+   "trust": "Annai Thilagam Educational Trust",
    "aliases": [
-    "AMCE Chennai",
-    "Annai Meenakshi Engg College"
+    "ATCE Chennai",
+    "Annai Thilagam Engg College"
    ]
   },
   {
    "id": "i4",
    "pid": "1-4567890",
-   "name": "Annai Meenakshi Polytechnic College",
+   "name": "Annai Thilagam Polytechnic College",
    "city": "Chengalpattu",
    "state": "Tamil Nadu",
    "region": "South",
    "address": "GST Road, Chengalpattu 603001",
-   "trust": "Annai Meenakshi Educational Trust",
+   "trust": "Annai Thilagam Educational Trust",
    "aliases": [
-    "AMPC Chengalpattu"
+    "ATPC Chengalpattu"
    ]
   },
   {
    "id": "i5",
    "pid": "1-5678901",
-   "name": "Government Polytechnic",
+   "name": "Triloknath Government Polytechnic",
    "city": "Kangra",
    "state": "Himachal Pradesh",
    "region": "North",
    "address": "Kangra 176001",
    "trust": "—",
    "aliases": [
-    "G.P. Kangra",
-    "Govt Polytechnic Kangra"
+    "T.G.P. Kangra",
+    "Triloknath Govt Polytechnic"
    ]
   },
   {
    "id": "i6",
    "pid": "1-6789012",
-   "name": "Government Polytechnic",
+   "name": "Kandhasor Government Polytechnic",
    "city": "Nabarangpur",
    "state": "Odisha",
    "region": "East",
    "address": "Nabarangpur 764059",
    "trust": "—",
    "aliases": [
-    "G.P. Nabarangpur"
+    "K.G.P. Nabarangpur"
    ]
   },
   {
    "id": "i7",
    "pid": "1-7890123",
-   "name": "Patel College of Science & Technology",
+   "name": "Rajhans College of Science & Technology",
    "city": "Indore",
    "state": "Madhya Pradesh",
    "region": "Central",
    "address": "Bypass Road, Indore 452020",
-   "trust": "Patel Education Society",
+   "trust": "Rajhans Education Society",
    "aliases": [
-    "Patel College of Sci & Tech",
-    "PCST Indore"
+    "Rajhans College of Sci & Tech",
+    "RCST Indore"
    ]
   },
   {
    "id": "i8",
    "pid": "1-8901234",
-   "name": "Patel Institute of Management",
+   "name": "Rajhans Institute of Management",
    "city": "Bhopal",
    "state": "Madhya Pradesh",
    "region": "Central",
    "address": "Hoshangabad Road, Bhopal 462047",
-   "trust": "Patel Education Society",
+   "trust": "Rajhans Education Society",
    "aliases": [
-    "PIM Bhopal"
+    "RIM Bhopal"
    ]
   },
   {
    "id": "i9",
    "pid": "1-9012345",
-   "name": "St. Xavier's Technical Institute",
+   "name": "St. Ives Technical Institute",
    "city": "Mumbai",
    "state": "Maharashtra",
    "region": "West",
    "address": "Mahim, Mumbai 400016",
-   "trust": "St. Xavier's Society",
+   "trust": "St. Ives Society",
    "aliases": [
-    "SXTI Mumbai",
-    "St Xaviers Technical Institute"
+    "SITI Mumbai",
+    "St Ives Technical Institute"
    ]
   },
   {
    "id": "i10",
    "pid": "1-0123456",
-   "name": "Rajiv Gandhi Institute of Technology",
+   "name": "Chalukya Institute of Technology",
    "city": "Bengaluru",
    "state": "Karnataka",
    "region": "South",
    "address": "Cholanayakanahalli, Bengaluru 560032",
    "trust": "—",
    "aliases": [
-    "RGIT Bengaluru"
+    "CIT Bengaluru"
    ]
   },
   {
    "id": "i11",
    "pid": "1-1122334",
-   "name": "Sri Krishna College of Engineering",
+   "name": "Kovai College of Engineering",
    "city": "Coimbatore",
    "state": "Tamil Nadu",
    "region": "South",
    "address": "Vattamalaipalayam, Coimbatore 641042",
-   "trust": "Sri Krishna Educational Trust",
+   "trust": "Kovai Educational Trust",
    "aliases": [
-    "SKCE Coimbatore",
-    "Sri Krishna College of Engg"
+    "KCE Coimbatore",
+    "Kovai College of Engg"
    ]
   },
   {
    "id": "i12",
    "pid": "1-2233445",
-   "name": "Sri Krishna Institute of Technology",
+   "name": "Kovai Institute of Technology",
    "city": "Coimbatore",
    "state": "Tamil Nadu",
    "region": "South",
    "address": "Vinayaka Nagar, Coimbatore 641035",
-   "trust": "Sri Lakshmi Educational Trust",
+   "trust": "Nallur Educational Trust",
    "aliases": [
-    "SKIT Coimbatore"
+    "KIT Coimbatore"
    ]
   },
   {
    "id": "i13",
    "pid": "1-3344556",
-   "name": "Deccan Education Society's Technical Institute",
+   "name": "Sahyadri Vidyapeeth's Technical Institute",
    "city": "Pune",
    "state": "Maharashtra",
    "region": "West",
-   "address": "Fergusson College Road, Pune 411004",
-   "trust": "Deccan Education Society",
+   "address": "Nandanvan College Road, Pune 411004",
+   "trust": "Sahyadri Vidyapeeth Society",
    "aliases": [
-    "DES Technical Institute",
-    "DEST Pune"
+    "SV Technical Institute",
+    "SVTI Pune"
    ]
   },
   {
    "id": "i14",
    "pid": "1-4455667",
-   "name": "Fergusson College (Autonomous)",
+   "name": "Anandashram College (Autonomous)",
    "city": "Pune",
    "state": "Maharashtra",
    "region": "West",
-   "address": "F.C. Road, Pune 411004",
-   "trust": "Deccan Education Society",
+   "address": "N.C. Road, Pune 411004",
+   "trust": "Sahyadri Vidyapeeth Society",
    "aliases": [
-    "Fergusson College Pune"
+    "Anandashram College Pune"
    ]
   },
   {
    "id": "i15",
    "pid": "1-5566778",
-   "name": "Chaitanya Bharathi Institute of Technology",
+   "name": "Vidyanidhi Institute of Technology",
    "city": "Hyderabad",
    "state": "Telangana",
    "region": "South",
    "address": "Gandipet, Hyderabad 500075",
-   "trust": "CBIT Educational Society",
+   "trust": "Vidyanidhi Educational Society",
    "aliases": [
-    "CBIT Hyderabad"
+    "VNIET Hyderabad"
    ]
   },
   {
    "id": "i16",
    "pid": "1-6677889",
-   "name": "Government Engineering College",
+   "name": "Kodiyur Government Engineering College",
    "city": "Thrissur",
    "state": "Kerala",
    "region": "South",
    "address": "Ramavarmapuram, Thrissur 680009",
    "trust": "—",
    "aliases": [
-    "GEC Thrissur"
+    "KGEC Thrissur"
    ]
   },
   {
    "id": "i17",
    "pid": "1-7788990",
-   "name": "Sardar Patel Institute of Technology",
+   "name": "Sardar Rajhans Institute of Technology",
    "city": "Mumbai",
    "state": "Maharashtra",
    "region": "West",
    "address": "Andheri West, Mumbai 400058",
-   "trust": "Sardar Patel Trust",
+   "trust": "Rajhans Memorial Trust",
    "aliases": [
-    "SPIT Mumbai"
+    "SRIT Mumbai"
    ]
   },
   {
    "id": "i18",
    "pid": "1-8899001",
-   "name": "IIIT Design & Manufacturing Kancheepuram",
+   "name": "Kancheepuram Institute of Design & Manufacturing",
    "city": "Kancheepuram",
    "state": "Tamil Nadu",
    "region": "South",
    "address": "Melakottaiyur, Kancheepuram 600127",
    "trust": "—",
    "aliases": [
-    "IIITDM Kancheepuram"
+    "KIDM Kancheepuram"
    ]
   }
  ],
@@ -770,7 +770,7 @@
    "confidence": 98,
    "reason": [
     "Same AICTE Permanent ID",
-    "Alias matched: S.V. College of Engineering",
+    "Alias matched: V.S. College of Engineering",
     "Same issue cluster: fee / scholarship",
     "Location match: Kanchipuram"
    ],
@@ -805,7 +805,7 @@
    "confidence": 97,
    "reason": [
     "Same AICTE Permanent ID",
-    "Alias matched: CBIT Hyderabad",
+    "Alias matched: VNIET Hyderabad",
     "Same issue cluster: admission / course approval"
    ],
    "state": "open",

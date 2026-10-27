@@ -800,8 +800,8 @@ summary::marker{content:""}
         <summary class="iconbtn" id="bellBtn" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><i class="dot"></i></summary>
         <div class="dropdown" id="bellDrop">
           <div class="ddh">Notifications</div>
-          <div class="ddi" onclick="bellGo('C-2026-0142')"><span class="chip red">Overlap</span><div><b>3 open cases at Sri Venkateswara College</b><span>PGRC and RB · 12 min ago</span></div></div>
-          <div class="ddi" onclick="bellGo('C-2026-0185')"><span class="chip amber">SLA</span><div><b>C-2026-0185 is 25 days beyond limit</b><span>Government Polytechnic, Kangra</span></div></div>
+          <div class="ddi" onclick="bellGo('C-2026-0142')"><span class="chip red">Overlap</span><div><b>3 open cases at Vidyasagara College</b><span>PGRC and RB · 12 min ago</span></div></div>
+          <div class="ddi" onclick="bellGo('C-2026-0185')"><span class="chip amber">SLA</span><div><b>C-2026-0185 is 25 days beyond limit</b><span>Triloknath Government Polytechnic, Kangra</span></div></div>
           <div class="ddi" onclick="bellGo('C-2026-0186')"><span class="chip blue">Custody</span><div><b>Transfer C-2026-0186 not accepted</b><span>15 days in limbo · RB</span></div></div>
           <div class="ddi" onclick="bellGo('')"><span class="chip green">Resolved</span><div><b>Overlap CL-04 reviewed</b><span>Different institutions · no link</span></div></div>
           <div class="dd-foot"><span>4 logged to the audit chain</span><button class="btn small" aria-label="Open audit log" onclick="bellAudit()">Audit log</button></div>
@@ -872,24 +872,24 @@ document.querySelectorAll('[data-icon]').forEach(el=>{el.innerHTML=svg(el.datase
 const TODAY=new Date('2026-10-25T00:00:00+05:30');
 const DAY=86400000;
 const institutions=[
- {id:'i1',pid:'1-1234567',name:'Sri Venkateswara College of Engineering',city:'Kanchipuram',state:'Tamil Nadu',region:'South',address:'Pennalur, Sriperumbudur, Kanchipuram 602117',trust:'Sri Venkateswara Educational Trust',aliases:['S.V. College of Engineering','Sri Venkateshwara Engineering College','SVCE Kanchipuram']},
- {id:'i2',pid:'1-2345678',name:'Sri Venkateswara Institute of Technology',city:'Tirupati',state:'Andhra Pradesh',region:'South',address:'Karakatamanchi, Tirupati 517502',trust:'Sri Vidya Educational Society',aliases:['SVIT Tirupati','Sri Venkateshwara Institute of Technology']},
- {id:'i3',pid:'1-3456789',name:'Annai Meenakshi College of Engineering',city:'Chennai',state:'Tamil Nadu',region:'South',address:'Vembuliamman Koil St, K.K. Nagar, Chennai 600078',trust:'Annai Meenakshi Educational Trust',aliases:['AMCE Chennai','Annai Meenakshi Engg College']},
- {id:'i4',pid:'1-4567890',name:'Annai Meenakshi Polytechnic College',city:'Chengalpattu',state:'Tamil Nadu',region:'South',address:'GST Road, Chengalpattu 603001',trust:'Annai Meenakshi Educational Trust',aliases:['AMPC Chengalpattu']},
- {id:'i5',pid:'1-5678901',name:'Government Polytechnic',city:'Kangra',state:'Himachal Pradesh',region:'North',address:'Kangra 176001',trust:'—',aliases:['G.P. Kangra','Govt Polytechnic Kangra']},
- {id:'i6',pid:'1-6789012',name:'Government Polytechnic',city:'Nabarangpur',state:'Odisha',region:'East',address:'Nabarangpur 764059',trust:'—',aliases:['G.P. Nabarangpur']},
- {id:'i7',pid:'1-7890123',name:'Patel College of Science & Technology',city:'Indore',state:'Madhya Pradesh',region:'Central',address:'Bypass Road, Indore 452020',trust:'Patel Education Society',aliases:['Patel College of Sci & Tech','PCST Indore']},
- {id:'i8',pid:'1-8901234',name:'Patel Institute of Management',city:'Bhopal',state:'Madhya Pradesh',region:'Central',address:'Hoshangabad Road, Bhopal 462047',trust:'Patel Education Society',aliases:['PIM Bhopal']},
- {id:'i9',pid:'1-9012345',name:"St. Xavier's Technical Institute",city:'Mumbai',state:'Maharashtra',region:'West',address:'Mahim, Mumbai 400016',trust:"St. Xavier's Society",aliases:['SXTI Mumbai','St Xaviers Technical Institute']},
- {id:'i10',pid:'1-0123456',name:'Rajiv Gandhi Institute of Technology',city:'Bengaluru',state:'Karnataka',region:'South',address:'Cholanayakanahalli, Bengaluru 560032',trust:'—',aliases:['RGIT Bengaluru']},
- {id:'i11',pid:'1-1122334',name:'Sri Krishna College of Engineering',city:'Coimbatore',state:'Tamil Nadu',region:'South',address:'Vattamalaipalayam, Coimbatore 641042',trust:'Sri Krishna Educational Trust',aliases:['SKCE Coimbatore','Sri Krishna College of Engg']},
- {id:'i12',pid:'1-2233445',name:'Sri Krishna Institute of Technology',city:'Coimbatore',state:'Tamil Nadu',region:'South',address:'Vinayaka Nagar, Coimbatore 641035',trust:'Sri Lakshmi Educational Trust',aliases:['SKIT Coimbatore']},
- {id:'i13',pid:'1-3344556',name:"Deccan Education Society's Technical Institute",city:'Pune',state:'Maharashtra',region:'West',address:'Fergusson College Road, Pune 411004',trust:'Deccan Education Society',aliases:['DES Technical Institute','DEST Pune']},
- {id:'i14',pid:'1-4455667',name:'Fergusson College (Autonomous)',city:'Pune',state:'Maharashtra',region:'West',address:'F.C. Road, Pune 411004',trust:'Deccan Education Society',aliases:['Fergusson College Pune']},
- {id:'i15',pid:'1-5566778',name:'Chaitanya Bharathi Institute of Technology',city:'Hyderabad',state:'Telangana',region:'South',address:'Gandipet, Hyderabad 500075',trust:'CBIT Educational Society',aliases:['CBIT Hyderabad']},
- {id:'i16',pid:'1-6677889',name:'Government Engineering College',city:'Thrissur',state:'Kerala',region:'South',address:'Ramavarmapuram, Thrissur 680009',trust:'—',aliases:['GEC Thrissur']},
- {id:'i17',pid:'1-7788990',name:'Sardar Patel Institute of Technology',city:'Mumbai',state:'Maharashtra',region:'West',address:'Andheri West, Mumbai 400058',trust:'Sardar Patel Trust',aliases:['SPIT Mumbai']},
- {id:'i18',pid:'1-8899001',name:'IIIT Design & Manufacturing Kancheepuram',city:'Kancheepuram',state:'Tamil Nadu',region:'South',address:'Melakottaiyur, Kancheepuram 600127',trust:'—',aliases:['IIITDM Kancheepuram']}
+ {id:'i1',pid:'1-1234567',name:'Vidyasagara College of Engineering',city:'Kanchipuram',state:'Tamil Nadu',region:'South',address:'Pennalur, Sriperumbudur, Kanchipuram 602117',trust:'Vidyasagara Educational Trust',aliases:['V.S. College of Engineering','Vidyasagar Engineering College','VCE Kanchipuram']},
+ {id:'i2',pid:'1-2345678',name:'Vidyasagara Institute of Technology',city:'Tirupati',state:'Andhra Pradesh',region:'South',address:'Karakatamanchi, Tirupati 517502',trust:'Vidya Prasarana Society',aliases:['VSIT Tirupati','Vidyasagar Institute of Technology']},
+ {id:'i3',pid:'1-3456789',name:'Annai Thilagam College of Engineering',city:'Chennai',state:'Tamil Nadu',region:'South',address:'Vembuliamman Koil St, K.K. Nagar, Chennai 600078',trust:'Annai Thilagam Educational Trust',aliases:['ATCE Chennai','Annai Thilagam Engg College']},
+ {id:'i4',pid:'1-4567890',name:'Annai Thilagam Polytechnic College',city:'Chengalpattu',state:'Tamil Nadu',region:'South',address:'GST Road, Chengalpattu 603001',trust:'Annai Thilagam Educational Trust',aliases:['ATPC Chengalpattu']},
+ {id:'i5',pid:'1-5678901',name:'Triloknath Government Polytechnic',city:'Kangra',state:'Himachal Pradesh',region:'North',address:'Kangra 176001',trust:'—',aliases:['T.G.P. Kangra','Triloknath Govt Polytechnic']},
+ {id:'i6',pid:'1-6789012',name:'Kandhasor Government Polytechnic',city:'Nabarangpur',state:'Odisha',region:'East',address:'Nabarangpur 764059',trust:'—',aliases:['K.G.P. Nabarangpur']},
+ {id:'i7',pid:'1-7890123',name:'Rajhans College of Science & Technology',city:'Indore',state:'Madhya Pradesh',region:'Central',address:'Bypass Road, Indore 452020',trust:'Rajhans Education Society',aliases:['Rajhans College of Sci & Tech','RCST Indore']},
+ {id:'i8',pid:'1-8901234',name:'Rajhans Institute of Management',city:'Bhopal',state:'Madhya Pradesh',region:'Central',address:'Hoshangabad Road, Bhopal 462047',trust:'Rajhans Education Society',aliases:['RIM Bhopal']},
+ {id:'i9',pid:'1-9012345',name:"St. Ives Technical Institute",city:'Mumbai',state:'Maharashtra',region:'West',address:'Mahim, Mumbai 400016',trust:"St. Ives Society",aliases:['SITI Mumbai','St Ives Technical Institute']},
+ {id:'i10',pid:'1-0123456',name:'Chalukya Institute of Technology',city:'Bengaluru',state:'Karnataka',region:'South',address:'Cholanayakanahalli, Bengaluru 560032',trust:'—',aliases:['CIT Bengaluru']},
+ {id:'i11',pid:'1-1122334',name:'Kovai College of Engineering',city:'Coimbatore',state:'Tamil Nadu',region:'South',address:'Vattamalaipalayam, Coimbatore 641042',trust:'Kovai Educational Trust',aliases:['KCE Coimbatore','Kovai College of Engg']},
+ {id:'i12',pid:'1-2233445',name:'Kovai Institute of Technology',city:'Coimbatore',state:'Tamil Nadu',region:'South',address:'Vinayaka Nagar, Coimbatore 641035',trust:'Nallur Educational Trust',aliases:['KIT Coimbatore']},
+ {id:'i13',pid:'1-3344556',name:"Sahyadri Vidyapeeth's Technical Institute",city:'Pune',state:'Maharashtra',region:'West',address:'Nandanvan College Road, Pune 411004',trust:'Sahyadri Vidyapeeth Society',aliases:['SV Technical Institute','SVTI Pune']},
+ {id:'i14',pid:'1-4455667',name:'Anandashram College (Autonomous)',city:'Pune',state:'Maharashtra',region:'West',address:'N.C. Road, Pune 411004',trust:'Sahyadri Vidyapeeth Society',aliases:['Anandashram College Pune']},
+ {id:'i15',pid:'1-5566778',name:'Vidyanidhi Institute of Technology',city:'Hyderabad',state:'Telangana',region:'South',address:'Gandipet, Hyderabad 500075',trust:'Vidyanidhi Educational Society',aliases:['VNIET Hyderabad']},
+ {id:'i16',pid:'1-6677889',name:'Kodiyur Government Engineering College',city:'Thrissur',state:'Kerala',region:'South',address:'Ramavarmapuram, Thrissur 680009',trust:'—',aliases:['KGEC Thrissur']},
+ {id:'i17',pid:'1-7788990',name:'Sardar Rajhans Institute of Technology',city:'Mumbai',state:'Maharashtra',region:'West',address:'Andheri West, Mumbai 400058',trust:'Rajhans Memorial Trust',aliases:['SRIT Mumbai']},
+ {id:'i18',pid:'1-8899001',name:'Kancheepuram Institute of Design & Manufacturing',city:'Kancheepuram',state:'Tamil Nadu',region:'South',address:'Melakottaiyur, Kancheepuram 600127',trust:'—',aliases:['KIDM Kancheepuram']}
 ];
 const cases=[
  {id:'C-2026-0031',instId:'i3',category:'Unauthorized intake',bureau:'RB',status:'Disposed',received:'2026-02-04',lastAction:'Show-cause closed, admissions re-verified',nextAction:'None — disposed',lastActionDate:'2026-02-26',expected:'2026-03-20',officer:'S. Iyer',sla:60,docs:3,summary:'Institution admitted 38 students beyond sanctioned intake in two PG programmes.'},
@@ -926,9 +926,9 @@ const cases=[
  {id:'C-2026-0169',instId:'i17',category:'Unapproved course',bureau:'RB',status:'Pending',received:'2026-10-14',lastAction:'Case created',nextAction:'Assign officer',lastActionDate:'2026-10-14',expected:'2026-12-15',officer:'Unassigned',sla:90,docs:1,summary:'New PG diploma advertised before approval.'}
 ];
 const overlaps=[
- {id:'CL-01',instId:'i1',caseIds:['C-2026-0142','C-2026-0167','C-2026-0198'],confidence:98,reason:['Same AICTE Permanent ID','Alias matched: S.V. College of Engineering','Same issue cluster: fee / scholarship','Location match: Kanchipuram'],state:'open',room:'CR-01',lead:'Unassigned',detected:'20 Oct 2026, 10:38'},
+ {id:'CL-01',instId:'i1',caseIds:['C-2026-0142','C-2026-0167','C-2026-0198'],confidence:98,reason:['Same AICTE Permanent ID','Alias matched: V.S. College of Engineering','Same issue cluster: fee / scholarship','Location match: Kanchipuram'],state:'open',room:'CR-01',lead:'Unassigned',detected:'20 Oct 2026, 10:38'},
  {id:'CL-02',instId:'i2',caseIds:['C-2026-0180','C-2026-0181'],confidence:94,reason:['Same AICTE Permanent ID','Same issue cluster: approval / faculty','Both open across PGRC and RB'],state:'open',room:'CR-02',lead:'Unassigned',detected:'19 Oct 2026, 15:10'},
- {id:'CL-03',instId:'i15',caseIds:['C-2026-0196','C-2026-0197'],confidence:97,reason:['Same AICTE Permanent ID','Alias matched: CBIT Hyderabad','Same issue cluster: admission / course approval'],state:'open',room:'CR-03',lead:'Unassigned',detected:'21 Oct 2026, 09:12'}
+ {id:'CL-03',instId:'i15',caseIds:['C-2026-0196','C-2026-0197'],confidence:97,reason:['Same AICTE Permanent ID','Alias matched: VNIET Hyderabad','Same issue cluster: admission / course approval'],state:'open',room:'CR-03',lead:'Unassigned',detected:'21 Oct 2026, 09:12'}
 ];
 const rooms={
  'CR-01':{id:'CR-01',overlapId:'CL-01',lead:'Unassigned',custody:'Each case keeps its bureau of origin',notes:'',activity:[{t:'20 Oct 10:38',a:'System',x:'detected overlap with 98% confidence'},{t:'20 Oct 10:42',a:'R. Menon',x:'linked C-2026-0167 to C-2026-0142'},{t:'20 Oct 10:45',a:'P. Rao',x:'opened Coordination Room CR-01'}]},
@@ -1108,7 +1108,7 @@ function dashHero(){
  +'<div class="tp-head"><span class="lab">One thread · live</span><span class="chip amber">Under process</span></div>'
  +'<div class="tp-body">'
  +'<div class="tp-row"><i class="tp-dot slate"></i><div><span class="tp-lab">Grievance cell · PGRC</span><div class="tp-main">C-2026-0142 · fee refund</div><div class="tp-meta">Received 12 Sep · 43 days · officer P. Rao</div></div></div>'
- +'<div class="tp-row"><i class="tp-dot rust"></i><div><span class="tp-lab">Institution · AICTE Permanent ID</span><div class="tp-main">Sri Venkateswara College</div><div class="tp-meta">1-1234567 · Kanchipuram, Tamil Nadu</div></div></div>'
+ +'<div class="tp-row"><i class="tp-dot rust"></i><div><span class="tp-lab">Institution · AICTE Permanent ID</span><div class="tp-main">Vidyasagara College</div><div class="tp-meta">1-1234567 · Kanchipuram, Tamil Nadu</div></div></div>'
  +'<div class="tp-row"><i class="tp-dot moss"></i><div><span class="tp-lab">Coordination room</span><div class="tp-main">CR-01 · lead RB</div><div class="tp-meta">Joint decision open · both bureaus notified</div></div></div>'
  +'</div>'
  +'<div class="tp-foot"><span><b>98%</b> match · 2 bureaus linked</span><span class="tp-link" onclick="go(\'room\')">Open room →</span></div>'
@@ -1130,11 +1130,11 @@ function renderDashboard(){
  const maxr=Math.max(...rcounts.map(r=>r[1]),1);
  const recent=act.slice().sort((a,b)=>age(b)-age(a)).slice(0,6);
  const alerts=[
-  ['red','alert','Overlapping cases detected','CL-01 · Sri Venkateswara College of Engineering · PGRC + RB','12 min'],
-  ['amber','clock','SLA breach: C-2026-0185','85 days old against a 60-day limit · Government Polytechnic, Kangra','3 h'],
+  ['red','alert','Overlapping cases detected','CL-01 · Vidyasagara College of Engineering · PGRC + RB','12 min'],
+  ['amber','clock','SLA breach: C-2026-0185','85 days old against a 60-day limit · Triloknath Government Polytechnic, Kangra','3 h'],
   ['blue','link','Custody not accepted','C-2026-0186 transferred 15 days ago · RB','1 h'],
   ['amber','clock','Case due in 5 days','C-2026-0180 escalated · expected disposal 30 Oct','Yesterday'],
-  ['blue','users','Duplicate blocked at intake','CL-02 · Annai Meenakshi Polytechnic already linked to an open PGRC case','Yesterday']
+  ['blue','users','Duplicate blocked at intake','CL-02 · Annai Thilagam Polytechnic already linked to an open PGRC case','Yesterday']
  ];
  content.innerHTML=dashHero()
  +'<div class="kpis">'
@@ -1157,7 +1157,7 @@ function renderDashboard(){
  +'</div>'
  +'<div class="grid2">'
  +'<div class="card stretch"><div class="cardhead"><h3>Region-wise active cases</h3><span class="muted">15 institutions with open cases</span></div><div class="cardbody"><div class="regionlist">'+rcounts.map(r=>'<div class="regionrow"><span>'+r[0]+'</span><div class="tr"><div class="fl" style="width:'+(r[1]/maxr*100)+'%"></div></div><b>'+r[1]+'</b></div>').join('')+'</div><div class="regionfoot"><b>'+act.length+'</b> active cases across five regions · <b>'+over+'</b> beyond the 60-day limit.</div></div></div>'
- +'<div class="card"><div class="cardhead"><h3>Trust / society group risk</h3><span class="muted">One group, many institutions</span></div><div class="cardbody"><div class="trustcard"><div class="tt">Annai Meenakshi Educational Trust</div><div class="td">2 institutions · 2 open cases in PGRC and RB. One group-level review recommended.</div><div class="tb"><span class="chip amber">2 open cases</span><span class="chip">Chennai + Chengalpattu</span></div></div><div class="trustcard"><div class="tt">Deccan Education Society</div><div class="td">2 institutions · 2 open cases in PGRC and RB. Same society, separate campuses.</div><div class="tb"><span class="chip amber">2 open cases</span><span class="chip">Pune</span></div></div><div class="trustcard calm"><div class="tt">Patel Education Society</div><div class="td">2 institutions · 1 open case and 1 recently disposed. No group escalation.</div><div class="tb"><span class="chip green">1 resolved</span><span class="chip">Indore + Bhopal</span></div></div></div></div>'
+ +'<div class="card"><div class="cardhead"><h3>Trust / society group risk</h3><span class="muted">One group, many institutions</span></div><div class="cardbody"><div class="trustcard"><div class="tt">Annai Thilagam Educational Trust</div><div class="td">2 institutions · 2 open cases in PGRC and RB. One group-level review recommended.</div><div class="tb"><span class="chip amber">2 open cases</span><span class="chip">Chennai + Chengalpattu</span></div></div><div class="trustcard"><div class="tt">Sahyadri Vidyapeeth Society</div><div class="td">2 institutions · 2 open cases in PGRC and RB. Same society, separate campuses.</div><div class="tb"><span class="chip amber">2 open cases</span><span class="chip">Pune</span></div></div><div class="trustcard calm"><div class="tt">Rajhans Education Society</div><div class="td">2 institutions · 1 open case and 1 recently disposed. No group escalation.</div><div class="tb"><span class="chip green">1 resolved</span><span class="chip">Indore + Bhopal</span></div></div></div></div>'
  +'</div>';
  content.querySelectorAll('[data-go]').forEach(el=>el.onclick=()=>go(el.dataset.go,el.dataset.payload));
  animateKpis();
@@ -1171,7 +1171,7 @@ function renderIntake(){
  +'</div>';
 }
 function loadSample(){
- $('#complaintText').value='Subject: Excess lab fees and unpaid scholarship — S.V. College of Engineering, Kanchipuram\n\nSir/Madam,\n\nWe are students of S.V. College of Engineering (formerly Sri Venkateshwara Engineering College), Kanchipuram. The college has charged an extra "lab development fee" of Rs. 4,500 this semester and has not refunded the state scholarship amount for 2025-26. When we asked the office, they said the fee is mandatory for all students.\n\nPlease investigate and direct the college to refund the amount.\n\nRegards,\nA group of 14 students';
+ $('#complaintText').value='Subject: Excess lab fees and unpaid scholarship — V.S. College of Engineering, Kanchipuram\n\nSir/Madam,\n\nWe are students of V.S. College of Engineering (formerly Vidyasagar Engineering College), Kanchipuram. The college has charged an extra "lab development fee" of Rs. 4,500 this semester and has not refunded the state scholarship amount for 2025-26. When we asked the office, they said the fee is mandatory for all students.\n\nPlease investigate and direct the college to refund the amount.\n\nRegards,\nA group of 14 students';
  showToast('Sample complaint loaded');
 }
 function resolveNow(){
@@ -1247,7 +1247,7 @@ function reviewSemantic(id){
 }
 function renderIntakeResults(text){
  let ranked=institutions.map(q=>({q,s:scoreMatch(text,q)})).sort((a,b)=>b.s-a.s).slice(0,3);
- if(norm(text).includes('s v college')||norm(text).includes('venkateshwara')||norm(text).includes('kanchipuram')){
+ if(norm(text).includes('v s college')||norm(text).includes('vidyasagar')||norm(text).includes('kanchipuram')){
   ranked=[{q:inst('i1'),s:97},{q:inst('i2'),s:71},{q:inst('i18'),s:58}];
  }
  const best=ranked[0].q;
@@ -1281,7 +1281,7 @@ function renderRadar(){
   const cs=o.caseIds.map(byCase);
   return '<div class="cluster"><div class="chead"><div><div class="ct">'+e(inst(o.instId).name)+'</div><div class="cm">'+e(inst(o.instId).pid)+' · '+e(inst(o.instId).city)+' · '+e(o.room)+' · lead: '+e(rooms[o.room].lead)+'</div></div><div class="conf"><b>'+o.confidence+'%</b><span>match confidence</span></div></div><div class="cbody"><div class="casepair">'+cs.map(c=>'<div class="minicase"><div class="cid">'+c.id+'</div><div class="cn">'+e(c.category)+'</div><div class="cb">'+bchip(c.bureau)+pill(c)+'</div><div class="ca">'+e(c.officer)+' · '+age(c)+' days · next: '+e(c.nextAction)+'</div></div>').join('')+'</div><div class="why" style="margin-bottom:9px">'+o.reason.map(r=>'<span class="chip">'+e(r)+'</span>').join('')+'</div><div class="cfoot"><span class="muted">'+cs.length+' cases linked · '+cs.filter(c=>beyond(c)).length+' beyond timeline</span><button class="btn small" onclick="dismissOverlap(\''+o.id+'\')">Not the same institution</button><button class="btn primary small" data-go="room" data-payload="'+o.room+'">'+svg('users',13)+'Open Coordination Room</button></div></div></div>';
  }).join('')
- +'<div class="cluster" style="opacity:.82"><div class="chead"><div><div class="ct">Sri Krishna College of Engineering vs Sri Krishna Institute of Technology</div><div class="cm">Coimbatore · reviewed by system · different Permanent IDs and trusts</div></div><div class="conf"><b style="color:var(--muted)">76%</b><span>name similarity</span></div></div><div class="cbody"><div class="banner ok" style="padding:9px 11px"><span>'+svg('check',16)+'</span><div><b>Not linked.</b> Same city and similar name, but different AICTE Permanent IDs and different trusts. Kept in the review log to demonstrate false-positive control.</div></div></div></div>'
+ +'<div class="cluster" style="opacity:.82"><div class="chead"><div><div class="ct">Kovai College of Engineering vs Kovai Institute of Technology</div><div class="cm">Coimbatore · reviewed by system · different Permanent IDs and trusts</div></div><div class="conf"><b style="color:var(--muted)">76%</b><span>name similarity</span></div></div><div class="cbody"><div class="banner ok" style="padding:9px 11px"><span>'+svg('check',16)+'</span><div><b>Not linked.</b> Same city and similar name, but different AICTE Permanent IDs and different trusts. Kept in the review log to demonstrate false-positive control.</div></div></div></div>'
  +'</div><div>'
  +'<div class="whybox"><h4>Why these matched</h4><div class="sig"><div class="n">1</div><div><b>AICTE Permanent ID</b><span>Deterministic match when the complaint or email references the ID.</span></div></div><div class="sig"><div class="n">2</div><div><b>Alias graph</b><span>Every spelling a complaint has used resolves to the same Permanent ID.</span></div></div><div class="sig"><div class="n">3</div><div><b>Fuzzy name + location</b><span>Abbreviations, typos and word order; city and state disambiguate.</span></div></div><div class="sig"><div class="n">4</div><div><b>Issue similarity</b><span>Fee/scholarship complaints cluster together; approval cases cluster separately.</span></div></div><div class="sig"><div class="n">5</div><div><b>Human confirmation</b><span>High-confidence matches can auto-link; everything else goes to an officer.</span></div></div></div>'
  +'<div class="whybox evidence"><h4>Measured on real data</h4><div class="mstats"><div class="mstat"><b>94.6%</b><span>top-1 match accuracy</span></div><div class="mstat"><b>99.7%</b><span>top-3 recall</span></div><div class="mstat"><b>0</b><span>silent merges</span></div></div><div class="mnote">9,558 real AICTE Permanent IDs · 367 labelled name variants. Human confirmation for the rest.</div></div>'
