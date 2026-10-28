@@ -66,3 +66,25 @@ On our own labelled set, three hundred and sixty-seven name variants resolve at 
 - "production ready", "replaces CPGRAMS" — the pilot, the roles and the audit lock are future work.
 - Any number that is not in the deck: 9,558 IDs, 367 variants, 94.6% top-1, 99.7% top-3, 0 silent merges, 18 audit events, 32 cases, 11 tables, 98% cluster.
 - The 100–200 officer-days figure without "modelled".
+
+## Cutaway cards (optional, 2–4 s each)
+
+Five stills that can sit between live actions. Every prompt ends with the style block; none of them may contain text — the generator garbles it, and a garbled label is worse than no image.
+
+**Style block, append to every prompt:**
+```
+flat editorial infographic, matte bone-paper background #F4F1EA, line art in ink navy
+#1F2A44 at 2-3px, one accent per image (muted brick #B3542F or steel blue #2B5C8A),
+flat fills, no gradients, no drop shadows, no glow, no 3D, no isometric, generous
+margins, calm symmetric composition, single focal point, 16:9, absolutely no text,
+no letters, no numbers, no logos, no watermarks
+```
+
+1. **The problem (0:00).** One small line-art building at centre; three identical folder icons around it at equal distance, each joined to the building by a different-coloured path that never touches the other two. The negative space between the paths is the point.
+2. **Resolve once, then one thread (0:18).** Three scattered paper-sheet icons entering from the left, converging into a single small ID-badge icon at centre; from the badge one clean horizontal line runs into a stacked timeline of three connected nodes. Left side unaligned, right side calm, same line weight throughout.
+3. **Reasons, not a score (0:45).** A single decision node with three thin labelled-by-shape branches: a solid checkmark branch, a dotted uncertain branch, and a hard stop. No arrows in a circle, no funnel cliché.
+4. **The audit chain (1:15).** Five or six short horizontal bars in a row, each overlapping the previous by a third, joined by a hairline that runs through their centres; one bar is a different colour to suggest an edited row and the hairline visibly breaks at it.
+5. **Reach (2:40).** A sparse grid of about forty small dot markers with one connected cluster ringed in accent colour, and a thin bracket linking that cluster to a plain rectangular register block at the right edge. No globe, no map outlines.
+
+Place them only where the framework asks for a beat, and cut any that are not ready: the walkthrough is 85 s of the 180 s and it should not be diluted.
+
