@@ -2,6 +2,15 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v9.2] — 2026-10-28
+
+The prototype is legible from a projector, and the deck carries captures of that build.
+
+- **Type floor.** Site labels sat at 7.5–9 px. One CSS block raises everything under 10.5 px to 9–9.5 px (`th`, `label`, nav labels, table headers, chips, hashes, case IDs) and leaves every size above that alone. Nothing was restyled beyond the small text; body copy stays 13 px.
+- **Evidence chips were run together.** Adjacent chips in the overlap card rendered as `…PERMANENT ID● ALIAS MATCHED…` because the container had no gap. `.why` is now a wrapping flex row with a 14 px column gap, so each chip's dot reads as its own bullet.
+- **Measured, not eyeballed.** A Playwright pass over five views reports no text node below 8.5 px except the version badge, and `scrollWidth` never exceeds the viewport at 1440. The QA flow re-ran after the change: 9 views, 0 console errors, 0 overflow at 320–1920 px, a11y 0/0/0.
+- **Captures re-shot from this build** and re-cropped against measured element boxes rather than guessed coordinates: `dash_main.png` 1136×710, `reports_band.png` 2272×1212, `radar_card.png` 1576×562. Deck rebuilt, PDF re-exported (6 pages, 960×540 pt), claim scan unchanged.
+
 ## [v9.1] — 2026-10-28
 
 Page 3 becomes a pictorial flowchart: the same tree, but every step now carries an icon, so the diagram reads before the text does.

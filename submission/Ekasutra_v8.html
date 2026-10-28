@@ -308,7 +308,8 @@ textarea.complaint{min-height:172px;resize:vertical;line-height:1.6;font-size:11
 .match.best .rank{background:none;color:var(--rust)}
 .match .mname{font-size:12px;font-weight:600;line-height:1.35;color:var(--ink)}
 .match .mmeta{font-size:9.5px;color:var(--muted);margin-top:3px}
-.match .why{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px}
+.why{display:flex;flex-wrap:wrap;gap:4px 14px}
+.match .why{display:flex;gap:4px 14px;flex-wrap:wrap;margin-top:7px}
 .conf{margin-left:auto;text-align:right;flex:0 0 auto}
 .conf b{font-size:17px;color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .conf span{display:block;font-size:7.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-2);margin-top:1px}
@@ -762,6 +763,14 @@ summary::marker{content:""}
  .tour p{font-size:11.5px;line-height:1.5}
  .tour-foot{margin-top:10px;padding-top:8px}
 }
+/* Legibility floor for projection and video: the smallest labels sat at 7.5-9 px. Nothing else moves. */
+.ver,.tp-lab{font-size:8.5px}
+.brand span,.nav-label,.sf-status,.sr-head,.eyebrow,.tp-head .lab,.lab,th,.sectionlabel{font-size:9px}
+.side-foot,.sr-k,.tp-foot,.tp-foot b,.kpi .lab,.donut .hole span,.bureau,.hash,.chain,.live,.chip,.cid{font-size:9.5px}
+.field label{font-size:9px}
+.whybox h4{font-size:9.5px}
+.stat .sl{font-size:9px}
+.minicase .cid{font-size:9.5px}
 @media print{
  html,body{background:#fff!important}
  body.printing>*{display:none!important}
