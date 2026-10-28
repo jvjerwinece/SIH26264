@@ -2,6 +2,15 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v9.3] — 2026-10-28
+
+Page 3's discs are optically centred, and the tech-stack strip now states what ships.
+
+- **A/B/C were sitting 16 % low in their circles.** Segoe MDL2 Assets has no Latin letters, so those three runs were silently falling back to Arial — and PowerPoint centres the line box, not the glyph ink, so every disc rendered 0.9–2.5 pt below centre. `disc()` now takes a measured `lift` (icons 1.3 px, letters 1.05 px) and a horizontal nudge; all thirteen discs plus the two new lane discs now measure within ±0.62 pt of centre in the exported PDF.
+- **The glyph has to live in a shape, not a textbox.** Routed through `add_textbox`, PowerPoint exported the symbol glyphs with a missing-glyph box (the 8.5 pt lane icons came out as dots) and `spAutoFit` moved the letters again. The label now rides in an unfilled oval offset by `lift`; the filled disc stays exactly where it was drawn.
+- **The stack strip is two lanes, not one row.** "Runs today, in this pack" (check disc, solid pills) is separated by a hairline from "Pilot build — not built yet" (warning disc, dashed pills in muted ink). Before this, all eight pills looked identical apart from a 10 pt caption, which read as if Next.js and FastAPI shipped.
+- **Verified from the export.** Letter and icon offsets measured on every disc, nothing re-wrapped, text scan unchanged (0 retired figures, 2× 9,558, 4× 367, 2× 94.6, 2× 99.7), 6 pages at 960×540 pt, checksums regenerated and verified.
+
 ## [v9.2] — 2026-10-28
 
 The prototype is legible from a projector, and the deck carries captures of that build.

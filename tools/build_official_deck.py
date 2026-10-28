@@ -15,7 +15,7 @@ from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.enum.dml import MSO_LINE
 from pptx.enum.shapes import MSO_SHAPE
-from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
+from pptx.enum.text import MSO_ANCHOR, MSO_AUTO_SIZE, PP_ALIGN
 from pptx.util import Emu, Pt
 
 REPO = Path(__file__).resolve().parents[1]
@@ -113,8 +113,8 @@ def shape(slide, kind, x, y, w, h, fill=None, line=None, line_w=1.0, adj=None, d
     return sh
 
 
-def card(slide, x, y, w, h, paras, fill=LIGHT, line=LINE, adj=(0.10,), margins=(10, 10, 6, 6), anchor=MSO_ANCHOR.TOP):
-    sh = shape(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x, y, w, h, fill=fill, line=line, adj=adj)
+def card(slide, x, y, w, h, paras, fill=LIGHT, line=LINE, adj=(0.10,), margins=(10, 10, 6, 6), anchor=MSO_ANCHOR.TOP, dash=False):
+    sh = shape(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x, y, w, h, fill=fill, line=line, adj=adj, dash=dash)
     tf = sh.text_frame
     tf.margin_left, tf.margin_right, tf.margin_top, tf.margin_bottom = [px(m) for m in margins]
     tf.vertical_anchor = anchor
@@ -175,22 +175,32 @@ def section(slide, x, y, w, text, color=BLUE):
             [{"runs": [(text.upper(), 12.5, {"bold": True, "color": color, "spc": 90})]}])
 
 
-def chip(slide, x, y, w, h, text, fg=INK, bg=WHITE, border=LINE, size=11.5, bold=True):
+def chip(slide, x, y, w, h, text, fg=INK, bg=WHITE, border=LINE, size=11.5, bold=True, dash=False):
     card(slide, x, y, w, h, [{"runs": [(text, size, {"bold": bold, "color": fg})], "align": PP_ALIGN.CENTER}],
-         fill=bg, line=border, adj=(0.35,), margins=(6, 6, 2, 2), anchor=MSO_ANCHOR.MIDDLE)
+         fill=bg, line=border, adj=(0.35,), margins=(6, 6, 2, 2), anchor=MSO_ANCHOR.MIDDLE, dash=dash)
 
 
-def disc(slide, x, y, d, fill, glyph, size, color):
+def disc(slide, x, y, d, fill, glyph, size, color, font=ICON, bold=False, lift=None, dx=0.0):
+    """Coloured disc with a centred glyph or letter.
+
+    Two ovals: the visible one, and an unfilled one carrying the text, nudged up by
+    `lift`. The glyph must live in a shape, not a textbox — PowerPoint exports symbol
+    fonts as notdef from a plain textbox. And PowerPoint centres the line box rather
+    than the glyph ink, so every disc renders low; the lift values below are measured
+    from the exported PDF, not guessed."""
     sh = shape(slide, MSO_SHAPE.OVAL, x, y, d, d, fill=fill, line=None)
-    tf = sh.text_frame
+    if lift is None:
+        lift = 1.3 if font == ICON else 1.05
+    txt = shape(slide, MSO_SHAPE.OVAL, x + dx, y - lift, d, d, fill=None, line=None)
+    tf = txt.text_frame
     tf.word_wrap = False
-    tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
     tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
     p = tf.paragraphs[0]
     p.alignment = PP_ALIGN.CENTER
     r = p.add_run()
     r.text = glyph
-    style_run(r, size, color=color, font=ICON)
+    style_run(r, size, color=color, font=font, bold=bold)
     return sh
 
 
@@ -373,7 +383,9 @@ def build():
         x, c, tint = b["x"], b["color"], b["tint"]
         elbow(s, 497, 208, x + 186, 230, color=c, width=1.8)
         shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, x, 230, 372, 298, fill=tint, line=c, line_w=1.4, adj=(0.05,), dash=True)
-        disc(s, x + 14, 240, 20, c, b["tag"], 10, WHITE)
+        # Letters fall back to Arial (MDL2 has no Latin), so they get their own metrics:
+        # measured 2.4 pt low and 0.8 pt right of centre before the correction.
+        disc(s, x + 14, 240, 20, c, b["tag"], 10, WHITE, font=BODY, bold=True, dx=-0.2)
         textbox(s, x + 40, 240, 318, 20, [
             {"runs": [(b["head"], 11.5, {"bold": True, "color": c, "spc": 70})]}], anchor=MSO_ANCHOR.MIDDLE)
         ny = 266
@@ -393,13 +405,19 @@ def build():
             {"runs": [(b["out"], 12, {"bold": True, "color": c})], "line": 1.05}], anchor=MSO_ANCHOR.MIDDLE)
 
     shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, 48, 548, 1148, 98, fill=GREY_BG, line=LINE, adj=(0.06,))
-    textbox(s, 66, 558, 150, 18, [{"runs": [("TECH STACK", 11.5, {"bold": True, "color": DEEP, "spc": 90})]}])
-    textbox(s, 66, 578, 170, 16, [{"runs": [("runs today", 10, {"color": GREEN})]}])
+    shape(s, MSO_SHAPE.RECTANGLE, 640, 560, 1.2, 76, fill=LINE, line=None)
+
+    disc(s, 64, 566, 20, GREEN_BG, "\uE73E", 11, GREEN)
+    textbox(s, 92, 567, 320, 18, [
+        {"runs": [("RUNS TODAY, IN THIS PACK", 9.5, {"bold": True, "color": GREEN, "spc": 80})]}])
     for i, t in enumerate(["HTML + JS", "Web Crypto", "PostgreSQL 14", "11 tables"]):
-        chip(s, 66 + i * 144, 598, 134, 30, t, fg=INK, bg=WHITE, border=LINE, size=10.5)
-    textbox(s, 652, 578, 190, 16, [{"runs": [("pilot build, not built yet", 10, {"color": AMBER})]}])
+        chip(s, 66 + i * 144, 596, 134, 28, t, fg=INK, bg=WHITE, border=LINE, size=10.5)
+
+    disc(s, 654, 566, 20, AMBER_BG, "\uE7BA", 11, AMBER)
+    textbox(s, 682, 567, 420, 18, [
+        {"runs": [("PILOT BUILD — NOT BUILT YET", 9.5, {"bold": True, "color": AMBER, "spc": 80})]}])
     for i, t in enumerate(["Next.js", "FastAPI", "pg_trgm", "Docker"]):
-        chip(s, 652 + i * 132, 598, 122, 30, t, fg=MUTED, bg=WHITE, border=LINE, size=10.5)
+        chip(s, 656 + i * 132, 596, 122, 28, t, fg=MUTED, bg=WHITE, border=LINE, size=10.5, dash=True)
     s.notes_slide.notes_text_frame.text = (
         "Rules decide, a statistical text check assists. Every match is explainable and every action is attributable. "
         "Auto-link only when confidence and margin clear the threshold; otherwise a person confirms."
