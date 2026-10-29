@@ -94,7 +94,7 @@ If the footer says **Offline file · no API**, the browser is on `file://` or `/
 https://<project>.vercel.app/api/meta
 ```
 
-A `503` means `EKASUTRA_API_ORIGIN` is missing. A `502` means Render is asleep, unreachable or erroring; open `/health` on Render directly.
+A `503` means `EKASUTRA_API_ORIGIN` is missing. A `502` means the proxy could not reach Render within 55 s or the API errored; open `/health` on Render directly. A sleeping free-tier service is retried by the dashboard, so a cold start alone should not produce a permanent fallback.
 
 ---
 
