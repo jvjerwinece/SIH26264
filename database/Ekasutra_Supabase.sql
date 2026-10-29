@@ -14,6 +14,8 @@
 -- file on a populated project fails instead of overwriting live rows.
 -- ============================================================================
 
+set client_encoding = 'utf8';
+
 -- ============================================================================
 -- Ekasutra · SIH26264
 -- PostgreSQL 14+ schema for the AICTE institution case coordination layer.
@@ -345,6 +347,10 @@ $$;
 --   psql -d ekasutra_demo -f seed_demo.sql
 -- ============================================================================
 
+
+-- The audit hashes are computed over UTF-8 bytes. Force the client encoding
+-- so a Windows psql session cannot transcode '→' into mojibake before hashing.
+set client_encoding = 'utf8';
 
 begin;
 

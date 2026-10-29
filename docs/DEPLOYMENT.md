@@ -140,7 +140,7 @@ The stack was verified on 29 October 2026 with PostgreSQL 16.15, Python 3.12 and
 # 1. database (any local PostgreSQL 14+)
 createdb ekasutra_demo
 psql -d ekasutra_demo -f database/schema.sql
-psql -d ekasutra_demo -f database/seed_demo.sql
+psql -d ekasutra_demo -f database/seed_demo.sql   # sets client_encoding to utf8 itself
 
 # 2. API (serves web/ too when it exists)
 cd server

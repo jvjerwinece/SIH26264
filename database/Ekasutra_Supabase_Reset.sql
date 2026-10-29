@@ -12,6 +12,8 @@
 --   2. Expect: 32 cases, 18 audit rows, chain_ok = true.
 -- ============================================================================
 
+set client_encoding = 'utf8';
+
 truncate table audit_entries, room_activity, rooms, overlap_cases,
                overlap_clusters, documents, case_events, cases, users,
                institution_aliases, institutions
@@ -39,6 +41,10 @@ truncate table audit_entries, room_activity, rooms, overlap_cases,
 --   psql -d ekasutra_demo -f seed_demo.sql
 -- ============================================================================
 
+
+-- The audit hashes are computed over UTF-8 bytes. Force the client encoding
+-- so a Windows psql session cannot transcode '→' into mojibake before hashing.
+set client_encoding = 'utf8';
 
 begin;
 

@@ -26,6 +26,11 @@ psql -d ekasutra_demo -f schema.sql
 psql -d ekasutra_demo -f seed_demo.sql
 ```
 
+The seed sets `client_encoding = 'utf8'` before inserting. Keep it: audit hashes
+are computed over UTF-8 bytes, and a Windows psql session that defaults to
+`WIN1252` will transcode the one non-ASCII audit object into mojibake and break
+`audit_verify()` at that row.
+
 The last command prints a row count for all eleven tables, then:
 
 ```

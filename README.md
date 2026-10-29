@@ -96,7 +96,7 @@ ekasutra/
 
 ## What is actually verified
 
-Verified on 27 October 2026 against the files in this repository.
+Verified on 27 October 2026 against the files in this repository; deployment rows added 29 October 2026.
 
 | Check | Result |
 |---|---|
@@ -110,7 +110,7 @@ Verified on 27 October 2026 against the files in this repository.
 | Kit and appendix | 2 pages each, render checked |
 | PS 26264 objectives | 8 of 8 mapped in the prototype (see `docs/PS26264_MAPPING.md`) |
 | Demo video | **Not recorded** — blocking submission item |
-| Audit append under concurrency | Pass on 29 October: parallel writers took the chain from 18 to 48 rows, 48 distinct `prev_hash` values, 0 duplicates, `audit_verify()` ok |
+| Audit append under concurrency | Pass on 29 October: 20 parallel writers took the chain from 18 to 38 rows, 38 distinct `prev_hash` values, 0 duplicates, `audit_verify()` ok |
 | Live stack, local end to end | Pass on PostgreSQL 16.15 + FastAPI + Chromium: intake create, dispose, role-switched reopen all committed; UI counts equalled SQL counts; chain verified in PostgreSQL from the Data Layer screen |
 | Vercel proxy handler | Pass against the local API: bootstrap 200, verify 200, matcher 200, invalid POST 422, `..` path blocked 400 |
 | Hosted deployment | **Not yet provisioned** — needs the Supabase, Render and Vercel accounts and DNS access; runbook in `docs/DEPLOYMENT.md` |

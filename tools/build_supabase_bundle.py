@@ -32,6 +32,8 @@ HEADER = """\
 -- file on a populated project fails instead of overwriting live rows.
 -- ============================================================================
 
+set client_encoding = 'utf8';
+
 """
 
 RESET_HEADER = """\
@@ -48,6 +50,8 @@ RESET_HEADER = """\
 --   1. Open SQL Editor → New query → paste this whole file → Run.
 --   2. Expect: 32 cases, 18 audit rows, chain_ok = true.
 -- ============================================================================
+
+set client_encoding = 'utf8';
 
 """
 

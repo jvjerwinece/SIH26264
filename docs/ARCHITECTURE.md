@@ -151,7 +151,7 @@ Genesis is `repeat('0', 64)`. The newest row commits to every row before it.
 
 **Browser:** the same formula over the in-memory `audit` array, rendered newest-first. `Verify chain` recomputes and compares stored hashes without rewriting them; in live mode it calls `GET /api/audit/verify`, so PostgreSQL is the verifier.
 
-**Concurrency evidence (29 October 2026):** a parallel-writer test took the chain from 18 to 48 rows with 48 distinct `prev_hash` values, zero duplicates, and `audit_verify()` returned `ok = true`. Before the lock and index, the same test could fork the chain.
+**Concurrency evidence (29 October 2026):** a 20-writer parallel test took the chain from 18 to 38 rows with 38 distinct `prev_hash` values, zero duplicates, and `audit_verify()` returned `ok = true`. Before the lock and index, the same test could fork the chain.
 
 ## 8. API contract (implemented)
 

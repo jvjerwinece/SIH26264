@@ -22,6 +22,10 @@
 
 \set ON_ERROR_STOP on
 
+-- The audit hashes are computed over UTF-8 bytes. Force the client encoding
+-- so a Windows psql session cannot transcode '→' into mojibake before hashing.
+set client_encoding = 'utf8';
+
 begin;
 
 do $$
