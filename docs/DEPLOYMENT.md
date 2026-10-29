@@ -164,6 +164,10 @@ Evidence from that run:
 | Verify chain in PostgreSQL | `SHA-256 chain verified in PostgreSQL · 19 entries` |
 | Vercel proxy handler (local harness) | bootstrap 200, audit verify 200, matcher 200, invalid POST 422, `..` path blocked 400 |
 | Clean reset | truncate + seed returns 32 cases, 18 rows, head `748b44fc…fc6fe0` |
+| Audit append under 20 parallel writers | 18 → 38 rows, 38 distinct `prev_hash`, 0 duplicates, `audit_verify()` ok |
+| Fresh bundle into an empty database | 32 cases, 18 rows, `chain_ok = true` |
+
+Not verified here: the Docker image (no Docker on the dev machine, first build is on Render), Supavisor transaction pooling, Render cold starts, and TLS to Supabase. Those four only resolve once the projects exist.
 
 ---
 

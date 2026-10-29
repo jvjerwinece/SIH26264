@@ -164,13 +164,13 @@ node qa_flow.js
 
 ### P2-4 · “Same code path in demo and production” is not true
 
-**Status:** Fixed 27 October 2026 — slide 3 labelled the stack as the target. **Superseded 29 October 2026:** FastAPI, PostgreSQL and Docker now exist as the demo stack ([`server/`](../server), [`render.yaml`](../render.yaml)); the Next.js officer UI remains a target. The deck wording is still accurate for the submitted prototype.
+**Status:** Fixed 27 October 2026 — slide 3 labelled the stack as the target. **Superseded 29 October 2026:** a FastAPI service, a pooled PostgreSQL database and a container definition now exist as the demo stack ([`server/`](../server), [`render.yaml`](../render.yaml)); the Next.js officer UI remains a target. The deck wording is still accurate for the submitted prototype.
 
 **Where:** slide 3, with “Next.js · FastAPI · PostgreSQL · Docker”.
 
-**Evidence:** on 27 October the prototype was static HTML with no API. On 29 October a FastAPI service, a pooled PostgreSQL connection, a Docker image and a Vercel proxy were built and verified end to end (V23–V26). Authentication, uploads and the Next.js UI are still absent.
+**Evidence:** on 27 October the prototype was static HTML with no API. On 29 October a FastAPI service, a pooled PostgreSQL connection and a Vercel proxy were built and verified end to end (V23–V26). The Dockerfile and `render.yaml` are written but the image was not built locally — Docker is not installed on the dev machine, so the first build happens on Render. Authentication, uploads and the Next.js UI are still absent.
 
-**Why it matters:** a judge who asks to see the API or the container can now be shown both; claiming the full pilot stack is still false.
+**Why it matters:** a judge who asks to see the API can be shown a running one; claiming the full pilot stack is still false.
 **Fix:** keep the deck’s target framing; show `server/` and `/api/meta` as the demo slice, and name what is missing.
 
 ### P2-5 · `audit_write()` can fork the chain under concurrency
@@ -290,7 +290,7 @@ All edits were made to the shipped files and re-verified.
 - **P2-6 — page 1 metadata is typed, not copied.** The PS ID, title, theme and category on the official deck were entered from the statement text, not diffed against the portal record, and the Team ID is still a placeholder. A mismatched theme or a leftover placeholder on slide one is the cheapest mark lost in the whole review. Copy the four fields from the portal character by character, type the Team ID, re-export and regenerate checksums.
 - **P2-1 / P2-2 — synthetic-data labelling.** The false “labelled on every screen” claim is gone, and the deck, preview, kit and Data Layer now say the cases are synthetic in plain words. **Closed since v8.7:** a persistent amber ribbon (“SYNTHETIC DEMO DATA · NO REAL COMPLAINANTS”) is fixed to the bottom-right of every prototype view, so the live demo and the video are self-labelling. The v9 deck captures hide that dev ribbon behind a CSS override, which is acceptable only because every name visible in them is fictional and page 2 says “Synthetic data throughout” in text. **Closed for the deck (v9):** all four captures in the portal deck were re-shot from the renamed seed and carry fictional institutions only. **Still open:** the video must be recorded from the renamed build too, so no real institution name appears beside an invented complaint.
 - **P2-3 — video.** Not recorded. This is the largest remaining score risk. A 3:00 script mapped to the framework (problem 18 s → differentiator 27 s → core innovation 30 s → walkthrough 85 s → impact 20 s) is in `docs/VIDEO_SCRIPT.md`, with recording settings and a do-not-say list. Recording and upload are still outstanding.
-- **P2-4 — production stack.** Closed and superseded. FastAPI, PostgreSQL and Docker now exist as the demo stack; the Next.js officer UI and authentication are still targets, and the deck says so.
+- **P2-4 — production stack.** Closed and superseded. A FastAPI service, a pooled PostgreSQL database and a container definition now exist as the demo stack; the Docker image has not been built locally, and the Next.js officer UI and authentication are still targets.
 - **P2-5 — concurrent audit append.** Closed 29 October. Advisory lock plus unique `prev_hash`; parallel-writer test clean.
 - **P2-7 — hosted URLs not provisioned.** The Supabase/Render/Vercel configs and runbook are ready, but the free-tier projects have not been created, so no public URL exists yet and Supavisor/cold-start behaviour is untested in the cloud. This is the remaining technical gap after the video.
 

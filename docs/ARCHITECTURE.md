@@ -201,7 +201,7 @@ Supabase — PostgreSQL 16, Supavisor session pooler
 - Free-tier behaviour: the Render service sleeps after idle and the Supabase project pauses after a week of inactivity. Both wake on the next request; the dashboard shows an offline seed until `/api/bootstrap` answers.
 - Step-by-step runbook: [`DEPLOYMENT.md`](DEPLOYMENT.md).
 
-**Production target.** Deck slide 3 names **Next.js · FastAPI · PostgreSQL · Docker**. Only FastAPI + PostgreSQL + Docker exist today; the Next.js officer UI does not.
+**Production target.** Deck slide 3 names **Next.js · FastAPI · PostgreSQL · Docker**. FastAPI and PostgreSQL run today and a `server/Dockerfile` is written, though not yet built; the Next.js officer UI does not exist.
 
 ```
 Next.js (RB / PGRC officer UI)

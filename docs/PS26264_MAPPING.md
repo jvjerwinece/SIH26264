@@ -63,7 +63,7 @@ The statement's diagnosis is: same institution, different bureaus, no central re
 - Do not claim role-based access is implemented. The role selector changes the demo persona; there is no authentication or authorization, and the API trusts its `X-Demo-Role` header.
 - Do not claim a multi-user production deployment. A demo API and database exist, but there is no login, session or per-user scoping, and the hosted URLs are not provisioned yet.
 - Do not claim national-scale matcher performance. See `DATA_NOTICE.md`.
-- Do not claim the full production stack is built. FastAPI, PostgreSQL and Docker exist as a demo; the Next.js officer UI, RBAC and uploads do not.
+- Do not claim the full production stack is built. A FastAPI service and PostgreSQL run as a demo, and a Dockerfile is written but not yet built; the Next.js officer UI, RBAC and uploads do not exist.
 
 ## 6. Coverage summary
 
@@ -72,4 +72,4 @@ The statement's diagnosis is: same institution, different bureaus, no central re
 | Portal objectives demoable | **8 / 8** |
 | Key features built in prototype | 8 of 9 (RBAC not built) |
 | PS fit | Strong: institution-first model directly addresses the overlap/ownership diagnosis |
-| Production readiness | Low–medium: demo API, pooled PostgreSQL and Docker exist; no auth, RBAC, uploads or hosted URLs |
+| Production readiness | Low–medium: demo API and pooled PostgreSQL run locally; a container definition exists but has not been built; no auth, RBAC, uploads or hosted URLs |

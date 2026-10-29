@@ -63,7 +63,7 @@ ekasutra/
 │   ├── generate_demo_seed.py
 │   ├── seed_institutions.py
 │   └── README.md          load, verify and API notes
-├── server/                FastAPI demo API and Docker image for Render
+├── server/                FastAPI demo API and container definition for Render
 │   ├── app.py             endpoints, transactional writes, server-side actor
 │   ├── db.py              psycopg pool with a checkout probe
 │   ├── requirements.txt
