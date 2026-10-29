@@ -10,15 +10,24 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const raw = req.query.path;
-  const parts = Array.isArray(raw) ? raw : [raw].filter(Boolean);
+  // Vercel does not always populate req.query for a catch-all function, so read
+  // the path from req.url and fall back to the query object only if it is there.
+  const url = new URL(req.url, 'http://local');
+  const fromQuery = req.query && req.query.path;
+  let parts = Array.isArray(fromQuery) ? fromQuery : fromQuery ? [fromQuery] : [];
+  if (!parts.length) {
+    let path = url.pathname;
+    if (path.startsWith('/api/')) path = path.slice(5);
+    else if (path === '/api') path = '';
+    else if (path.startsWith('/api')) path = path.slice(4);
+    parts = path.split('/').filter(Boolean).map(decodeURIComponent);
+  }
   if (!parts.length || parts.some((p) => !/^[A-Za-z0-9_-]+$/.test(p))) {
     res.status(400).json({ detail: 'Bad API path' });
     return;
   }
 
-  const query = new URL(req.url, 'http://local').search;
-  const target = `${ORIGIN}/api/${parts.map(encodeURIComponent).join('/')}${query}`;
+  const target = `${ORIGIN}/api/${parts.map(encodeURIComponent).join('/')}${url.search}`;
 
   const headers = { accept: 'application/json' };
   if (req.headers['content-type']) headers['content-type'] = req.headers['content-type'];
