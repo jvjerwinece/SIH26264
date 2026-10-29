@@ -331,6 +331,84 @@ as $$
   limit p_limit;
 $$;
 
+-- ------------------------------------------------------- API surface hardening
+-- Supabase serves schema public through PostgREST to the anon/authenticated
+-- roles, and its public anon key is not a secret. The dashboard never uses
+-- those roles: it calls the Render API, which connects as postgres, the table
+-- owner, and therefore still bypasses RLS. So enable RLS with no policies and
+-- withdraw the grants, which closes both /rest/v1/<table> and
+-- /rest/v1/rpc/audit_write without touching the API path.
+--
+-- Only objects owned by the role running this file are touched, so pg_trgm's
+-- functions and anything else in public are left alone.
+do $$
+declare
+  r record;
+  me oid := (select oid from pg_roles where rolname = current_user);
+begin
+  for r in select c.relname
+             from pg_class c
+             join pg_namespace n on n.oid = c.relnamespace
+            where n.nspname = 'public'
+              and c.relkind in ('r', 'p')
+              and c.relowner = me
+  loop
+    execute format('alter table public.%I enable row level security', r.relname);
+  end loop;
+
+  for r in select c.relname
+             from pg_class c
+             join pg_namespace n on n.oid = c.relnamespace
+            where n.nspname = 'public'
+              and c.relkind in ('r', 'p', 'v', 'm')
+              and c.relowner = me
+  loop
+    execute format('revoke all on table public.%I from public', r.relname);
+  end loop;
+
+  for r in select p.proname, pg_get_function_identity_arguments(p.oid) as args
+             from pg_proc p
+             join pg_namespace n on n.oid = p.pronamespace
+            where n.nspname = 'public' and p.proowner = me
+  loop
+    execute format('revoke all on routine public.%I(%s) from public', r.proname, r.args);
+  end loop;
+
+  if exists (select 1 from pg_roles where rolname = 'anon') then
+    for r in select c.relname
+               from pg_class c
+               join pg_namespace n on n.oid = c.relnamespace
+              where n.nspname = 'public'
+                and c.relkind in ('r', 'p', 'v', 'm')
+                and c.relowner = me
+    loop
+      execute format('revoke all on table public.%I from anon, authenticated', r.relname);
+    end loop;
+
+    for r in select c.relname
+               from pg_class c
+               join pg_namespace n on n.oid = c.relnamespace
+              where n.nspname = 'public'
+                and c.relkind = 'S'
+                and c.relowner = me
+    loop
+      execute format('revoke all on sequence public.%I from anon, authenticated', r.relname);
+    end loop;
+
+    for r in select p.proname, pg_get_function_identity_arguments(p.oid) as args
+               from pg_proc p
+               join pg_namespace n on n.oid = p.pronamespace
+              where n.nspname = 'public' and p.proowner = me
+    loop
+      execute format('revoke all on routine public.%I(%s) from anon, authenticated', r.proname, r.args);
+    end loop;
+
+    execute 'alter default privileges in schema public revoke all on tables    from anon, authenticated';
+    execute 'alter default privileges in schema public revoke all on sequences from anon, authenticated';
+    execute 'alter default privileges in schema public revoke execute on functions from anon, authenticated';
+  end if;
+end $$;
+
 -- ============================================================================
 -- Ekasutra · SIH26264 · demo seed (generated, do not edit by hand)
 --

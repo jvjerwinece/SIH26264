@@ -197,6 +197,7 @@ Supabase — PostgreSQL 16, Supavisor session pooler
 - Render runs [`render.yaml`](../render.yaml) with `rootDir: server`; `healthCheckPath: /health`. `DB_POOL_MAX=5`, `prepare_threshold=None` for pooler compatibility.
 - The Vercel function reads `EKASUTRA_API_ORIGIN` and forwards method, body, query and `X-Demo-Role`. No Render URL or database credential reaches the browser.
 - Supabase receives [`database/Ekasutra_Supabase.sql`](../database/Ekasutra_Supabase.sql) (schema + seed concatenated, psql meta-commands stripped) through the SQL editor. Chain head after a clean load is `748b44fc…fc6fe0`; `/api/meta` exposes it.
+- Supabase's `anon`/`authenticated` roles get nothing: every table has RLS enabled with no policies, and table, view, sequence and routine grants are revoked at load time. The API connects as `postgres`, the table owner, so it bypasses RLS and keeps working; PostgREST `/rest/v1` has no readable surface and cannot call `audit_write()`.
 - Custom domain points at Vercel only; Render stays on its `onrender.com` hostname behind the proxy.
 - Free-tier behaviour: the Render service sleeps after idle and the Supabase project pauses after a week of inactivity. Both wake on the next request; the dashboard shows an offline seed until `/api/bootstrap` answers.
 - Step-by-step runbook: [`DEPLOYMENT.md`](DEPLOYMENT.md).

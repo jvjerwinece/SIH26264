@@ -42,6 +42,7 @@ Files that do the work:
 
 1. **New project.** Region: Mumbai (`ap-south-1`) if offered, otherwise the nearest Asia region. Save the database password.
 2. **SQL Editor → New query.** Paste the entire contents of `database/Ekasutra_Supabase.sql` and run it. It creates `pg_trgm`, eleven tables, the view, the matcher and the audit functions, then loads the seed. The script sets `search_path = public, extensions`, so it works whether Supabase has already installed `pg_trgm` in `extensions` or the script creates it in `public`.
+   **If Supabase warns about Row Level Security, choose “Run and enable RLS”.** Never choose “Run without RLS”: the public anon key can reach `public` over PostgREST. The script also enables RLS itself and revokes table, view, sequence and routine grants from `anon` and `authenticated`, so the API's `postgres` connection is the only way in. A project created before this was added can be patched with the block at the end of [`schema.sql`](../database/schema.sql).
 3. **Read the final result row.** It must be:
 
    ```

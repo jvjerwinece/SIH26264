@@ -2,6 +2,21 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v9.5] — 2026-10-29
+
+The dashboard is rebuilt around a single ledger, the type floor moves to 11 px, and the synthetic-data label stops sitting on top of the interface.
+
+- **One ledger instead of eight KPI tiles.** The dashboard opens on a three-part ledger: active cases against the register with a stage bar, this month's intake sparkline, and a compact stage/overdue/room foot. Eight equal-weight tiles made every number look equally important, so nothing led.
+- **The type floor is 11 px, measured.** Every `font-size` declaration under 11 px was raised to 11 px (215 declarations scanned, none remain), and the `.type-ramp` block layers micro 11 / small 12 / body 13.5 on top. A Playwright pass over 10 views and 1,417 rendered text nodes reports 0 below 11 px and 0 contrast pairs below 4.5:1. `.arch .arw` was the one genuine AA failure at 1.61:1 and now measures 4.93:1.
+- **The ribbon is gone, the disclosure is not.** A fixed `position:fixed` strip made the claim while covering KPI numbers on every screen and colliding with the sidebar footer. The label now lives in three places that cannot overlap content: a sidebar footer chip, a dashboard footnote naming what the 32 cases are, and the print-brief footer.
+- **The shipped file makes no network requests.** `config.js` is loaded through a `document.write` guard that skips it on `file://`, so opening the submission from a memory stick logs no failed request in the console — the one thing a judge with devtools open would see.
+- **Claims are computed, not typed.** The ledger's "received this week" figure is derived from the `received` dates; the previous +2 was hardcoded and wrong after any intake.
+- **A cold Render instance no longer looks broken.** `connectLive()` retries three times with neutral "waking" copy before falling back to the offline pack.
+- **Four responsive defects fixed** at 320, 1024 and 1180 px: the two-column ledger crush at 320, the clipped case table and truncated stage legend at 1024, and the stretched region card.
+- **Deck captures re-shot from this build.** `dash_main.png`, `reports_band.png` and `radar_card.png` were re-cropped from measured DOM boxes; the page-6 picture box was resized to the card's real 3.27:1 aspect instead of the old 2.76:1. Deck rebuilt, PDF re-exported from PowerPoint (6 pages at 960×540 pt), pages re-rendered and read, all 8 checksums regenerated and verified.
+
+Verified on 29 October 2026: `qa/qa_flow.js` — 9 views, intake collision shown, joint room created, chain intact at 18 events, tamper returns "Chain broken", 4/4 unique document hashes, 0 overflow at seven widths, a11y 0/0/0, 0 console errors, no findings. **Still open:** the unrecorded video and the Team ID placeholder on deck page 1.
+
 ## [v9.4] — 2026-10-29
 
 The prototype gets a real three-tier demo stack: dashboard on Vercel, FastAPI on Render, PostgreSQL on Supabase. Local end-to-end verified; cloud projects not yet provisioned.
@@ -14,6 +29,7 @@ The prototype gets a real three-tier demo stack: dashboard on Vercel, FastAPI on
 - **No toast outruns the database.** Intake “Proceed with reason” now posts the override to `/api/cases`; link/joint no longer claim an audit write that never happened. `reopen` is a real event kind, not a `note`.
 - **Deployment configs.** `render.yaml` (Docker, `server/`, `/health`, free plan, Singapore), `web/vercel.json` (`sin1`, security headers), `web/api/[...path].js` (same-origin proxy to Render with path validation), `server/.dockerignore`, `.env.example`, and a step-by-step `docs/DEPLOYMENT.md` covering Supabase SQL, connection pooling, the Vercel root directory, custom-domain DNS and demo reset.
 - **Supabase bundles.** `tools/build_supabase_bundle.py` now writes both `Ekasutra_Supabase.sql` (fresh project) and `Ekasutra_Supabase_Reset.sql` (truncate + reseed), each ending in a verification row. The reset bundle was loaded on PostgreSQL 16: 32 cases, 18 audit rows, chain ok, unchanged head.
+- **Supabase's anon role is locked out.** The schema enables RLS on every table with no policies and revokes table, view, sequence and routine grants from `anon` and `authenticated`, plus execute from `PUBLIC` on its own functions. The dashboard never uses those roles; the Render API connects as `postgres`, the table owner, and still bypasses RLS. Verified with a non-superuser owner: owner reads 32 cases, verifies the chain and writes a case; `anon` is denied on `cases`, on the `v_case_register` view and on `audit_write()`, and even an accidental grant returns zero rows through RLS.
 - **Schema loads on Supabase's extension layout.** Supabase installs `pg_trgm` in an `extensions` schema; `schema.sql` now sets `search_path = public, extensions` and pins the same path on `fn_match_institution`, so the trigram index and the matcher resolve whether the extension lives in `public` or `extensions`. Verified by loading the schema and seed into a database with `pg_trgm` installed in `extensions` and calling the matcher with `search_path = public`.
 - **Seed import is encoding-safe.** `seed_demo.sql` and both Supabase bundles now run `set client_encoding = 'utf8'` before inserting. A Windows psql session defaulting to `WIN1252` had transcoded the single non-ASCII audit object into mojibake, so the stored row hashed to different bytes and `audit_verify()` broke at row 10; fresh and reset loads now both return `ok = true` with the documented head.
 - **Docs corrected against the current seed.** The matcher example was still quoting a 58.4 runner-up from an older seed; it is 67.2 (25.5-point margin) today, and `ARCHITECTURE.md` §2/§7/§8/§9 now describe the built stack instead of the old target. README, QA report and claim register keep hosted URLs, auth and uploads in the “not built” list.
