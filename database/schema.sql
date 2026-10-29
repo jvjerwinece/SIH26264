@@ -10,6 +10,10 @@
 --   * Matching uses pg_trgm only. No vector database, no external service.
 -- ============================================================================
 
+-- Supabase installs extensions into an `extensions` schema. Keep both schemas
+-- resolvable so the trigram operator class and functions work on either layout.
+set search_path = public, extensions;
+
 create extension if not exists pg_trgm;
 
 -- ---------------------------------------------------------------- institutions
@@ -271,7 +275,9 @@ returns table (
   score          numeric,
   why            text
 )
-language sql stable as $$
+language sql stable
+set search_path = public, extensions
+as $$
   with cand as (
     select i.id,
            i.name,

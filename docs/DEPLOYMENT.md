@@ -41,7 +41,7 @@ Files that do the work:
 ## 1. Supabase — database
 
 1. **New project.** Region: Mumbai (`ap-south-1`) if offered, otherwise the nearest Asia region. Save the database password.
-2. **SQL Editor → New query.** Paste the entire contents of `database/Ekasutra_Supabase.sql` and run it. It creates `pg_trgm`, eleven tables, the view, the matcher and the audit functions, then loads the seed.
+2. **SQL Editor → New query.** Paste the entire contents of `database/Ekasutra_Supabase.sql` and run it. It creates `pg_trgm`, eleven tables, the view, the matcher and the audit functions, then loads the seed. The script sets `search_path = public, extensions`, so it works whether Supabase has already installed `pg_trgm` in `extensions` or the script creates it in `public`.
 3. **Read the final result row.** It must be:
 
    ```
