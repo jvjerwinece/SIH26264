@@ -107,10 +107,10 @@ Do this on Vercel only; Render stays behind the proxy.
 
    | Type | Name | Value |
    |---|---|---|
-   | A | `@` | `76.76.21.21` |
+   | A | `@` | the IP Vercel shows |
    | CNAME | `www` | `cname.vercel-dns.com` |
 
-   If the provider supports `ALIAS`/`ANAME` at the apex, use the value Vercel displays instead of the A record.
+   Vercel's panel is authoritative for the A value: new projects show `216.198.79.1`, older ones `76.76.21.21`; both are anycast. If the provider supports `ALIAS`/`ANAME` at the apex, use the hostname Vercel displays instead of the A record.
 3. Wait for **Valid Configuration** and the automatic TLS certificate.
 4. Add the domain to Render's `ALLOWED_ORIGINS` **only** if you switch to direct API calls (below). With the proxy, leave it empty.
 
