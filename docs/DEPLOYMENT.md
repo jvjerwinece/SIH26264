@@ -169,6 +169,10 @@ Evidence from that run:
 
 Not verified here: the Docker image (no Docker on the dev machine, first build is on Render), Supavisor transaction pooling, Render cold starts, and TLS to Supabase. Those four only resolve once the projects exist.
 
+### Cold starts
+
+Render's free plan sleeps after 15 minutes. The first request can take 30–50 s. The proxy allows 55 s and its Vercel function is configured for `maxDuration: 60`; the dashboard renders the seed immediately, shows `Live stack waking · retry n/6` in the footer and keeps retrying for about 45 s before falling back to the offline pack. Open the URL once before a demo and leave the tab warm.
+
 ---
 
 ## 6. Cost and limits

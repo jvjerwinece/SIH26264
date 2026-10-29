@@ -28,7 +28,7 @@ module.exports = async function handler(req, res) {
     method: req.method,
     headers,
     redirect: 'manual',
-    signal: AbortSignal.timeout(25000),
+    signal: AbortSignal.timeout(55000),
   };
   if (req.method !== 'GET' && req.method !== 'HEAD' && req.body != null) {
     init.body = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
