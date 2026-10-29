@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: ekasutra-api
+    runtime: docker
+    rootDir: server
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DB_POOL_MAX
+        value: "5"
+      # Only needed when the browser calls Render directly. The bundled
+      # Vercel proxy is same-origin, so this stays empty by default.
+      - key: ALLOWED_ORIGINS
+        sync: false

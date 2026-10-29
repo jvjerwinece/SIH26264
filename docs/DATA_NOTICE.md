@@ -64,9 +64,11 @@ Slide references below point at the long-form deck (`Ekasutra_SIH2026_SIH26264.p
 | 2,726 variants, 95.0/98.2, 100% precision, 70.3% coverage, 322 duplicate names | Formerly deck and kit | **Withdrawn 27 October 2026** | No shipped artifact supports them | Do not reintroduce |
 | 18 institutions, 32 cases, 109 documents, 18 audit rows | Appendix, DB pack | **Supported** | Deterministic seed | Keep |
 | Chain head `748b44fc…fc6fe0` | Appendix, DB pack | **Supported** | Recomputed, 0 broken links | Keep |
-| “Every action is tamper-evident” | Deck, tour | **Supported for the demo** | PostgreSQL chain is sound; the browser verifier now detects edited rows (P1-1 fixed) | Keep; fix P2-5 before real deployment |
-| “Synthetic data labelled on every screen” | Formerly kit Q4 | **Removed** | The claim was false; documents now say the case data is synthetic without promising a label on every screen | Add the ribbon before recording |
+| “Every action is tamper-evident” | Deck, tour | **Supported for the demo** | PostgreSQL chain is sound, the append is advisory-locked and `prev_hash` is unique; the browser verifier detects edited rows (P1-1 fixed, P2-5 closed 29 October) | Keep |
+| “Synthetic data labelled on every screen” | Formerly kit Q4 | **Removed** | The claim was false; the persistent amber ribbon now carries the label and documents say the case data is synthetic | Keep the ribbon visible in the video |
 | “Same code path in demo and production” | Formerly deck slide 3 | **Removed 27 October 2026** | Slide now separates the prototype (one HTML file) from the target stack | Keep the separation |
+| Live three-tier demo (Vercel → Render → Supabase) | README, ARCHITECTURE §2/§9, DEPLOYMENT | **Built and verified locally; not hosted** | PostgreSQL 16 + FastAPI + browser end to end on 29 October; Supabase/Render/Vercel configs exist, projects not created | Say “deployable demo stack” until the URLs exist; then say “demo”, never “pilot” |
+| “No server, no database” | Formerly ARCHITECTURE §2 | **Outdated 29 October 2026** | `server/` and `web/` exist; the frozen submission file is still offline-capable | Do not repeat; distinguish the offline artifact from the live demo |
 | Advisory text similarity (TF-IDF) | Prototype radar + intake, deck slide 3, kit Q3 | **Supported and demoable** | Cosine similarity over complaint narratives computed in-browser; threshold 0.30 across institutions, 0.20 at intake; never auto-links | Call it advisory; do not call it an LLM |
 | Six-person team | Deck slide 6 | **Supported** | Lead 1, frontend + design 2, backend 2, data 1 | Keep |
 | 3:00 video | Kit cover | **Not delivered** | No MP4 in archive; checklist says 2:50 | Record and verify duration |

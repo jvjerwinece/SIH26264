@@ -1,14 +1,15 @@
-# QA report — Ekasutra v8
+# QA report — Ekasutra v9.4
 
-**Build:** v8, cut 25 October 2026
+**Build:** v9.4, cut 29 October 2026
 **Audit date:** 26 October 2026
 **Remediation and re-verification:** 27 October 2026
+**Deployment verification:** 29 October 2026
 **Auditor:** internal pre-submission review
-**Scope:** `submission/` (HTML, PPTX, preview PDF, appendix, kit, database pack), `database/` source, deck and kit renders.
+**Scope:** `submission/` (HTML, PPTX, preview PDF, appendix, kit, database pack), `database/` source, deck and kit renders, `server/` API, `web/` live dashboard and the Vercel proxy handler.
 
 **Verdict (26 October):** a strong, coherent prototype with an unusually good domain model, held back by claim-integrity defects in the submission layer. The build is credible in a live demo until a judge tests the audit claim or asks for the matcher harness. Fix the five P1 items before 28 October.
 
-**Status (27 October):** P1-1 to P1-5, P3-1, P3-2 and P3-3 are fixed and re-tested. The prototype, deck, preview PDF, kit and appendix now carry one set of matcher numbers. Remaining blockers are the unrecorded video and the production-stack caveats listed in §8.
+**Status (29 October):** P1-1 to P1-5, P3-1, P3-2 and P3-3 are fixed and re-tested. The audit append is concurrency-locked, the demo API and live dashboard are built and verified end to end on PostgreSQL 16, and the Supabase/Render/Vercel configs are ready. Remaining blockers are the unrecorded video and the unprovisioned hosted URLs.
 
 ---
 
@@ -20,13 +21,13 @@ Scores are as of the 26 October audit; the right-hand column records the 27 Octo
 |---|---:|---:|---:|---|
 | Problem fit and insight | 15% | 9.0 | 9.0 | Institution-first model, overlap classes, custody and coordination rooms map directly to PS 26264 |
 | Prototype completeness | 25% | 9.0 | 9.5 | All eight objectives are demoable; intake-to-audit flow closes; responsive and offline; audit and stale-label defects fixed |
-| Technical depth | 20% | 8.5 | 8.5 | Real schema, register view, trigram matcher, hash chain, constraints; production layer not built |
-| Evidence and claim integrity | 20% | 6.5 | 9.0 | Numbers now agree across all artifacts; tamper check detects edits; document digests unique. Harness output and the 9,558-row list are still not shipped |
-| Submission readiness | 10% | 7.5 | 8.0 | Deck, kit, preview and appendix aligned and team slide fixed; video still missing |
+| Technical depth | 20% | 8.5 | 9.2 | Real schema, register view, trigram matcher, hash chain, constraints; now a working FastAPI service, pooled PostgreSQL writes, locked audit append and a live dashboard |
+| Evidence and claim integrity | 20% | 6.5 | 9.2 | Numbers now agree across all artifacts; tamper check detects edits; live counts match SQL; document digests unique. Harness output and the 9,558-row list are still not shipped |
+| Submission readiness | 10% | 7.5 | 8.0 | Deck, kit, preview and appendix aligned and team slide fixed; deployment runbook ready; video still missing |
 | Design and polish | 10% | 8.5 | 9.0 | Clear editorial visual language; 320 px overflow and unnamed controls fixed |
-| **Weighted total** | **100%** | **8.2 / 10** | **8.9 / 10** | |
+| **Weighted total** | **100%** | **8.2 / 10** | **9.1 / 10** | |
 
-Recording the video and relabelling the production stack as a plan would move this to roughly **9.3**. The model itself does not need rescuing.
+Recording the video and provisioning the hosted URLs would move this to roughly **9.4**. The model itself does not need rescuing.
 
 ## 2. Method and reproduction
 
@@ -72,6 +73,10 @@ node qa_flow.js
 | V20 | Deck v9.1 — pictorial match tree | Page 3: 13 icon discs (entry chip, decision box, A/B/C tabs, nine steps, three outcomes) built as ovals plus Segoe MDL2 Assets glyph runs; font embedded in the export as `ABCDEE+Segoe MDL2 Assets`; every node label and sub-line measured inside its 44 px card from the exported PDF, no span crosses a card edge, decision title on one line at 16.5 pt; PDF text scan unchanged (retired 0, 2× 9,558, 4× 367, 2× 94.6, 2× 99.7, 6 pages at 960×540 pt) | Pass |
 | V21 | Deck v9.2 + site v9.2 — projection legibility | Site: `type_audit.js` walked the computed styles of all five views; nothing renders below 8.5 px except the version badge, the previous floor was 7.5 px on 11 classes. Empty-state / subtitle tiers moved to 9 px, annotation tiers to 9.5 px, with the four higher-specificity selectors (`.field label`, `.whybox h4`, `.stat .sl`, `.minicase .cid`) targeted explicitly so the overrides actually land. A second audit confirms the floor. Overflow re-checked at 320–1920 px: 0 horizontal scroll on every width. `.why` evidence chips were touching (`…PERMANENT ID● ALIAS MATCHED…`) and now wrap in a flex row with 14 px column gap. Deck captures for pages 2 / 5 / 6 were re-cropped from measured DOM boxes on the post-fix build so the deck and the live site show the same type. `qa/qa_flow.js` re-run: 9 views, 0 console errors, all functional checks pass, no findings. PDF text scan unchanged (6 pages at 960×540 pt). Checksums regenerated and verified. | Pass |
 | V22 | Deck v9.3 — disc centring and a two-lane stack strip | Ink offsets measured at 8x on every disc in the exported PDF: the A/B/C labels sat 2.42 pt low in their 15 pt circles and were rendering in Arial (Segoe MDL2 has no Latin letters); all discs now land within ±0.62 pt vertically and ±0.25 pt horizontally. Two intermediate builds were rejected: glyphs routed through `add_textbox` export as missing-glyph boxes, and python-pptx's default `spAutoFit` resizes the label box. The label now rides in an unfilled oval offset by a measured `lift`. The tech-stack strip splits into “runs today, in this pack” (check disc, solid pills) and “pilot build — not built yet” (warning disc, dashed pills), so the eight pills can no longer read as eight shipped components. No text re-wrapped; text scan unchanged (retired 0, 2x 9,558, 4x 367, 2x 94.6, 2x 99.7); 6 pages at 960x540 pt; checksums regenerated and verified. | Pass |
+| V23 | Audit append under parallel writers | 30 concurrent `audit_write()` calls took the chain 18 → 48 rows; 48 distinct `prev_hash`; 0 duplicates; `audit_verify()` ok; advisory lock + unique `prev_hash` index in `schema.sql` | Pass |
+| V24 | Live dashboard against PostgreSQL 16.15 + FastAPI | `web/` loaded 32 cases from `/api/bootstrap`, footer `Live · Supabase + Render`. Intake override created `C-2026-0199` (audit 19); dispose and role-switched reopen wrote events as `R. Menon` then `P. Rao` (audit 21); Data Layer showed `cases 33`, `case_events 130`, `audit_entries 19`, equal to SQL; **Verify chain in PostgreSQL** reported 19 entries | Pass |
+| V25 | Vercel proxy handler | Local harness against the running API: bootstrap 200 (32 cases, 18 audit), audit verify 200, matcher 200 (`92.7` for SVCE), invalid POST 422, traversal segment `..` rejected 400 | Pass |
+| V26 | Supabase bundles | `Ekasutra_Supabase.sql` (fresh) and `Ekasutra_Supabase_Reset.sql` (truncate + seed) generated from one builder; reset bundle loaded on PostgreSQL 16 and returned 32 cases, 18 audit rows, `chain_ok = t`, head `748b44fc…fc6fe0` | Pass |
 
 ## 4. Findings
 
@@ -159,23 +164,25 @@ node qa_flow.js
 
 ### P2-4 · “Same code path in demo and production” is not true
 
-**Status:** Fixed 27 October 2026 — slide 3 now labels the stack “TARGET STACK” and states “Prototype is one HTML file; the API is specified, not built.” Preview page 3 patched to match.
+**Status:** Fixed 27 October 2026 — slide 3 labelled the stack as the target. **Superseded 29 October 2026:** FastAPI, PostgreSQL and Docker now exist as the demo stack ([`server/`](../server), [`render.yaml`](../render.yaml)); the Next.js officer UI remains a target. The deck wording is still accurate for the submitted prototype.
 
 **Where:** slide 3, with “Next.js · FastAPI · PostgreSQL · Docker”.
 
-**Evidence:** the prototype is static HTML with in-memory arrays and `localStorage`. There is no API, no auth, no database connection and no Docker image in the repository.
+**Evidence:** on 27 October the prototype was static HTML with no API. On 29 October a FastAPI service, a pooled PostgreSQL connection, a Docker image and a Vercel proxy were built and verified end to end (V23–V26). Authentication, uploads and the Next.js UI are still absent.
 
-**Why it matters:** a judge who asks to see the API or the container will find neither. The target stack is a reasonable plan; presenting it as built is not.
-**Fix:** relabel as “Prototype: single-file HTML. Target stack: Next.js, FastAPI, PostgreSQL, Docker — API contract defined, not yet implemented.” Keep the architecture slide; remove the equivalence claim.
+**Why it matters:** a judge who asks to see the API or the container can now be shown both; claiming the full pilot stack is still false.
+**Fix:** keep the deck’s target framing; show `server/` and `/api/meta` as the demo slice, and name what is missing.
 
 ### P2-5 · `audit_write()` can fork the chain under concurrency
 
-**Where:** [`schema.sql`](../database/schema.sql) lines 177–198.
+**Status:** Fixed 29 October 2026.
 
-**Evidence:** `select hash into v_prev from audit_entries order by id desc limit 1;` takes no lock. Two concurrent transactions can read the same predecessor and insert two children.
+**Where:** [`schema.sql`](../database/schema.sql) `audit_write()` and the `audit_entries_prev` index.
+
+**Evidence:** the original function read the head without a lock. It now takes `pg_advisory_xact_lock(hashtext('ekasutra.audit_chain'))` and a unique index on `prev_hash` rejects a fork. A parallel-writer test took the chain 18 → 48 rows with 48 distinct `prev_hash`, 0 duplicates and `audit_verify()` ok.
 
 **Why it matters:** the central “tamper-evident” claim depends on a single chain. A fork is not detected by a linear verifier.
-**Fix:** serialise appends with `pg_advisory_xact_lock(<constant>)` or a chain-head row selected `for update`; add a unique index on `prev_hash` (genesis excepted) to make a fork fail loudly.
+**Fix:** applied — serialise appends, then make a fork fail loudly at the index.
 
 ### P3-1 · Intake grammar
 
@@ -263,6 +270,19 @@ All edits were made to the shipped files and re-verified.
 
 | New | Deck disc centring (v9.3): `disc()` gained a measured `lift`/`dx`, and the glyph moved out of a plain textbox into an unfilled oval. | A/B/C went from 2.42 pt low to 0.62 pt high in a 15 pt circle; every other disc ≤0.25 pt; the two lane discs are centred. Two intermediate builds were measured and thrown away — a textbox host exported the symbol glyphs as missing-glyph boxes. |
 
+### Deployment remediation — 29 October 2026
+
+| Item | Change | Evidence after the fix |
+|---|---|---|
+| P2-5 | `audit_write()` now takes an advisory lock; unique index `audit_entries_prev` on `prev_hash`. | Parallel writers: 18 → 48 rows, 48 distinct `prev_hash`, 0 duplicates, `audit_verify()` ok. |
+| New | FastAPI service ([`server/app.py`](../server/app.py), [`db.py`](../server/db.py)) with pooled psycopg connections, server-side actor resolution, row locks on case actions and one transaction per write. | API smoke test exercised create → assign → docs → dispose → reopen → invalid action 422 → unknown institution 404 → room decision → room docs → overlap dismiss → duplicate dismiss 409 → matcher → verify; 28 audit rows, 33 cases. |
+| New | Live dashboard ([`web/`](../web)): `connectLive()` hydrates from `/api/bootstrap`, every write is API-first and re-hydrates; offline seed remains the fallback. | Browser E2E: `C-2026-0199` created, disposed as `R. Menon`, reopened as `P. Rao`; chain 18 → 21; Data Layer footer `Live · Supabase + Render`. |
+| New | Data Layer counts were estimated as `cases × 4 + 1` for `case_events`; that read 133 while SQL held 130. | Tiles now use `LIVE_STATS` for aliases, users, documents and events; the E2E screen read 130 against a SQL count of 130. |
+| New | Intake “Proceed with reason” simulated a write and linked/joint toasts claimed audit entries that were never written. | Live mode posts the override reason to `/api/cases`; link/joint no longer claim a write and state that no duplicate was created. |
+| New | `reopen` was recorded with `kind = 'note'`. | Schema check now includes `reopen`; the API writes `kind = 'reopen'`. Seed rebuilt and chain head unchanged. |
+| New | Matcher documentation gave a 58.4 runner-up and 34.3-point margin from an older seed. | Re-queried against the current seed: 92.7 vs 67.2, 25.5-point margin; `ARCHITECTURE.md` and `database/README.md` corrected. |
+| New | Deployment configs: [`render.yaml`](../render.yaml), [`web/vercel.json`](../web/vercel.json), [`web/api/[...path].js`](../web/api/[...path].js), [`server/Dockerfile`](../server/Dockerfile), `.env.example`, [`DEPLOYMENT.md`](DEPLOYMENT.md). | Proxy harness passed 5/5 cases; Supabase reset bundle loaded cleanly and returned head `748b44fc…fc6fe0`. |
+
 **Re-run result (`qa/qa_flow.js`):** 9 views navigate with no console errors; intake collision shown; joint room created; tamper detected; live Data Layer ID correct; document digests 4/4 unique; all widths clean; accessibility 0/0/0; **no findings**.
 
 ### Still open
@@ -270,9 +290,10 @@ All edits were made to the shipped files and re-verified.
 - **P2-6 — page 1 metadata is typed, not copied.** The PS ID, title, theme and category on the official deck were entered from the statement text, not diffed against the portal record, and the Team ID is still a placeholder. A mismatched theme or a leftover placeholder on slide one is the cheapest mark lost in the whole review. Copy the four fields from the portal character by character, type the Team ID, re-export and regenerate checksums.
 - **P2-1 / P2-2 — synthetic-data labelling.** The false “labelled on every screen” claim is gone, and the deck, preview, kit and Data Layer now say the cases are synthetic in plain words. **Closed since v8.7:** a persistent amber ribbon (“SYNTHETIC DEMO DATA · NO REAL COMPLAINANTS”) is fixed to the bottom-right of every prototype view, so the live demo and the video are self-labelling. The v9 deck captures hide that dev ribbon behind a CSS override, which is acceptable only because every name visible in them is fictional and page 2 says “Synthetic data throughout” in text. **Closed for the deck (v9):** all four captures in the portal deck were re-shot from the renamed seed and carry fictional institutions only. **Still open:** the video must be recorded from the renamed build too, so no real institution name appears beside an invented complaint.
 - **P2-3 — video.** Not recorded. This is the largest remaining score risk. A 3:00 script mapped to the framework (problem 18 s → differentiator 27 s → core innovation 30 s → walkthrough 85 s → impact 20 s) is in `docs/VIDEO_SCRIPT.md`, with recording settings and a do-not-say list. Recording and upload are still outstanding.
-- **P2-4 — production stack.** Closed. Slide 3 now labels the stack as the target and states that the prototype is one HTML file.
-- **P2-5 — concurrent audit append.** `audit_write()` still reads the chain head without a lock. Serialise with an advisory lock or a `FOR UPDATE` head row before any real deployment.
+- **P2-4 — production stack.** Closed and superseded. FastAPI, PostgreSQL and Docker now exist as the demo stack; the Next.js officer UI and authentication are still targets, and the deck says so.
+- **P2-5 — concurrent audit append.** Closed 29 October. Advisory lock plus unique `prev_hash`; parallel-writer test clean.
+- **P2-7 — hosted URLs not provisioned.** The Supabase/Render/Vercel configs and runbook are ready, but the free-tier projects have not been created, so no public URL exists yet and Supavisor/cold-start behaviour is untested in the cloud. This is the remaining technical gap after the video.
 
 ## 8. Sign-off
 
-The domain model, the demo flow and the visual language are submission-grade. The evidence layer is not yet. Treat this report as the punch list, not a verdict on the idea: the idea is the strongest part of the build.
+The domain model, the demo flow, the visual language and the demo API are submission-grade. The evidence layer is now backed by a real database and a live end-to-end test. The two remaining score risks are not code: the video is unrecorded, and the hosted URLs are not provisioned.

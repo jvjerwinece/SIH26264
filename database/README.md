@@ -123,8 +123,10 @@ select * from audit_verify();
 select hash from audit_entries order by id desc limit 1;
 ```
 
-`fn_match_institution` returns `92.7` for the SVCE alias with a `58.4` runner-up —
-a 34-point margin, well past the auto-link rule (>= 92 with >= 8 points of margin).
+`fn_match_institution('S.V. College of Engineering Kanchipuram', 'Tamil Nadu')` returns
+`92.7` for the SVCE alias with a `67.2` runner-up — a 25.5-point margin, past the
+auto-link rule (>= 92 with >= 8 points of margin). Without the state hint the same
+name scores `87.7`, which correctly falls to human confirmation.
 
 ## 5. Hashing a document at insert time
 

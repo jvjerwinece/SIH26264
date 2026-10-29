@@ -89,7 +89,7 @@ create table case_events (
   at      timestamptz not null default now(),
   actor   text not null,
   kind    text not null check (kind in
-          ('created','assigned','note','document','transfer','escalation','disposal','linked','merged')),
+          ('created','assigned','note','document','transfer','escalation','disposal','linked','merged','reopen')),
   detail  text not null
 );
 
@@ -173,6 +173,9 @@ create table audit_entries (
   hash      char(64) not null
 );
 
+-- One successor per link. A forked chain breaks this index immediately.
+create unique index audit_entries_prev on audit_entries (prev_hash);
+
 -- Write one link. Every row commits to the previous row's hash.
 create or replace function audit_write(p_actor text, p_action text, p_object text)
 returns char(64)
@@ -182,6 +185,10 @@ declare
   v_at   timestamptz := clock_timestamp();
   v_hash char(64);
 begin
+  -- Serialise the append. Without this, two concurrent writers can read the
+  -- same head and fork the chain; the lock is held until the transaction ends.
+  perform pg_advisory_xact_lock(hashtext('ekasutra.audit_chain'));
+
   select hash into v_prev from audit_entries order by id desc limit 1;
   v_prev := coalesce(v_prev, repeat('0', 64));
 

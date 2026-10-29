@@ -1,0 +1,9 @@
+# Build context is server/ on Render, so the static dashboard (web/) is not
+# copied into the API image. app.py mounts it only when the directory exists.
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+*.log

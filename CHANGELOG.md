@@ -2,6 +2,22 @@
 
 All notable states of the submission. Earlier builds (v1–v7), earlier renders and the full archive are intentionally not part of this repository.
 
+## [v9.4] — 2026-10-29
+
+The prototype gets a real three-tier demo stack: dashboard on Vercel, FastAPI on Render, PostgreSQL on Supabase. Local end-to-end verified; cloud projects not yet provisioned.
+
+- **FastAPI service, not a mock.** `server/app.py` exposes bootstrap, meta, audit, verify, matcher, case creation, case actions, overlap dismissal and room actions. Every write is one transaction: ledger change + `case_events` row + `audit_write()`. The actor is resolved server-side from `X-Demo-Role` against seeded users; the request body cannot name an actor.
+- **PostgreSQL pool built for a pooler.** `server/db.py` uses psycopg3 with `prepare_threshold=None` (Supavisor-compatible), a checkout `select 1` probe with one retry, and `max_idle=120`. A dropped database no longer turns into a 500 on the next request.
+- **Audit chain is concurrency-safe.** `audit_write()` takes `pg_advisory_xact_lock(hashtext('ekasutra.audit_chain'))` and `audit_entries_prev` is unique on `prev_hash`. Parallel-writer test: 18 → 48 rows, 48 distinct predecessors, 0 duplicates, verify ok. Seed head stays `748b44fc…fc6fe0`.
+- **The dashboard runs live.** `web/index.html` is derived from the frozen submission file and adds `connectLive()`: seed renders first, `/api/bootstrap` replaces it, writes are API-first and re-hydrate from PostgreSQL. `file://` and unreachable APIs keep the offline seed and say so. Footer reads `Live · Supabase + Render`; Data Layer gained a live card and a “Verify chain in PostgreSQL” button.
+- **Counts are read, not estimated.** The Data Layer previously computed `case_events` as `cases × 4 + 1` (133) while SQL held 130. Aliases, users, documents and events now use `/api/meta` counts; the E2E screen matched SQL row-for-row.
+- **No toast outruns the database.** Intake “Proceed with reason” now posts the override to `/api/cases`; link/joint no longer claim an audit write that never happened. `reopen` is a real event kind, not a `note`.
+- **Deployment configs.** `render.yaml` (Docker, `server/`, `/health`, free plan, Singapore), `web/vercel.json` (`sin1`, security headers), `web/api/[...path].js` (same-origin proxy to Render with path validation), `server/.dockerignore`, `.env.example`, and a step-by-step `docs/DEPLOYMENT.md` covering Supabase SQL, connection pooling, the Vercel root directory, custom-domain DNS and demo reset.
+- **Supabase bundles.** `tools/build_supabase_bundle.py` now writes both `Ekasutra_Supabase.sql` (fresh project) and `Ekasutra_Supabase_Reset.sql` (truncate + reseed), each ending in a verification row. The reset bundle was loaded on PostgreSQL 16: 32 cases, 18 audit rows, chain ok, unchanged head.
+- **Docs corrected against the current seed.** The matcher example was still quoting a 58.4 runner-up from an older seed; it is 67.2 (25.5-point margin) today, and `ARCHITECTURE.md` §2/§7/§8/§9 now describe the built stack instead of the old target. README, QA report and claim register keep hosted URLs, auth and uploads in the “not built” list.
+
+Verified locally on 29 October 2026: PostgreSQL 16.15 + FastAPI + Chromium; create `C-2026-0199`, dispose as `R. Menon`, reopen as `P. Rao`, audit 18 → 21, Data Layer `33 cases / 130 events / 19 audit rows`, PostgreSQL chain verification, proxy harness 5/5, clean reset to the seeded head. **Not done:** cloud projects and DNS, login/RBAC, real uploads, video.
+
 ## [v9.3] — 2026-10-28
 
 Page 3's discs are optically centred, and the tech-stack strip now states what ships.

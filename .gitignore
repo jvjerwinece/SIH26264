@@ -31,3 +31,12 @@ venv/
 .vscode/
 .idea/
 *.swp
+
+# local dev harness (conda Postgres, venv, API logs, temp scripts)
+.devpg/
+session/
+
+# deck build scratch dirs
+submission/_audit_render/
+submission/_mtmp*
+submission/*_assets/
